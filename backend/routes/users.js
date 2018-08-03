@@ -10,7 +10,7 @@ const db = new sqlite.Database('./petDataBase.db', err => {
 
 router.get('/userI/:username', (req, res, next) => {
     let username = req.params.username;
-    const stmt = db.prepare(`SELECT * FROM users WHERE username=(?);`)
+    const stmt = db.prepare(`SELECT * FROM uknekrjnekjnw WHERE username=(?);`)
     stmt.all(username, (err, items) => {
       if (err) throw err;
       let totalResult = items.length;

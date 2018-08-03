@@ -10,8 +10,8 @@ const db = new sqlite.Database('./petDataBase.db', err => {
 
 router.get('/petId=:petId', (req, res, next) => {
   let petId = req.params.petId;
-  const stmtPetId = db.prepare(`SELECT * FROM pets WHERE petId=(?);`);
-  const stmtUserId = db.prepare(`SELECT * FROM centers WHERE userId=(?);`);
+  const stmtPetId = db.prepare(`SELECT * FROM plsfdfldfd3 WHERE petId=(?);`);
+  const stmtUserId = db.prepare(`SELECT * FROM cjansdfkjdsnf WHERE userId=(?);`);
   let x = stmtPetId.all(petId, (err, petInfo) => {
     if (err) return next(err);
     if (!isEmpty(petInfo[0])) {
@@ -22,7 +22,6 @@ router.get('/petId=:petId', (req, res, next) => {
           petInfo[0]['userInfo'] = userInfo;
           res.send({ petInfo });
         } else {
-
           petInfo[0]['userInfo'] = "User info don't exist.";
           res.send({ petInfo });
         }
@@ -32,6 +31,7 @@ router.get('/petId=:petId', (req, res, next) => {
     }
   });
 });
+
 isEmpty = (obj) => {
   for (var key in obj) {
     if (obj.hasOwnProperty(key))

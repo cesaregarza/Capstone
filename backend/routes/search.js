@@ -1,32 +1,87 @@
-var express = require('express');
-var router = express.Router();
-const sqlite = require('sqlite3').verbose();
-const db = new sqlite.Database('./petDataBase.db', err => {
-  if (err) {
-    return console.error(err.message);
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+
+const Pet = require('../models/pets');
+
+router.get('/', (req, res, next) => {
+  const location = req.params.location;
+  Pet.find()
+  .exec()
+  .then(pets => {
+    console.log(pets);
+    res.status(200).json(pets);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
+});
+
+router.get('/l=:location', (req, res, next) => {
+  const location = req.params.location;
+  Pet.find()
+  .where('_id').equals(location)
+  .sort('_id')
+  .exec()
+  .then(pets => {
+    console.log(pets);
+    res.status(200).json(pets);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
+});
+
+router.post('/', (req, res, next) => {
+  const  pet = new Pet({
+    _id: new mongoose.Types.ObjectId(),
+    _uid: req.body._uid,
+    name: req.body.name,
+    location: req.body.location,
+    specie: req.body.specie,
+    size: req.body.size,
+    age: req.body.age,
+    breed: req.body.breed,
+    description: req.body.description,
+    gender: req.body.gender,
+    picture: req.body.picture
+  })
+ pet.save()
+  .then(result => {
+    console.log(result);
+    res.status(201).json({
+    message: 'Handling POST request to /pets',
+    createdPet: result
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
+  })
+});
+
+router.patch('/:petId', (req, res, next) => {
+  const id = req.params.petId;
+  const updateOps = {};
+  console.log(req.body)
+  for (const ops of req.body) {
+      updateOps[ops.propName] = ops.value;
   }
-  console.log('Yay! Search is connected to the database!');
-});
-
-router.get('/searchP/:location&:species', (req, res, next) => {
-  let location = req.params.location;
-  let species = req.params.species;
-  const stmt = db.prepare(`SELECT * FROM pets WHERE location=(?) OR species=(?);`)
-  stmt.all([location, species], (err, items) => {
-    if (err) throw err;
-    let totalResult = items.length;
-    res.send({ items, totalResult });
-  });
-});
-
-router.get('/searchC/:location', (req, res, next) => {
-  let location = req.params.location;
-  const stmt = db.prepare(`SELECT * FROM centers WHERE city LIKE (?);`)
-  stmt.all(location, (err, items) => {
-    if (err) throw err;
-    let totalResult = items.length;
-    res.send({ items, totalResult });
-  });
+  Pet.update({ _id: id }, { $set: updateOps }).exec()
+      .then(result => {
+          console.log(result);
+          res.status(200).json(result);
+      })
+      .catch(err => {
+          console.log(err);
+          res.status(500).json({
+              error: err
+          });
+      });
 });
 
 
