@@ -23,6 +23,7 @@ mongoose.connect(`mongodb+srv://dbpets:${obj.env.PW}@petsdb-165j8.mongodb.net/te
 });
 
 app.use(logger('dev'));
+app.use('/upload', express.static('upload'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

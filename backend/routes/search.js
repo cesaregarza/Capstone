@@ -4,11 +4,12 @@ const Pet = require('../models/pet');
 const Center = require('../models/center');
 
 
-router.get('/:id', (req, res, next) => {
-  let petsObj = {}
+router.get('/i=:id', (req, res, next) => {
   Pet.findById(req.params.id)
     //select the propieries to show
-    .select('_id _uid name location specie size age breed description gender picture')
+    .select('_id name location specie size age breed description gender picture center')
+    .populate("center", "name address city postal phone email hours picture")
+    .exec()
     .then(pets => {
       //Validate the answer is not empty
       if (!pets) {
@@ -16,17 +17,7 @@ router.get('/:id', (req, res, next) => {
           message: "Pet id not found."
         })
       }
-      petsObj = pets;
-      return Center.findById(pets._uid)
-        //select the propieries to show
-        .select('_id name address city postal phone email hours')
-        .exec()
-    })
-    .then(center => {
-      res.status(200).json({
-        pet: petsObj,
-        center: center
-      });
+      res.status(201).json(pets)
     })
     .catch(err => {
       console.log(err);
@@ -35,9 +26,14 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
+  let pageSize =  13;
+  let pageNo =  2;
   Pet.find()
     //select the propieries to show
-    .select('_id _uid name location specie size age breed description gender picture')
+    .select('_id name location specie size age breed description gender picture center')
+    .populate("center", "name address city postal phone email hours picture")
+    .limit(pageSize)
+    .skip(pageSize * (pageNo - 1))
     .exec()
     .then(pets => {
       console.log(pets);
@@ -46,7 +42,6 @@ router.get('/', (req, res, next) => {
         pets: pets.map(pet => {
           return {
             _id: pet._id,
-            _uid: pet._uid,
             name: pet.name,
             location: pet.location,
             specie: pet.specie,
@@ -55,7 +50,8 @@ router.get('/', (req, res, next) => {
             breed: pet.breed,
             description: pet.description,
             gender: pet.gender,
-            picture: pet.picture
+            picture: pet.picture,
+            center: pet.center
           }
         })
       });
@@ -67,17 +63,24 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/l=:location', (req, res, next) => {
-  const location = /req.params.location/;
   Pet.find()
     //select the propieries to show
-    .select('_id _uid name location specie size age breed description gender picture')
+    .select('_id name location specie size age breed description gender picture center')
+    .populate("center", "name address city postal phone email hours picture")
     //regex with $options:"$i" to make the search case insensitive
-    .where('location').equals({ $regex: location, $options: "$i" })
+    .where('location').equals({ $regex: req.params.location, $options: "$i" })
     .sort({ _id: -1 })
     .exec()
     .then(pets => {
-      console.log(pets);
-      res.status(200).json(pets);
+      if (pets.length === 0) {
+        res.status(404).json({
+          message: "No found"
+        });
+      }
+      res.status(200).json({
+        count: pets.length,
+        pets: pets
+      });
     })
     .catch(err => {
       console.log(err);
@@ -86,12 +89,12 @@ router.get('/l=:location', (req, res, next) => {
 });
 
 router.get('/s=:specie', (req, res, next) => {
-  const specie = req.params.specie;
   Pet.find()
     //select the propieries to show
-    .select('_id _uid name location specie size age breed description gender picture')
+    .select('_id name location specie size age breed description gender picture center')
+    .populate("center", "name address city postal phone email hours picture")
     //regex with $options:"$i" to make the search case insensitive
-    .where('specie').equals({ $regex: specie, $options: "$i" })
+    .where('specie').equals({ $regex: req.params.specie, $options: "$i" })
     .sort({ _id: -1 })
     .exec()
     .then(pets => {
@@ -104,5 +107,12 @@ router.get('/s=:specie', (req, res, next) => {
     })
 });
 
+isEmpty = (obj) => {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
+};
 
 module.exports = router;

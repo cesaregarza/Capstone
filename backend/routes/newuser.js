@@ -1,8 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './upload/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, filename(file.originalname));
+  }
+})
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype == 'image/jpeg' || file.mimetype == 'image.png') {
+    cb(null, false);
+  } else {
+    cb(null, true);
+  }
+}
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 2
+  },
+  filefilter: fileFilter
+});
+const localPath = "http://localhost:3000/"
+
 const Userlist = require('../models/userlist');
 const User = require('../models/user');
+const Center = require('../models/center');
 
 router.get('/', (req, res, next) => {
     User.find()
@@ -16,7 +42,7 @@ router.get('/', (req, res, next) => {
 });
 
 
-router.post('/', (req, res, next) => {
+router.post('/', upload.single('product-image'), (req, res, next) => {
     const id = new mongoose.Types.ObjectId();
     const userlist = new Userlist({
         _id: id,
@@ -34,7 +60,7 @@ router.post('/', (req, res, next) => {
         email: req.body.email,
         liked: req.body.liked,
         location: req.body.location,
-        picture: req.body.picture,
+        picture: localPath + req.file.path,
         date_joined: req.body.date_joined,
         last_login: req.body.last_login,
         isDeleted: req.body.isDeleted
