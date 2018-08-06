@@ -8,6 +8,8 @@ const userlistSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: false, unique: true },
     salt: { type: String, required: false },
+    date_joined: { type: Date, required: true },
+    last_login  : { type: Date, required: true },
     isDeleted: { type: Boolean, required: true }
 });
 

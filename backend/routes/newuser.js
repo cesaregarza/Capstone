@@ -3,26 +3,26 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './upload/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, filename(file.originalname));
-  }
+    destination: (req, file, cb) => {
+        cb(null, './upload/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, filename(file.originalname));
+    }
 })
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype == 'image/jpeg' || file.mimetype == 'image.png') {
-    cb(null, false);
-  } else {
-    cb(null, true);
-  }
+    if (file.mimetype == 'image/jpeg' || file.mimetype == 'image.png') {
+        cb(null, false);
+    } else {
+        cb(null, true);
+    }
 }
 const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 2
-  },
-  filefilter: fileFilter
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 2
+    },
+    filefilter: fileFilter
 });
 const localPath = "http://localhost:3000/"
 
@@ -31,7 +31,8 @@ const User = require('../models/user');
 const Center = require('../models/center');
 
 router.get('/', (req, res, next) => {
-    User.find()
+    Center.find()
+        .populate('_id')
         .exec()
         .then(users => {
             res.send(users);
@@ -51,6 +52,8 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
         username: req.body.username,
         email: req.body.email,
         salt: req.body.salt,
+        date_joined: req.body.date_joined,
+        last_login: req.body.last_login,
         isDeleted: req.body.isDeleted
     });
     const user = new User({
@@ -61,34 +64,54 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
         liked: req.body.liked,
         location: req.body.location,
         picture: localPath + req.file.path,
-        date_joined: req.body.date_joined,
-        last_login: req.body.last_login,
+        isDeleted: req.body.isDeleted
+    });
+    const center = new Center({
+        _id: id,
+        name: req.body.name,
+        username: req.body.username,
+        email: req.body.email,
+        address: req.body.address,
+        city: req.body.city,
+        postal: req.body.postal,
+        phone: req.body.phone,
+        hours: req.body.hours,
+        picture: localPath + req.file.path,
         isDeleted: req.body.isDeleted
     });
 
     userlist.save()
         .then(result => {
-            console.log(result);
-            // *** we can't sent response 2 times in the same router ***
-            // res.status(201).json({
-            //     message: 'The userlist was successfully created.',
-            //     createdUser: result
-            // });
-        })
-        .catch(err => {
-            console.log(err);
-            // res.status(500).json({
-            //     error: err
-            // });
-        });
-
-    user.save()
-        .then(result => {
-            console.log(result);
-            res.status(201).json({
-                message: 'The user was successfully created.',
-                createdUser: result
-            });
+            if (req.body.usertype == 1) {
+                user.save()
+                    .then(result => {
+                        res.status(201).json({
+                            message: 'The user was successfully created.',
+                            createdUser: result
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+            } else if (req.body.usertype == 2) {
+                center.save()
+                    .then(result => {
+                        console.log(result);
+                        res.status(201).json({
+                            message: 'The center was successfully created.',
+                            createdCenter: result
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+            }
         })
         .catch(err => {
             console.log(err);
@@ -96,6 +119,8 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
                 error: err
             });
         });
+
+
 });
 
 
