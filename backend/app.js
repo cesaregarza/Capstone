@@ -39,6 +39,8 @@ app.use((req, res, next, ) => {
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyparser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 

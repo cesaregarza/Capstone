@@ -1,24 +1,20 @@
-// haversine :: (Num, Num) -> (Num, Num) -> Num
-exports.haversine = ([lat1, lon1], [lat2, lon2]) => {
-    // Math lib function names
-    const [pi, asin, sin, cos, sqrt, pow, round] = [
-        'PI', 'asin', 'sin', 'cos', 'sqrt', 'pow', 'round'
-    ]
-    .map(k => Math[k]),
-        // degrees as radians
-        [rlat1, rlat2, rlon1, rlon2] = [lat1, lat2, lon1, lon2]
-        .map(x => x / 180 * pi),
-        dLat = rlat2 - rlat1,
-        dLon = rlon2 - rlon1,
-        radius = 24901; // miles
-    // km
-    return round(
-        radius * 2 * asin(
-            sqrt(
-                pow(sin(dLat / 2), 2) +
-                pow(sin(dLon / 2), 2) *
-                cos(rlat1) * cos(rlat2)
+exports.haversine = ([lat1, lon1],[lat2, lon2]) => {
+    const deltaPhi = (lat2 - lat1);
+    const deltaTheta = (lon2 - lon1);
+
+    const [asin, pow, sin, cos] = ["asin", "pow", "sin", "cos"].map(x => Math.x); //maps asin, pow, sin, and cos to the math object to reference without having to type Math.asin, etc.
+
+    const r = 3958.76; //radius of earth in miles
+
+    let d = 2 * r * asin(
+        sqrt(
+            pow(
+                sin(deltaTheta)/2, 2) + 
+            cos(lon1) * cos(lon2) * 
+            pow(
+                sin(deltaPhi)/2, 2)
             )
-        ) * 100
-    ) / 100;
+        );
+
+    return Math.round(d);
 };
