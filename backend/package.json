@@ -14,9 +14,9 @@
     "http-errors": "~1.6.2",
     "mongodb": "^3.1.1",
     "mongoose": "^5.2.6",
+    "mongoose-unique-validator": "^2.0.1",
     "morgan": "~1.9.0",
-    "scrypt": "^6.0.3",
-    "sqlite3": "^4.0.2"
+    "scrypt": "^6.0.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"

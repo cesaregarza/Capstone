@@ -6,23 +6,22 @@ var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var path = require('path');
 const mongoose = require('mongoose');
+var obj = require("./nodemon.json");
 
-// var index = require('./routes/index');
-var authRouter = require('./routes/auth');
-var adminRouter = require('./routes/admin');
 var searchRouter = require('./routes/search');
 var petsRouter = require('./routes/pets');
 var centersRouter = require('./routes/centers');
 var usersRouter = require('./routes/users');
+var newuserRouter = require('./routes/newuser');
 
-
-mongoose.connect('mongodb+srv://dbpets:ioa65MCjNuiFfWBe@petsdb-165j8.mongodb.net/test?retryWrites=true', {
+mongoose.connect(`mongodb+srv://dbpets:${obj.env.PW}@petsdb-165j8.mongodb.net/test?retryWrites=true`, {
   useNewUrlParser: true
 }).then(() => {
   console.log("Connected to Database");
 }).catch((err) => {
   console.log("Not Connected to Database ERROR! ", err);
 });
+
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -42,23 +41,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-// app.get('/api', (req, res) => {
-// if(req.session.page_views){
-//   req.session.page_views++;
-//   res.send('You visited this page ' + req.session.page_views + ' times');
-// } else {
-//   req.session.page_views = 1;
-//   res.send('Welcome to this page for the first time!');
-// }
-// });
-
-// app.use('/', index);
-app.use('/auth', authRouter);
-app.use('/admin', adminRouter);
 app.use('/search', searchRouter);
 app.use('/pets', petsRouter);
 app.use('/centers', centersRouter);
 app.use('/users', usersRouter);
+app.use('/newuser', newuserRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');

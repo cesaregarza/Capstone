@@ -1,36 +1,64 @@
-var express = require('express');
-var router = express.Router();
-const sqlite = require('sqlite3').verbose();
-const db = new sqlite.Database('./petDataBase.db', err => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log('Yay! Pets is connected to the database!');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const Pet = require('../models/pet');
+
+
+router.post('/', (req, res, next) => {
+  const  pet = new Pet({
+    _id: new mongoose.Types.ObjectId(),
+    _uid: req.body._uid,
+    name: req.body.name,
+    location: req.body.location,
+    specie: req.body.specie,
+    size: req.body.size,
+    age: req.body.age,
+    breed: req.body.breed,
+    description: req.body.description,
+    gender: req.body.gender,
+    picture: req.body.picture,
+    isDeleted: req.body.isDeleted
+  })
+ pet.save()
+  .then(result => {
+    console.log(result);
+    res.status(201).json({
+    message: 'Handling POST request to /pets',
+    createdPet: result
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
+  })
 });
 
-router.get('/petId=:petId', (req, res, next) => {
-  let petId = req.params.petId;
-  const stmtPetId = db.prepare(`SELECT * FROM plsfdfldfd3 WHERE petId=(?);`);
-  const stmtUserId = db.prepare(`SELECT * FROM cjansdfkjdsnf WHERE userId=(?);`);
-  let x = stmtPetId.all(petId, (err, petInfo) => {
-    if (err) return next(err);
-    if (!isEmpty(petInfo[0])) {
-      let userId = petInfo[0].userId;
-      stmtUserId.all(userId, (err1, userInfo) => {
-        if (err1) return next(err1);
-        if (!isEmpty(userInfo[0])) {
-          petInfo[0]['userInfo'] = userInfo;
-          res.send({ petInfo });
-        } else {
-          petInfo[0]['userInfo'] = "User info don't exist.";
-          res.send({ petInfo });
-        }
+
+
+router.patch('/:petId', (req, res, next) => {
+  const id = req.params.petId;
+  const updateOps = {};
+  console.log(req.body)
+  for (const ops of req.body) {
+      updateOps[ops.propName] = ops.value;
+  }
+  Pet.update({ _id: id }, { $set: updateOps }).exec()
+      .then(result => {
+          console.log(result);
+          res.status(200).json(result);
+      })
+      .catch(err => {
+          console.log(err);
+          res.status(500).json({
+              error: err
+          });
       });
-    } else {
-      res.send('No id found');
-    }
-  });
 });
+
+
+
 
 isEmpty = (obj) => {
   for (var key in obj) {
