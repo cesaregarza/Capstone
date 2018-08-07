@@ -51,7 +51,6 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
         usertype: req.body.usertype,
         username: req.body.username,
         email: req.body.email,
-        salt: req.body.salt,
         date_joined: req.body.date_joined,
         last_login: req.body.last_login,
         isDeleted: req.body.isDeleted
@@ -79,46 +78,59 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
         picture: localPath + req.file.path,
         isDeleted: req.body.isDeleted
     });
-
-    userlist.save()
-        .then(result => {
-            if (req.body.usertype == 1) {
-                user.save()
+    //Find existing file
+    Userlist.find({ email: req.body.email })
+        .exec()
+        .then(email => {
+            if (email.length >= 1) {
+                return res.status(409).json({
+                    message: "Email exists"
+                })
+            } else {
+                userlist.save()
                     .then(result => {
-                        res.status(201).json({
-                            message: 'The user was successfully created.',
-                            createdUser: result
-                        });
+                        if (req.body.usertype == 1) {
+                            user.save()
+                                .then(result => {
+                                    res.status(201).json({
+                                        message: 'The user was successfully created.',
+                                        createdUser: result
+                                    });
+                                })
+                                .catch(err => {
+                                    res.status(500).json({
+                                        error: err
+                                    });
+                                })
+                        } else if (req.body.usertype == 2) {
+                            center.save()
+                                .then(result => {
+                                    console.log(result);
+                                    res.status(201).json({
+                                        message: 'The center was successfully created.',
+                                        createdCenter: result
+                                    });
+                                })
+                                .catch(err => {
+                                    res.status(500).json({
+                                        error: err
+                                    });
+                                })
+                        }
                     })
                     .catch(err => {
-                        console.log(err);
                         res.status(500).json({
                             error: err
                         });
-                    });
-            } else if (req.body.usertype == 2) {
-                center.save()
-                    .then(result => {
-                        console.log(result);
-                        res.status(201).json({
-                            message: 'The center was successfully created.',
-                            createdCenter: result
-                        });
                     })
-                    .catch(err => {
-                        console.log(err);
-                        res.status(500).json({
-                            error: err
-                        });
-                    });
             }
         })
         .catch(err => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
-        });
+        })
+
 
 
 });

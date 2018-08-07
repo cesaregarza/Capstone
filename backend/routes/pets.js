@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   }
 })
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype == 'image/jpeg' || file.mimetype == 'image.png') {
+  if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
     cb(null, false);
   } else {
     cb(null, true);
@@ -31,7 +31,7 @@ const Pet = require('../models/pet');
 
 router.post('/', upload.single('product-image'), (req, res, next) => {
   const id = new mongoose.Types.ObjectId();
-  req.file.filename = id + req.file.filename;
+  // req.file.filename = id + req.file.filename;
   const pet = new Pet({
     _id: id,
     name: req.body.name,

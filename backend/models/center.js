@@ -3,8 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const centerSchema = mongoose.Schema({
     _id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Userlist' },
-    name: { type: String, required: true, unique: true },
-    username: {type: String, required: true, unique: true},
+    name: { type: String, required: true },
     address: { type: String, required: true },
     city: { type: String, required: true },
     postal: { type: Number, required: true },
