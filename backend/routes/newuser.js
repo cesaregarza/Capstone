@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
+const scrypt = require('scrypt');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './upload/');
@@ -30,6 +31,13 @@ const Userlist = require('../models/userlist');
 const User = require('../models/user');
 const Center = require('../models/center');
 
+//Set scrypt configs. We want keys in UTF8 and hashes in hex.
+scrypt.hash.config.keyEncoding = 'utf8';
+scrypt.hash.config.outputEncoding = 'hex';
+scrypt.verify.config.keyEncoding = 'utf8';
+scrypt.verify.config.hashEncoding = 'hex';
+var scryptParameters = scrypt.paramsSync(0.1);
+
 router.get('/', (req, res, next) => {
     Center.find()
         .populate('_id')
@@ -45,9 +53,10 @@ router.get('/', (req, res, next) => {
 
 router.post('/', upload.single('product-image'), (req, res, next) => {
     const id = new mongoose.Types.ObjectId();
+    const hashedpw = scrypt.kdfSync(req.body.password, scryptParameters); //REMEMBER to use req.body.password NOT req.body.hash
     const userlist = new Userlist({
         _id: id,
-        hash: req.body.hash,
+        hash: hashedpw,
         usertype: req.body.usertype,
         username: req.body.username,
         email: req.body.email,
@@ -82,7 +91,7 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
     Userlist.find({ email: req.body.email })
         .exec()
         .then(email => {
-            if (email.length >= 1) {
+            if (email.length >= 1) { 
                 return res.status(409).json({
                     message: "Email exists"
                 })

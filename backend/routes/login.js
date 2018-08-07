@@ -1,20 +1,80 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var expressSession = require('express-session');
+var keys = require('./gitignore/keys.js');
+const scrypt = require('scrypt');
+const mongoose = require('mongoose');
+const Userlist = require('../models/userlist');
+const User = require('../models/user');
+const Center = require('../models/center');
 
-const db = new sqlite.Database('./petDataBase.db', err => {
-    if (err) {
-        return console.error(err.message);
-    }
-    console.log('Yay! Admin is connected to the database!');
+//Set scrypt configs. We want keys in UTF8 and hashes in hex.
+scrypt.hash.config.keyEncoding = 'utf8';
+scrypt.hash.config.outputEncoding = 'hex';
+scrypt.verify.config.keyEncoding = 'utf8';
+scrypt.verify.config.hashEncoding = 'hex';
+
+app.use(expressSession({
+    secret: 'mySecretKey'
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+//Create sessions as encrypted cookies
+passport.serializeUser((user, done) => {
+    done(null, user._id);
 });
 
-router.get('/loginv/:location&:species', (req, res, next) => {
-    let location = req.params.location;
-    let species = req.params.species;
-    const stmt = db.prepare(`SELECT * FROM pets WHERE location=(?) OR species=(?);`)
-    stmt.all([location, species], (err, items) => {
-      if (err) throw err;
-      let totalResult = items.length;
-      res.send({ items, totalResult });
+//Decrypt cookies to extract session
+passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+        done(err, user);
     });
-  });
+});
+
+//Set up passport "strategy" for locally saved profiles
+passport.use(new LocalStrategy(
+    (username, password, done) => {
+        Userlist.findOne({
+            username: username
+        }, (err, user) => {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                return done(null, false, {
+                    message: 'Incorrect username.' //REMEMBER TO REMOVE THIS ON PRODUCTION
+                });
+            }
+            if (!isValidPassword(user, password)) {
+                return done(null, false, {
+                    message: 'Incorrect password.' //REMEMBER TO REMOVE THIS ON PRODUCTION
+                });
+            }
+            return done(null, user);
+        });
+    }
+));
+//Check if input password is valid. INPUT => OUTPUT: (Object, String) => Boolean
+ const isValidPassword = (user, password) => {
+    scrypt.params(0.1)
+    .then( result => {
+        console.log(result);
+        return result;
+    })
+    .catch(err => {
+        return err;
+    });
+
+    return scrypt.verifyKdf(user.hash, password)
+    .then( result => {
+        console.log(result);
+        return result;
+    })
+    .catch(err => {
+        return err;
+    });
+ };
