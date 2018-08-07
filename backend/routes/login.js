@@ -58,7 +58,8 @@ passport.use(new LocalStrategy(
         });
     }
 ));
-//Check if input password is valid. INPUT => OUTPUT: (Object, String) => Boolean
+//isValidPassword. Check if input password is valid using scrypt.
+//INPUT TYPES => OUTPUT TYPES: (Object, String) => Boolean
  const isValidPassword = (user, password) => {
     scrypt.params(0.1)
     .then( result => {
@@ -70,7 +71,7 @@ passport.use(new LocalStrategy(
     });
 
     return scrypt.verifyKdf(user.hash, password)
-    .then( result => {
+    .then(result => {
         console.log(result);
         return result;
     })

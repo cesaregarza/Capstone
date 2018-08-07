@@ -1,3 +1,5 @@
+//isInRange. Given two pairs of coordinates and a distance "d", determine whether the second set of coordinates lies within a square of distance "d".
+//INPUT TYPES => OUTPUT TYPES: ([Number, Number], [Number, Number], Number) => Boolean
 exports.isInRange = ([lat1, lon1],[lat2, lon2], d) => {
     const circ = 24901; //circumference of earth in miles
 

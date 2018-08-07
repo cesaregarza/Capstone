@@ -53,6 +53,8 @@ router.get('/', (req, res, next) => {
 
 router.post('/', upload.single('product-image'), (req, res, next) => {
     const id = new mongoose.Types.ObjectId();
+    //hashedpw. Hash a password using scrypt.
+    //INPUT TYPES => OUTPUT TYPES: ((String || Buffer), Object) => (String || Buffer)
     const hashedpw = scrypt.kdfSync(req.body.password, scryptParameters); //REMEMBER to use req.body.password NOT req.body.hash
     const userlist = new Userlist({
         _id: id,

@@ -1,3 +1,5 @@
+//haversine. Given two pairs of geographical coordinates, determine the distance between them in miles. 
+//INPUT TYPES => OUTPUT TYPES: ([Number, Number], [Number, Number]) => Number
 exports.haversine = ([lat1, lon1],[lat2, lon2]) => {
     const deltaPhi = (lat2 - lat1);
     const deltaTheta = (lon2 - lon1);
