@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const expressSession = require('express-session');
+const passport = require('./routes/login');
 var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var path = require('path');
@@ -33,7 +35,7 @@ app.use((req, res, next, ) => {
   if (req === 'OPTIONS') {
     res.header('Access-Control-Alloq-Methods', 'GET, PUT, POST, PATCH, DELETE');
     return res.status(200).json({});
-  };
+  }
   next();
 });
 

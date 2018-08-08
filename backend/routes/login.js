@@ -10,19 +10,24 @@ const Userlist = require('../models/userlist');
 const User = require('../models/user');
 const Center = require('../models/center');
 
+//Set up session parameters
 app.use(expressSession({
-    secret: 'mySecretKey'
+    secret: keys.session,
+    cookie: {
+        maxAge: 1000*3600*6,
+        //secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 
-//Create sessions as encrypted cookies
+//Create sessions as encrypted cookies. In this case, we'll just use the user ID as the session.
 passport.serializeUser((user, done) => {
     done(null, user._id);
 });
 
-//Decrypt cookies to extract session
+//Decrypt cookies to extract session information
 passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
         done(err, user);
@@ -52,6 +57,9 @@ passport.use(new LocalStrategy(
         });
     }
 ));
+
+
+
 //isValidPassword. Check if input password is valid using scrypt.
 //INPUT TYPES => OUTPUT TYPES: (Object, String) => Boolean
  const isValidPassword = (user, password) => {
