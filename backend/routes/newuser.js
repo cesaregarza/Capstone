@@ -32,10 +32,10 @@ const User = require('../models/user');
 const Center = require('../models/center');
 
 //Set scrypt configs. We want keys in UTF8 and hashes in hex.
-scrypt.hash.config.keyEncoding = 'utf8';
-scrypt.hash.config.outputEncoding = 'hex';
-scrypt.verify.config.keyEncoding = 'utf8';
-scrypt.verify.config.hashEncoding = 'hex';
+// scrypt.hash.config.keyEncoding = 'utf8';
+// scrypt.hash.config.outputEncoding = 'hex';
+// scrypt.verify.config.keyEncoding = 'utf8';
+// scrypt.verify.config.hashEncoding = 'hex';
 var scryptParameters = scrypt.paramsSync(0.1);
 
 router.get('/', (req, res, next) => {

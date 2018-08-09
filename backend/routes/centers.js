@@ -14,6 +14,9 @@ router.get('/', (req, res, next) => {
       });
 });
 
+reqAuth = () => {
+
+}
 router.post("/", (req, res, next) => {
   const center = new Center({
     _id: mongoose.Types.ObjectId(),
