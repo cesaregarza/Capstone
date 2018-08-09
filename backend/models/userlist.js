@@ -3,7 +3,7 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 const userlistSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    hash: { type: String, required: true },
+    hash: { type: Buffer, required: true },
     usertype: { type: Number, required: true },
     email: { type: String, required: false, unique: true },
     date_joined: { type: Date, required: true },

@@ -1,46 +1,40 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const mongoose = require('mongoose');
-var Center = require('../models/center');
+var Center = require("../models/center");
 
-router.get('/', (req, res, next) => {
+router.get("/", (req, res, next) => {
   Center.find()
-      .exec()
-      .then(users => {
-          res.send(users);
-      })
-      .catch(err => {
-          res.status(500).json(err);
+    .select("_id name address city postal phone email hours picture")
+    .exec()
+    .then(centers => {
+      res.send(centers);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+router.get("/i=:id", (req, res, next) => {
+  Center.findById(req.params.id)
+    //select the propieries to show
+    .select("_id name address city postal phone email hours picture")
+    .exec()
+    .then(centers => {
+      //Validate the answer is not empty
+      if (!centers) {
+        return res.status(404).json({
+          message: "Center id not found."
+        });
+      }
+      res.status(201).json(centers);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: "Wrong center id.",
+        error: err
       });
-});
-
-reqAuth = () => {
-
-}
-router.post("/", (req, res, next) => {
-  const center = new Center({
-    _id: mongoose.Types.ObjectId(),
-    name: req.body.name,
-    address: req.body.address,
-    city: req.body.city,
-    postal: req.body.postal,
-    phone: req.body.phone,
-    email: req.body.email,
-    hours: req.body.hours,
-    picture: req.body.picture,
-    isDeleted: req.body.isDeleted
-});
-
-center.save()
-.then(result => {
-  console.log(result);
-  res.status(201).json(result)
-})
-.catch(err => {
-  res.status(500).json({
-    error: err
-  });
-});
+    });
 });
 
 module.exports = router;
