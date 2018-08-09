@@ -31,7 +31,7 @@ const Userlist = require("../models/userlist");
 const User = require("../models/user");
 const Center = require("../models/center");
 
-//Set scrypt configs. We want keys in UTF8 and hashes in hex.
+//Set scrypt parameters
 var scryptParameters = scrypt.paramsSync(0.1);
 
 // Testing hashed password with the login password
