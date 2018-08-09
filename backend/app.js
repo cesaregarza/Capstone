@@ -3,7 +3,8 @@ const app = express();
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
-// const passport = require('./routes/login');
+const cors = require('cors');
+const passport = require('./routes/login');
 var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var path = require('path');
@@ -15,6 +16,8 @@ var petsRouter = require('./routes/pets');
 var centersRouter = require('./routes/centers');
 var usersRouter = require('./routes/users');
 var newuserRouter = require('./routes/newuser');
+var loginRouter = require('./routes/login');
+var keys = require('./gitignore/keys');
 
 mongoose.connect(`mongodb+srv://dbpets:${obj.env.PW}@petsdb-165j8.mongodb.net/test?retryWrites=true`, {
   useNewUrlParser: true
@@ -28,6 +31,12 @@ app.use(logger('dev'));
 app.use('/upload', express.static('upload'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(cors({
+  origin: ["http://localhost:4200"],
+  credentials: true
+}));
+
 
 app.use((req, res, next, ) => {
   res.header("Access-Control-Allow-Headers", "*");
@@ -44,6 +53,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//Set up session parameters
+app.use(expressSession({
+  secret: keys.session,
+  cookie: {
+      maxAge: 1000*3600*6,
+      //secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
+  },
+  resave: true,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use('/search', searchRouter);

@@ -3,24 +3,12 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
-var keys = require('./gitignore/keys.js');
+var keys = require('../gitignore/keys.js');
 const scrypt = require('scrypt');
 const mongoose = require('mongoose');
 const Userlist = require('../models/userlist');
 const User = require('../models/user');
 const Center = require('../models/center');
-
-//Set up session parameters
-app.use(expressSession({
-    secret: keys.session,
-    cookie: {
-        maxAge: 1000*3600*6,
-        //secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
-    }
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
 
 //Create sessions as encrypted cookies. In this case, we'll just use the user ID as the session.
 passport.serializeUser((user, done) => {
@@ -81,3 +69,5 @@ passport.use(new LocalStrategy(
         return err;
     });
  };
+
+ module.exports=passport;
