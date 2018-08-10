@@ -64,7 +64,7 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
 
 
 
-router.patch('/:petId', (req, res, next) => {
+router.patch('/i=:petId', (req, res, next) => {
   const id = req.params.petId;
   const updateOps = {};
   console.log(req.body)

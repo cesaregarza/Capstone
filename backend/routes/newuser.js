@@ -58,17 +58,37 @@ var scryptParameters = scrypt.paramsSync(0.1);
 // });
 
 // Fetch  all users information
-// router.get("/", (req, res, next) => {
-//   Userlist.find()
-//     .populate("_id")
-//     .exec()
-//     .then(users => {
-//       res.send(users);
-//     })
-//     .catch(err => {
-//       res.status(500).json(err);
-//     });
-// });
+router.get("/i=:id", (req, res, next) => {
+  User.find({_id: req.params.id})
+    .populate("_id")
+    .exec()
+    .then(users => {
+      res.send(users);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+router.patch('/i=:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const updateOps = {};
+  console.log(req.body)
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+  User.update({ _id: id }, { $set: updateOps }).exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+});
 
 router.post("/", upload.single("product-image"), (req, res, next) => {
   const id = new mongoose.Types.ObjectId();
