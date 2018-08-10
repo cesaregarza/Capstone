@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -12,21 +13,22 @@ export class TestbedComponent implements OnInit {
   constructor(
     private http: HttpClient,
   ) {
+    this.http = http;
     this.loggedIn = new Subject();
     // this.getLogin();
   }
-
-  ngOnInit() {
-  }
-
+  
   environment = {
     production: false,
-    apiUrl: 'http://localhost:3000/api'
+    apiUrl: 'http://localhost:3000/'
   };
 
   email: String = "test@test.com";
   password: String = "password";
   loggedIn: Subject<boolean>;
+  ngOnInit() {
+  }
+
 
   doLogin(){
     this.http.post(this.environment.apiUrl + '/login', {
@@ -34,9 +36,11 @@ export class TestbedComponent implements OnInit {
       password: this.password
     }, {
       withCredentials: true
-    }).subscribe(((resp: any) => {
+    }).subscribe((resp: any) => {
       this.loggedIn.next(true);
-    }, {err})) //FINISH THIS
+    }, err => {
+      this.loggedIn.next(false);
+    })
   }
 
 }

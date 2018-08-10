@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { TestbedComponent } from './testbed/testbed.component';
 import { RoutingModule } from './/routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { RoutingModule } from './/routing.module';
   ],
   imports: [
     BrowserModule,
-    RoutingModule
+    RoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
