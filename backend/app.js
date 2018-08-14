@@ -4,7 +4,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const cors = require('cors');
-const passport = require('./routes/login');
+const passport = require('./middleware/passport');
 var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var path = require('path');
@@ -72,6 +72,7 @@ app.use('/pets', petsRouter);
 app.use('/centers', centersRouter);
 app.use('/users', usersRouter);
 app.use('/newuser', newuserRouter);
+app.use('/user', loginRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
@@ -80,6 +81,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  console.error(error);
   res.status(error.status || 500);
   res.json({
       error: {

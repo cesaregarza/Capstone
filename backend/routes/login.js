@@ -1,73 +1,58 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var expressSession = require('express-session');
 var keys = require('../gitignore/keys.js');
 const scrypt = require('scrypt');
 const mongoose = require('mongoose');
 const Userlist = require('../models/userlist');
 const User = require('../models/user');
 const Center = require('../models/center');
+const passport = require('../middleware/passport');
 
-//Create sessions as encrypted cookies. In this case, we'll just use the user ID as the session.
-passport.serializeUser((user, done) => {
-    done(null, user._id);
-});
+const localPath = "http://localhost:3000/";
 
-//Decrypt cookies to extract session information
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(err, user);
+router.post('/login', passport.authenticate('local'), (req, res) => {
+    let userSansHash = req.user;
+    userSansHash.hash = "";
+
+    req.session.user = userSansHash;
+    res.status(200).send({
+        session: req.session
     });
-});
+}
+);
 
-//Set up passport "strategy" for locally saved profiles
-passport.use(new LocalStrategy(
-    (username, password, done) => {
-        Userlist.findOne({
-            username: username
-        }, (err, user) => {
-            if (err) {
-                return done(err);
-            }
-            if (!user) {
-                return done(null, false, {
-                    message: 'Incorrect username.' //REMEMBER TO REMOVE THIS ON PRODUCTION
-                });
-            }
-            if (!isValidPassword(user, password)) {
-                return done(null, false, {
-                    message: 'Incorrect password.' //REMEMBER TO REMOVE THIS ON PRODUCTION
-                });
-            }
-            return done(null, user);
+router.get('/login', function(req, res){
+    console.log(req.session.page_views);
+    console.log(req.session.user);
+    if(req.session.page_views){
+      req.session.page_views++;
+      res.send({
+          message: "You visited this page " + req.session.page_views + " times"
         });
+    } else {
+      req.session.page_views = 1;
+      res.send({
+          message: "Welcome to this page for the first time!"
+      });
     }
-));
+  });
 
-
-
-//isValidPassword. Check if input password is valid using scrypt.
-//INPUT TYPES => OUTPUT TYPES: (Object, String) => Boolean
- const isValidPassword = (user, password) => {
-    scrypt.params(0.1)
-    .then( result => {
-        console.log(result);
-        return result;
-    })
-    .catch(err => {
-        return err;
+router.get('/', (req, res, next) => {
+    res.status(401).json({
+        error: 'Error'
     });
+});
 
-    return scrypt.verifyKdf(user.hash, password)
-    .then(result => {
-        console.log(result);
-        return result;
-    })
-    .catch(err => {
-        return err;
+router.post('/logout', (req, res) => {
+    req.session.destroy( (err) => {
+        if (err) {
+            res.status(500).json({
+                error: 'Could not log out'
+            });
+        } else {
+            res.status(200).send({});
+        }
     });
- };
+});
 
- module.exports=passport;
+ module.exports = router;
