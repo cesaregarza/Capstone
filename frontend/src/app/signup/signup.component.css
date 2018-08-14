@@ -1,0 +1,32 @@
+.material-icons {
+  background: gray;
+  color: white;
+  border-radius: 90px;
+  font-size: 50px;
+}
+
+.container .row, .row img , .border-left-rounded {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+
+img {
+position: relative;
+width: 100%;
+height: 100%;
+}
+
+.borderGray {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+}
+
+.border-right-rounded {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.btn.btn-round {
+  border-radius: 30px;
+}

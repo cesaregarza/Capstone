@@ -32,8 +32,8 @@ router.get("/\?:super", (req, res, next) => {
   let ps = 0;
   let pn = 0;
   let findObj = {};
-  spr == null
-    ? res.status(500).json({
+  let countAll = 0;
+  spr == null ? res.status(500).json({
         error: "Incorrect syntax"
       })
     : null;
@@ -53,6 +53,10 @@ router.get("/\?:super", (req, res, next) => {
     : null;
   specie !== "" ? (findObj.specie = { $regex: specie, $options: "$i" }) : null;
 
+  Pet.count(findObj, (err, count) => {
+    countAll = count
+  })
+
   Pet.find(findObj)
     //select the propieries to show
     .select(
@@ -63,9 +67,10 @@ router.get("/\?:super", (req, res, next) => {
     .skip(ps * (pn - 1))
     .exec()
     .then(pets => {
-      // console.log(pets);
+      console.log(countAll);
       res.status(200).json({
         count: pets.length,
+        total: countAll,
         pets: pets.map(pet => {
           return {
             _id: pet._id,
@@ -131,5 +136,9 @@ isEmpty = obj => {
   }
   return true;
 };
+
+var countPets = (err, count) => {
+  return count;
+}
 
 module.exports = router;

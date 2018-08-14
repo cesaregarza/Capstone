@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <mat-form-field class="w-50">
+    <input id="location" matInput placeholder="Location">
+  </mat-form-field>
+  <br>
+  <mat-form-field class="w-50">
+    <input id="specie" matInput placeholder="Specie">
+  </mat-form-field>
+  <br>
+  <!-- <mat-form-field class="w-50">
+    <input matInput placeholder="">
+  </mat-form-field>
+<br>
+  <mat-form-field class="w-50">
+    <input matInput placeholder="Input">
+  </mat-form-field>
+  <br> -->
+  <button mat-raised-button (click)="find()" color="primary">Find</button>
+</div>
+<br>
+<mat-paginator [length]=pets.total
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="pageEvent = $event">
+</mat-paginator>
+<div class="row">
+  <mat-card *ngFor="let pet of pets.pets; index as i" class="example-card col-2 mx-4">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{ pet.name }}</mat-card-title>
+      <mat-card-subtitle>{{ pet.specie }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p>{{ pet.description }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

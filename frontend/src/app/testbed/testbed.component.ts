@@ -54,7 +54,7 @@ export class TestbedComponent implements OnInit {
     }, (err) => {
       console.log(err)
       this.loggedIn.next(false);
-    })
+    });
   }
 
   getLogin() {
