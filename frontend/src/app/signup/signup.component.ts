@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import * as $ from 'jquery';
 
 import {
   FormControl,
@@ -73,23 +74,42 @@ export class SignupComponent implements OnInit {
     let password = g.get("password").errors;
     let passwordConfirm = g.get("passwordConfirm").errors;
     if (g.get("password").value === g.get("passwordConfirm").value) {
-      // this.validPassword = true;
-      delete password.mismatch;
-      delete passwordConfirm.mismatch;
+
+      if (password !== null) {
+        password.mismatch != undefined ? delete password.mismatch : "";
+      }
+
+      if (passwordConfirm !== null) {
+        passwordConfirm.mismatch != undefined ? delete passwordConfirm.mismatch : "";
+      }
+
+      if ($.isEmptyObject(password))
+      {
+          password = null;
+      }
+      if ($.isEmptyObject(passwordConfirm))
+      {
+          passwordConfirm = null;
+      }
+
       g.get("password").setErrors(password);
       g.get("passwordConfirm").setErrors(passwordConfirm);
       return null;
     }
+
+    password == null ? (password = {}) : "";
+    passwordConfirm == null ? (passwordConfirm = {}) : "";
     password.mismatch = true;
     passwordConfirm.mismatch = true;
+
     g.get("password").setErrors(password);
-    g.get("passwordConfirm").setErrors(password);
-    // this.validPassword = false;
+    g.get("passwordConfirm").setErrors(passwordConfirm);
+
     return { mismatch: true };
   }
 
   sendForm = () => {
-    console.log(this.form.get("passwords").hasError("mismatch"));
+    console.log(this.form.get("passwords").errors);
   };
 
   hide = true;

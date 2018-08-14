@@ -27,7 +27,10 @@
           <mat-form-field class="col-md-8 my-2">
             <input id="pwd1" matInput placeholder="Password" formControlName="password" [type]="hide ? 'password' : 'text'" [errorStateMatcher]="matcher">
 
-            <mat-error *ngIf="!this.form.get('passwords').get('password').hasError('minLength') && !this.form.get('passwords').get('password').hasError('required')">
+            <mat-error *ngIf="this.form.get('passwords').get('password').hasError('mismatch') && !this.form.get('passwords').get('password').hasError('minlength') && !this.form.get('passwords').get('password').hasError('required')">
+                Password must match!
+              </mat-error>
+            <mat-error *ngIf="this.form.get('passwords').get('password').hasError('minlength') && !this.form.get('passwords').get('password').hasError('required')">
               Password must be at least 8 characters!
             </mat-error>
             <mat-error *ngIf="this.form.get('passwords').get('password').hasError('required')">
@@ -38,10 +41,10 @@
 
           <mat-form-field id="pwd2" class="col-md-8 my-2">
             <input  matInput placeholder="Retype password" formControlName="passwordConfirm" [type]="hide ? 'password' : 'text'">
-            <mat-error *ngIf="!this.form.get('passwords').get('passwordConfirm').hasError('mismatch')">
+            <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('mismatch') && !this.form.get('passwords').get('passwordConfirm').hasError('minlength') && !this.form.get('passwords').get('passwordConfirm').hasError('required')">
                 Password must match!
               </mat-error>
-            <mat-error *ngIf="!this.form.get('passwords').get('passwordConfirm').hasError('minLength') && !this.form.get('passwords').get('passwordConfirm').hasError('required')">
+            <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('minlength') && !this.form.get('passwords').get('passwordConfirm').hasError('required')">
               Password must be at least 8 characters!
             </mat-error>
             <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('required')">
@@ -51,14 +54,6 @@
 
 
           </mat-form-field>
-
-            <mat-error class="col-md-8 my-2 " *ngIf="this.form.get('passwords').hasError('mismatch')">
-             <small> Password must match!</small>
-            </mat-error>
-            <mat-error class="col-md-8 my-2" *ngIf="!this.form.get('passwords').hasError('mismatch')">
-                &nbsp;
-              </mat-error>
-
         </ng-container>
         <div class="col-md-8 text-center my-2">
           <button (click)="sendForm()" class="btn bg-success text-light btn-round px-3" mat-raised-button>Signup</button>
