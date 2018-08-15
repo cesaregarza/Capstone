@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Pet = require("../models/pet");
+const checkAuth = require('../middleware/check-auth');
 
 router.get("/i=:id", (req, res, next) => {
   Pet.findById(req.params.id)
@@ -25,7 +26,7 @@ router.get("/i=:id", (req, res, next) => {
     });
 });
 
-router.get("/\?:super", (req, res, next) => {
+router.get("/\?:super", checkAuth,(req, res, next) => {
   let spr = req.params.super.match(/((?<=^|&)([a-zA-Z]+=[\da-zA-Z]+))/g);
   let location = "";
   let specie = "";

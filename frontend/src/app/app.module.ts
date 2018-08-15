@@ -1,6 +1,6 @@
 import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -66,6 +66,7 @@ import { ChangepwComponent } from './dashboard/changepw/changepw.component';
 import { OptionsComponent } from './dashboard/options/options.component';
 import { CenterComponent } from './dashboard/center/center.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AuthInterceptor } from './testbed/auth-interceptor';
 
 @NgModule({
   exports: [
@@ -173,8 +174,13 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
   ],
   providers: [{
     provide: ErrorStateMatcher,
-    useClass: ShowOnDirtyErrorStateMatcher
-  }],
+    useClass: ShowOnDirtyErrorStateMatcher,
+  },{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -33,13 +33,22 @@ export class HomeComponent implements OnInit {
     specie !== '' ? url = url + 'specie=' + specie + '&': specie = '';
 
     this.http.get(url)
-    .toPromise()
-    .then(pets => {
+    .subscribe((pets: any) => {
       this.pets = pets
-    })
-    .catch(err => {
+    }, (err) => {
       console.log(err);
+
     })
+
+
+
+    // .toPromise()
+    // .then(pets => {
+    //   this.pets = pets
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    // })
   }
 
 
