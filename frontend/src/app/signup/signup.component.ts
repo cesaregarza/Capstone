@@ -10,8 +10,8 @@ import {
   FormBuilder
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
-
-import { CustomValidators } from "./equal-validator.directive";
+import { HttpClient } from "../../../node_modules/@angular/common/http";
+import { Router } from "@angular/router";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -34,7 +34,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ["./signup.component.css"]
 })
 export class SignupComponent implements OnInit {
-  constructor() {}
+  constructor(public http: HttpClient, public router: Router) {
+    this.http = http,
+    this.router = router
+  }
 
   public validPassword = false;
 
@@ -109,9 +112,35 @@ export class SignupComponent implements OnInit {
   }
 
   sendForm = () => {
-    console.log(this.form.get("passwords").errors);
+    var d = new Date();
+    d.toLocaleString();
+    if (this.form.status === "VALID") {
+      this.http.post('http://localhost:3000/newuser',{
+        email: this.form.get('emailFormControl').value,
+        isDeleted: false,
+        usertype: "1",
+        password: this.form.get('passwords').get('password').value,
+        date_joined: d.toLocaleString(),
+        last_login: d.toLocaleString(),
+      })
+      .toPromise()
+      .then(result => {
+        if (result['status'] == 201) {
+          this.form.reset();
+          this.router.navigate(['/login']);
+          // console.log('User Created');
+        }
+      })
+      .catch(err => {
+        if (err['status'] == 409) {
+          this.form.get("emailFormControl").setErrors({already: true});
+          // console.log('User already exist');
+        } else if (err['status'] == 500) {
+          // console.log('Error');
+        }
+      })
+    }
   };
-
   hide = true;
   matcher = new MyErrorStateMatcher();
 }

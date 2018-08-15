@@ -17,9 +17,12 @@
             Please enter a valid email address
           </mat-error>
           <mat-error *ngIf="form.get('emailFormControl').hasError('required')">
-            Email is
-            <strong>required</strong>
-          </mat-error>
+              Email is
+              <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="form.get('emailFormControl').hasError('already')">
+                Email already exist!
+              </mat-error>
         </mat-form-field>
         <br>
         <ng-container formGroupName="passwords">

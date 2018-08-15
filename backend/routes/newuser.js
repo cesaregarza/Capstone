@@ -92,6 +92,8 @@ router.patch('/i=:userId', (req, res, next) => {
 
 router.post("/", upload.single("product-image"), (req, res, next) => {
   const id = new mongoose.Types.ObjectId();
+  // console.log(req.file.path);
+  req.file == undefined ? localPath == '' : localPath + req.file.path
   //hashedpw. Hash a password using scrypt.
   //INPUT TYPES => OUTPUT TYPES: ((String || Buffer), Object) => (String || Buffer)
   const hashedpw = scrypt.kdfSync(req.body.password, scryptParameters); //REMEMBER to use req.body.password NOT req.body.hash
@@ -112,7 +114,7 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
     email: req.body.email,
     liked: req.body.liked,
     location: req.body.location,
-    picture: localPath + req.file.path,
+    picture: localPath,
     isDeleted: req.body.isDeleted
   });
   const center = new Center({
@@ -125,7 +127,7 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
     postal: req.body.postal,
     phone: req.body.phone,
     hours: req.body.hours,
-    picture: localPath + req.file.path,
+    picture: localPath,
     isDeleted: req.body.isDeleted
   });
   //Find existing file
@@ -134,6 +136,7 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
     .then(email => {
       if (email.length >= 1) {
         return res.status(409).json({
+          status: 409,
           message: "Email exists"
         });
       } else {
@@ -145,12 +148,14 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
                 .save()
                 .then(result => {
                   res.status(201).json({
+                    status: 201,
                     message: "The user was successfully created.",
                     createdUser: result
                   });
                 })
                 .catch(err => {
                   res.status(500).json({
+                    status: 500,
                     error: err
                   });
                 });
@@ -160,12 +165,14 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
                 .then(result => {
                   console.log(result);
                   res.status(201).json({
+                    status: 201,
                     message: "The center was successfully created.",
                     createdCenter: result
                   });
                 })
                 .catch(err => {
                   res.status(500).json({
+                    status: 500,
                     error: err
                   });
                 });
@@ -173,6 +180,7 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
           })
           .catch(err => {
             res.status(500).json({
+              status: 500,
               error: err
             });
           });
@@ -180,6 +188,7 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
     })
     .catch(err => {
       res.status(500).json({
+        status: 500,
         error: err
       });
     });
