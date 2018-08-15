@@ -9,7 +9,6 @@ const Center = require('../models/center');
 const passport = require('../middleware/passport');
 const checkAuth = require('../middleware/check-auth');
 const jwt = require('jsonwebtoken');
-const obj = require('../nodemon.json');
 
 
 const localPath = "http://localhost:3000/";
@@ -19,7 +18,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     userSansHash.hash = "";
 
     req.session.user = userSansHash;
-    const token = jwt.sign({email: req.user.email, userId: req.user.u_id}, obj.env.JWT_KEY, 
+    const token = jwt.sign({email: req.user.email, userId: req.user.u_id}, keys.JWT_KEY, 
     { expiresIn: '1h' } 
 ) ;
     res.status(200).json({
@@ -31,6 +30,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 router.get('/login', checkAuth ,function(req, res){
     console.log(req.session.page_views);
     console.log(req.session.user);
+
     if(req.session.page_views){
       req.session.page_views++;
       res.send({

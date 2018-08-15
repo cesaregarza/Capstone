@@ -19,7 +19,7 @@ var newuserRouter = require('./routes/newuser');
 var loginRouter = require('./routes/login');
 var keys = require('./gitignore/keys');
 
-mongoose.connect(`mongodb+srv://dbpets:${obj.env.PW}@petsdb-165j8.mongodb.net/test?retryWrites=true`, {
+mongoose.connect(`mongodb+srv://dbpets:${keys.PW}@petsdb-165j8.mongodb.net/test?retryWrites=true`, {
   useNewUrlParser: true
 }).then(() => {
   console.log("Connected to Database");

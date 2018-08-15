@@ -5,4 +5,6 @@ module.exports = {
     },
     salt: "SodiumChloride",
     session: "move bitch get out the way",
+    JWT_KEY: "IJD.?)&cB;Uq4o1K~mD`&CTQrCHt)D",
+    PW: "ioa65MCjNuiFfWBe"
 };
