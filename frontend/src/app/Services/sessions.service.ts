@@ -46,7 +46,8 @@ export class SessionsService {
 
 
 
-  getAuthStatusListener(): Observable<boolean> {
+  getAuthStatusListener() {
+    this.getLogin();
     return this.loggedIn.asObservable();
   }
 
@@ -98,12 +99,13 @@ export class SessionsService {
       .subscribe(
         (resp: any) => {
           if (resp) {
-            console.log(resp);
+
             this.userInfo.next(resp.user);
             this.loggedIn.next(true);
           }
         },
         err => {
+          localStorage.removeItem('token')
           console.error(err);
         }
       );

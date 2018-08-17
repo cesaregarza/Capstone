@@ -31,4 +31,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {}
+
+
+  toggle(){
+  this.auth.opened = !this.auth.opened
+  }
 }

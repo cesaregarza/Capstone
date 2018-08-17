@@ -8,27 +8,27 @@
             Tip 2: you can also add an image using data-image tag
         -->
         <mat-chip-list class="mx-4 mat-chip-list-stacked nav flex-column align-content-center">
-          <mat-chip  class="nav-item active">
+          <mat-chip *ngIf="userIsAuthenticated" class="nav-item active">
             <a class="nav-link" routerLink="dashboard">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </mat-chip>
-          <mat-chip class="nav-item">
-            <a class="nav-link" href="./user.html">
+          <mat-chip *ngIf="!userIsAuthenticated" class="nav-item">
+            <a class="nav-link" routerLink="login">
               <i class="material-icons">person</i>
-              <p>User Profile</p>
+              <p>Login</p>
             </a>
           </mat-chip>
 
-          <mat-chip class="nav-item">
-            <a class="nav-link" href="./tables.html">
+          <mat-chip *ngIf="!userIsAuthenticated" class="nav-item">
+            <a class="nav-link" routerLink="signup">
               <i class="material-icons">content_paste</i>
-              <p>Table List</p>
+              <p>Sign Up</p>
             </a>
           </mat-chip>
 
-          <mat-chip class="nav-item">
+          <!-- <mat-chip class="nav-item">
             <a class="nav-link" href="./typography.html">
               <i class="material-icons">library_books</i>
               <p>Typography</p>
@@ -47,9 +47,9 @@
               <i class="material-icons">notifications</i>
               <p>Notifications</p>
             </a>
-          </mat-chip>
+          </mat-chip> -->
 
-          <mat-chip class="nav-item">
+          <mat-chip *ngIf="userIsAuthenticated" class="nav-item">
             <a class="nav-link" (click)="auth.doLogout()">
               <i class="material-icons">language</i>
               <p>Log off</p>
@@ -61,18 +61,19 @@
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div class="navbar-translate">
-      <a class="navbar-brand p-0" routerLink="home">
-        <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        <span class="navbar-toggler-icon"></span>
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="navbar-translate justify-content-around">
+      <div>
+        <a class="navbar-brand p-0" routerLink="home">
+
+          <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV</a>
+        </div>
+        <div (click)="toggle()">
+        <i class="material-icons">
+            menu
+            </i>
+          </div>
+
     </div>
-    <p>
-      <mat-checkbox [(ngModel)]="auth.opened">sidenav.opened</mat-checkbox>
-    </p>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 
