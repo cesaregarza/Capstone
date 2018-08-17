@@ -5,6 +5,7 @@ const Userlist = require('../models/userlist');
 const passport = require('passport');
 const scrypt = require('scrypt');
 var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 
 //Create sessions as encrypted cookies. In this case, we'll just use the user ID as the session.
 passport.serializeUser((user, done) => {
@@ -36,6 +37,11 @@ passport.use(new LocalStrategy({
                     message: 'Incorrect username.' //REMEMBER TO REMOVE THIS ON PRODUCTION
                 });
             }
+            if (!user.facebookid){
+                return done(null, false, {
+                    message: "Can't sign in"
+                });
+            }
             let isCorrect = isValidPassword(user, password);
             if (!isCorrect) {
                 console.log("wrong password");
@@ -49,6 +55,61 @@ passport.use(new LocalStrategy({
         });
     }
 ));
+
+//Facebook Strategy
+passport.use(new FacebookStrategy({
+    clientID: keys.facebook.clientID,
+    clientSecret: keys.facebook.clientSecret,
+    callbackURL: 'auth/facebook'
+}, (token, refreshToken, profile, done) => {
+    process.nextTick( () => {
+        Userlist.findOne({
+            facebookid: profile.id
+        }, (err, user) => {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                const id = new mongoose.Types.ObjectId();
+                const hashedpw = Buffer.from("facebook");
+
+                const tempUserlist = new Userlist({
+                    _id: id,
+                    hash: hashedpw,
+                    usertype: 1,
+                    email: profile.emails[0].value,
+                    facebookid: profile.id,
+                    facebooktoken: token,
+                    date_joined: new Date(),
+                    last_login: new Date(),
+                    isDeleted: false
+                });
+
+                const tempUser = new User({
+                    _id: id,
+                    name: profile.name.givenName,
+                    email: profile.emails[0].value,
+                    liked: [],
+                    location: null,
+                    picture: profile.photos[0].value,
+                    isDeleted: false
+                });
+                
+                tempUserlist.save().then(result => {
+                    tempUser.save()
+                        .catch(err => {
+                            return done(err);
+                        });
+                })
+                .catch(err => {
+                    return done(err);
+                });
+            } else {
+                return done(null, user);
+            }
+        });
+    });
+}));
 
 //isValidPassword. Check if input password is valid using scrypt.
 //INPUT TYPES => OUTPUT TYPES: (Object, String) => Boolean

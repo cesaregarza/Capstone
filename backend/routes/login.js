@@ -29,6 +29,24 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 }
 );
 
+//Route to initiate login
+router.get('/login/facebook', passport.authenticate('facebook', { scope: ['public_profile', 'email']
+}));
+
+//Callback route on successful login via facebook
+router.get('auth/facebook', passport.authenticate('facebook'), (req, res) => {
+    let userSansHash = req.user;
+    userSansHash.hash = "";
+
+    req.session.user = userSansHash;
+    const token = jwt.sign({email: req.user.email, userId: req.user.u_id}, keys.JWT_KEY, {expiresIn: '20m'});
+
+    res.status(200).json({
+        token: token,
+        user: req.session
+    })
+});
+
 router.get('/login', checkAuth, function(req, res){
       
     if (req.session.user) {

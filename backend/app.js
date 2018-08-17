@@ -9,7 +9,13 @@ var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var path = require('path');
 const mongoose = require('mongoose');
-var obj = require("./nodemon.json");
+const https = require('https');
+const fs = require('fs');
+
+const httpsOptions = {
+  key: fs.readFileSync('../SSLKeys/key.pem'),
+  cert: fs.readFileSync('../SSLKeys/cert.pem')
+};
 
 var searchRouter = require('./routes/search');
 var petsRouter = require('./routes/pets');
