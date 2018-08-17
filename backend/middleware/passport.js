@@ -4,8 +4,10 @@ const User = require('../models/user');
 const Userlist = require('../models/userlist');
 const passport = require('passport');
 const scrypt = require('scrypt');
+const mongoose = require('mongoose');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+
 
 //Create sessions as encrypted cookies. In this case, we'll just use the user ID as the session.
 passport.serializeUser((user, done) => {
@@ -60,10 +62,13 @@ passport.use(new LocalStrategy({
 passport.use(new FacebookStrategy({
     clientID: keys.facebook.clientID,
     clientSecret: keys.facebook.clientSecret,
-    
-    callbackURL: '/user/auth/facebook'
+    callbackURL: 'https://localhost:3000/user/auth/facebook',
+    enableProof: true,
+    usernameField: 'email',
+    profileFields: ['id', 'displayName', 'photos', 'email']
 }, (token, refreshToken, profile, done) => {
     process.nextTick( () => {
+        console.log(profile);
         Userlist.findOne({
             facebookid: profile.id
         }, (err, user) => {
