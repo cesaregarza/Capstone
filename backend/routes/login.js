@@ -11,7 +11,7 @@ const checkAuth = require('../middleware/check-auth');
 const jwt = require('jsonwebtoken');
 
 
-const localPath = "http://localhost:3000/";
+const localPath = "https://localhost:3000/";
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
     let userSansHash = req.user;
@@ -63,7 +63,7 @@ router.get('/login', checkAuth, function(req, res){
 
 router.get('/', (req, res, next) => {
     res.status(401).json({
-        error: 'Error'
+        error: 'Hola'
     });
 });
 

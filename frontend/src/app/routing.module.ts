@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, CanActivate } from '@angular/router';
 import { TestbedComponent } from './testbed/testbed.component';
 import { AboutComponent } from './about/about.component';
 import { CentersComponent } from './centers/centers.component';
@@ -18,6 +18,7 @@ import { PetRegisterComponent } from './dashboard/pet-register/pet-register.comp
 import { UserComponent } from './dashboard/user/user.component';
 import { CenterInfoComponent } from './centers/center/center.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AuthGuardService as AuthGuard } from './Services/auth-guard.service';
 
 
 const routes: Routes = [
@@ -35,7 +36,8 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'home',
@@ -59,27 +61,33 @@ const routes: Routes = [
   },
   {
     path: 'dashboard/center',
-    component: CenterComponent
+    component: CenterComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard/changepw',
-    component: ChangepwComponent
+    component: ChangepwComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard/likes',
-    component: LikesComponent
+    component: LikesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard/options',
-    component: OptionsComponent
+    component: OptionsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard/petregister',
-    component: PetRegisterComponent
+    component: PetRegisterComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard/user',
-    component: UserComponent
+    component: UserComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'centerinfo',

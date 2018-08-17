@@ -24,7 +24,7 @@ const upload = multer({
   },
   filefilter: fileFilter
 });
-const localPath = "http://localhost:3000/"
+const localPath = "https://localhost:3000/"
 
 const Pet = require('../models/pet');
 

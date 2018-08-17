@@ -1,9 +1,9 @@
-<input type="text" [(ngModel)]="email">
-<input type="text" [(ngModel)]="password">
-<button (click)="doLogin()">Click for Test</button>
-<button (click)="doLogout()">Logout</button>
-<button (click)="getLogin()">Get Login</button>
+<input type="text" [(ngModel)]="this.auth.email">
+<input type="text" [(ngModel)]="this.auth.password">
+<button (click)="this.auth.doLogin()">Login</button>
+<button (click)="this.auth.doLogout()">Logout</button>
+<button (click)="this.auth.getLogin()">Get Info</button>
 
 <p>
-  {{email}} {{password}} {{ loggedIn }}
+  {{this.auth.email}} {{this.auth.password}} {{ this.auth.loggedIn }}
 </p>

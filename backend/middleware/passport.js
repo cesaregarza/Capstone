@@ -37,7 +37,7 @@ passport.use(new LocalStrategy({
                     message: 'Incorrect username.' //REMEMBER TO REMOVE THIS ON PRODUCTION
                 });
             }
-            if (!user.facebookid){
+            if (!!user.facebookid){
                 return done(null, false, {
                     message: "Can't sign in"
                 });

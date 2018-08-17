@@ -48,7 +48,7 @@ import {
 
 import { AppComponent } from './app.component';
 import { TestbedComponent } from './testbed/testbed.component';
-import { RoutingModule } from './/routing.module';
+import { RoutingModule } from './routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -67,6 +67,9 @@ import { OptionsComponent } from './dashboard/options/options.component';
 import { CenterComponent } from './dashboard/center/center.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthInterceptor } from './testbed/auth-interceptor';
+import { SessionsService } from './Services/sessions.service';
+import { AuthGuardService } from './Services/auth-guard.service';
+
 
 @NgModule({
   exports: [
@@ -131,7 +134,6 @@ import { AuthInterceptor } from './testbed/auth-interceptor';
     BrowserModule,
     HttpClientModule,
     RoutingModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     MatNativeDateModule,
@@ -179,7 +181,10 @@ import { AuthInterceptor } from './testbed/auth-interceptor';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-  }
+  },
+SessionsService,
+AuthGuardService
+
 ],
   bootstrap: [AppComponent]
 })

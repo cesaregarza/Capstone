@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {PageEvent} from '@angular/material';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { SessionsService } from '../Services/sessions.service';
+
 
 
 @Component({
@@ -11,8 +13,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, public auth: SessionsService) {
     this.http = http;
+
   }
   pets = {};
   pageSizeOptions: number[] = [5, 10, 25, 100];

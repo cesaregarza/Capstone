@@ -9,13 +9,6 @@ var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var path = require('path');
 const mongoose = require('mongoose');
-const https = require('https');
-const fs = require('fs');
-
-const httpsOptions = {
-  key: fs.readFileSync('../SSLKeys/key.pem'),
-  cert: fs.readFileSync('../SSLKeys/cert.pem')
-};
 
 var searchRouter = require('./routes/search');
 var petsRouter = require('./routes/pets');
@@ -63,7 +56,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession({
   secret: keys.session,
   cookie: {
-      maxAge: 1000*3600*6,
+      maxAge: 1000*3600*2,
       //secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
   },
   resave: true,

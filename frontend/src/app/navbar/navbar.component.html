@@ -1,34 +1,124 @@
+<mat-sidenav-container class="container-fluid" *ngIf="!auth.shouldRun">
+  <mat-sidenav class="h-100" #sidenav mode="over" position="end" [(opened)]="auth.opened" (opened)="auth.events.push('open!')"
+    (closed)="auth.events.push('close!')">
+    <div class="sidebar mt-2 " data-color="green" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+      <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
+            Tip 2: you can also add an image using data-image tag
+        -->
+        <mat-chip-list class="mx-4 mat-chip-list-stacked nav flex-column align-content-center">
+          <mat-chip  class="nav-item active">
+            <a class="nav-link" routerLink="dashboard">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </mat-chip>
+          <mat-chip class="nav-item">
+            <a class="nav-link" href="./user.html">
+              <i class="material-icons">person</i>
+              <p>User Profile</p>
+            </a>
+          </mat-chip>
 
- <nav class="navbar navbar-default navbar-expand-lg">
-     <div class="container">
-         <div class="navbar-translate">
-             <a class="navbar-brand p-0" routerLink="home"> <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV</a>
-             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
-                 <span class="navbar-toggler-icon"></span>
-                 <span class="navbar-toggler-icon"></span>
-                 <span class="navbar-toggler-icon"></span>
-             </button>
-         </div>
-         <div class="collapse navbar-collapse">
-             <ul class="navbar-nav ml-auto">
-                 <li class="nav-item">
-                     <a href="#pablo" class="btn btn-white btn-round btn-raised ">
-                         Discover
-                     </a>
-                 </li>
-                 <li class="nav-item">
-                     <a href="#pablo" class="btn btn-white btn-round btn-raised ">
-                         Wishlist
-                     </a>
-                 </li>
-                 <li class="nav-item">
-                     <a routerLink="signup" class="btn bg-success text-light btn-raised btn-round " data-toggle="dropdown">
-                         Register
-                     </a>
-                 </li>
-             </ul>
-         </div>
-     </div>
- </nav>
- <router-outlet></router-outlet>
+          <mat-chip class="nav-item">
+            <a class="nav-link" href="./tables.html">
+              <i class="material-icons">content_paste</i>
+              <p>Table List</p>
+            </a>
+          </mat-chip>
+
+          <mat-chip class="nav-item">
+            <a class="nav-link" href="./typography.html">
+              <i class="material-icons">library_books</i>
+              <p>Typography</p>
+            </a>
+          </mat-chip>
+
+          <mat-chip class="nav-item">
+            <a class="nav-link" href="./icons.html">
+              <i class="material-icons">bubble_chart</i>
+              <p>Icons</p>
+            </a>
+          </mat-chip>
+
+          <mat-chip class="nav-item">
+            <a class="nav-link" href="./notifications.html">
+              <i class="material-icons">notifications</i>
+              <p>Notifications</p>
+            </a>
+          </mat-chip>
+
+          <mat-chip class="nav-item">
+            <a class="nav-link" (click)="auth.doLogout()">
+              <i class="material-icons">language</i>
+              <p>Log off</p>
+            </a>
+          </mat-chip>
+
+        </mat-chip-list>
+      <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-1.jpg) "></div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="navbar-translate">
+      <a class="navbar-brand p-0" routerLink="home">
+        <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <p>
+      <mat-checkbox [(ngModel)]="auth.opened">sidenav.opened</mat-checkbox>
+    </p>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+<!-- <nav class="navbar navbar-default navbar-expand-lg">
+  <div class="container">
+    <div class="navbar-translate">
+      <a class="navbar-brand p-0" routerLink="home">
+        <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a routerLink="login" class="btn btn-white btn-round btn-raised ">
+            Login
+          </a>
+        </li>
+        <li routerLink="dashboard" *ngIf="userIsAuthenticated" class="nav-item">
+          <a class="btn btn-white btn-round btn-raised ">
+            {{ userEmail }}
+          </a>
+        </li>
+        <li (click)="this.auth.doLogout()" *ngIf="userIsAuthenticated" class="nav-item">
+          <a class="btn btn-white btn-round btn-raised ">
+            Logout
+          </a>
+        </li>
+        <li *ngIf="!userIsAuthenticated" class="nav-item">
+          <a routerLink="signup" class="btn bg-success text-light btn-raised btn-round " data-toggle="dropdown">
+            Register
+          </a>
+        </li>
+        <li  class="nav-item">
+          <a (click)="auth.isAuthenticated()" class="btn bg-success text-light btn-raised btn-round " data-toggle="dropdown">
+            Register
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet> -->

@@ -6,11 +6,10 @@ import {
   FormGroupDirective,
   NgForm,
   Validators,
-  FormGroup,
-  FormBuilder
+  FormGroup
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
-import { HttpClient } from "../../../node_modules/@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -53,6 +52,7 @@ export class SignupComponent implements OnInit {
     emailFormControl: new FormControl("", [
       Validators.required,
       Validators.email,
+      Validators.maxLength(254),
       Validators.pattern(
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       )
@@ -61,12 +61,14 @@ export class SignupComponent implements OnInit {
       {
         password: new FormControl("", [
           Validators.required,
-          Validators.minLength(8)
+          Validators.minLength(8),
+          Validators.maxLength(20)
         ]),
 
         passwordConfirm: new FormControl("", [
           Validators.required,
-          Validators.minLength(8)
+          Validators.minLength(8),
+          Validators.maxLength(20)
         ])
       },
       { validators: this.passwordMatchValidator }

@@ -18,10 +18,7 @@
   <button mat-raised-button (click)="find()" color="primary">Find</button>
 </div>
 <br>
-<mat-paginator [length]=pets.total
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              (page)="pageEvent = $event">
+<mat-paginator [length]=pets.total [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = $event">
 </mat-paginator>
 <div class="row">
   <mat-card *ngFor="let pet of pets.pets; index as i" class="example-card col-2 mx-4">
