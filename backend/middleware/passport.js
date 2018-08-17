@@ -60,7 +60,8 @@ passport.use(new LocalStrategy({
 passport.use(new FacebookStrategy({
     clientID: keys.facebook.clientID,
     clientSecret: keys.facebook.clientSecret,
-    callbackURL: 'auth/facebook'
+    
+    callbackURL: '/user/auth/facebook'
 }, (token, refreshToken, profile, done) => {
     process.nextTick( () => {
         Userlist.findOne({

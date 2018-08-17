@@ -72,6 +72,7 @@ app.use('/centers', centersRouter);
 app.use('/users', usersRouter);
 app.use('/newuser', newuserRouter);
 app.use('/user', loginRouter);
+app.use('/login', loginRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');

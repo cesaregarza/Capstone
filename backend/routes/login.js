@@ -35,6 +35,7 @@ router.get('/login/facebook', passport.authenticate('facebook', { scope: ['publi
 
 //Callback route on successful login via facebook
 router.get('/auth/facebook', passport.authenticate('facebook'), (req, res) => {
+    console.log(1)
     let userSansHash = req.user;
     userSansHash.hash = "";
 

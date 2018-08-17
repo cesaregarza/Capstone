@@ -91,6 +91,12 @@ export class SessionsService {
     // });
   }
 
+facebook() {
+  this.http.get(this.environment.apiUrl + "login/facebook", {withCredentials: true }).subscribe(resp=>{
+    console.log(resp);
+  })
+}
+
   getLogin() {
     this.http
       .get(this.environment.apiUrl + "login", {

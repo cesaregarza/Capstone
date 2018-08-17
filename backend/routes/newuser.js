@@ -58,11 +58,12 @@ var scryptParameters = scrypt.paramsSync(0.1);
 // });
 
 // Fetch  all users information
-router.get("/i=:id", (req, res, next) => {
-  User.find({_id: req.params.id})
+router.get("/", (req, res, next) => {
+  User.find()
     .populate("_id")
     .exec()
     .then(users => {
+      console.log(users);
       res.send(users);
     })
     .catch(err => {
