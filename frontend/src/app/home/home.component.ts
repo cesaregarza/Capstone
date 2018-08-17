@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   }
 
   find = () => {
-    let url = "http://localhost:3000/search/";
+    let url = "https://localhost:3000/search/";
     let location = (<HTMLInputElement>document.getElementById('location')).value;
     let specie = (<HTMLInputElement>document.getElementById('specie')).value;
     console.log(location, specie);

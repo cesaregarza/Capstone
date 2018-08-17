@@ -21,7 +21,7 @@ export class SessionsService {
 
   environment = {
     production: false,
-    apiUrl: "http://localhost:3000/user/"
+    apiUrl: "https://localhost:3000/user/"
   };
 
   email: String = "123@123.com";

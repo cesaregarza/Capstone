@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: ["http://localhost:4200"],
+  origin: ["https://localhost:4200"],
   credentials: true
 }));
 
@@ -57,7 +57,7 @@ app.use(expressSession({
   secret: keys.session,
   cookie: {
       maxAge: 1000*3600*2,
-      //secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
+      secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
   },
   resave: true,
   saveUninitialized: false,
