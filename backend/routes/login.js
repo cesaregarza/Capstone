@@ -19,29 +19,28 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
     req.session.user = userSansHash;
     const token = jwt.sign({email: req.user.email, userId: req.user.u_id}, keys.JWT_KEY, 
-    { expiresIn: '1h' } 
+    { expiresIn: '20m' } 
 ) ;
+
     res.status(200).json({
-        token: token
+        token: token,
+        user: req.session
     });
 }
 );
 
-router.get('/login', checkAuth ,function(req, res){
-    console.log(req.session.page_views);
-    console.log(req.session.user);
-
-    if(req.session.page_views){
-      req.session.page_views++;
-      res.send({
-          message: "You visited this page " + req.session.page_views + " times"
-        });
+router.get('/login', checkAuth, function(req, res){
+      
+    if (req.session.user) {
+        res.status(200).json({
+              user: req.session.user
+            });
     } else {
-      req.session.page_views = 1;
-      res.send({
-          message: "Welcome to this page for the first time!"
-      });
-    }
+    res.status(401).json({
+        error: "Auth error"
+    })
+}
+    
   });
 
 router.get('/', (req, res, next) => {
@@ -57,7 +56,8 @@ router.post('/logout', (req, res) => {
                 error: 'Could not log out'
             });
         } else {
-            res.status(200).send({});
+            console.log(req.sessionID)
+            res.status(200).json({});
         }
     });
 });
