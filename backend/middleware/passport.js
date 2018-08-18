@@ -62,7 +62,7 @@ passport.use(new LocalStrategy({
 passport.use(new FacebookStrategy({
     clientID: keys.facebook.clientID,
     clientSecret: keys.facebook.clientSecret,
-    callbackURL: 'https://localhost:3000/user/auth/facebook',
+    callbackURL: 'https://localhost:4200/facebook-token',
     enableProof: true,
     usernameField: 'email',
     profileFields: ['id', 'displayName', 'photos', 'email']
@@ -93,7 +93,7 @@ passport.use(new FacebookStrategy({
 
                 const tempUser = new User({
                     _id: id,
-                    name: profile.name.givenName,
+                    name: profile.displayName,
                     email: profile.emails[0].value,
                     liked: [],
                     location: null,
@@ -111,6 +111,7 @@ passport.use(new FacebookStrategy({
                     return done(err);
                 });
             } else {
+                console.log("userlogin!");
                 return done(null, user);
             }
         });

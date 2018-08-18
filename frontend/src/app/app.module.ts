@@ -69,6 +69,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AuthInterceptor } from './testbed/auth-interceptor';
 import { SessionsService } from './Services/sessions.service';
 import { AuthGuardService } from './Services/auth-guard.service';
+import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component';
 
 
 @NgModule({
@@ -128,7 +129,8 @@ import { AuthGuardService } from './Services/auth-guard.service';
     PetRegisterComponent,
     ChangepwComponent,
     OptionsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FacebooktokenComponent
   ],
   imports: [
     BrowserModule,

@@ -91,10 +91,14 @@ export class SessionsService {
     // });
   }
 
+// facebook() {
+//   this.http.get(this.environment.apiUrl + "login/facebook", {withCredentials: true }).subscribe(resp=>{
+//     console.log(resp);
+//   })
+// }
+
 facebook() {
-  this.http.get(this.environment.apiUrl + "login/facebook", {withCredentials: true }).subscribe(resp=>{
-    console.log(resp);
-  })
+  window.location.href = "" + this.environment.apiUrl + "login/facebook";
 }
 
   getLogin() {

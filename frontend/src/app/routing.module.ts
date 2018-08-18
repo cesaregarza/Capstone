@@ -19,6 +19,7 @@ import { UserComponent } from './dashboard/user/user.component';
 import { CenterInfoComponent } from './centers/center/center.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthGuardService as AuthGuard } from './Services/auth-guard.service';
+import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component';
 
 
 const routes: Routes = [
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path: 'pet',
     component: PetComponent
+  },
+  {
+    path : 'facebook-token',
+    component: FacebooktokenComponent
   },
   {
     path: 'dashboard/center',
