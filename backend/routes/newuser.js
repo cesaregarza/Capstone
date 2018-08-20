@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 const scrypt = require("scrypt");
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./upload/");
@@ -11,6 +12,7 @@ const storage = multer.diskStorage({
     cb(null, filename(file.originalname));
   }
 });
+
 const fileFilter = (req, file, cb) => {
   if (file.mimetype == "image/jpeg" || file.mimetype == "image.png") {
     cb(null, false);
@@ -18,6 +20,7 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
   }
 };
+
 const upload = multer({
   storage: storage,
   limits: {
@@ -25,6 +28,7 @@ const upload = multer({
   },
   filefilter: fileFilter
 });
+
 const localPath = "https://localhost:3000/";
 
 const Userlist = require("../models/userlist");
@@ -74,7 +78,7 @@ router.get("/", (req, res, next) => {
 router.patch('/i=:userId', (req, res, next) => {
   const id = req.params.userId;
   const updateOps = {};
-  console.log(req.body)
+  console.log(req.body);
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value;
   }
@@ -91,13 +95,16 @@ router.patch('/i=:userId', (req, res, next) => {
     });
 });
 
-router.post("/", upload.single("product-image"), (req, res, next) => {
+router.post("/",  (req, res, next) => {
+  let localPathCopy = localpath;
+
   const id = new mongoose.Types.ObjectId();
-  // console.log(req.file.path);
-  req.file == undefined ? localPath == '' : localPath + req.file.path
+  
   //hashedpw. Hash a password using scrypt.
   //INPUT TYPES => OUTPUT TYPES: ((String || Buffer), Object) => (String || Buffer)
-  const hashedpw = scrypt.kdfSync(req.body.password, scryptParameters); //REMEMBER to use req.body.password NOT req.body.hash
+  const hashedpw = scrypt.kdfSync(req.body.password, scryptParameters); //REMEMBER: to use req.body.password NOT req.body.hash
+
+  //Prep objects for database input
   const userlist = new Userlist({
     _id: id,
     hash: hashedpw,
@@ -115,7 +122,6 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
     email: req.body.email,
     liked: req.body.liked,
     location: req.body.location,
-    picture: localPath,
     isDeleted: req.body.isDeleted
   });
   const center = new Center({
@@ -128,22 +134,22 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
     postal: req.body.postal,
     phone: req.body.phone,
     hours: req.body.hours,
-    picture: localPath,
     isDeleted: req.body.isDeleted
   });
-  //Find existing file
+  //Search to see if email is already in use. If not, create the user.
   Userlist.find({ email: req.body.email })
     .exec()
     .then(email => {
       if (email.length >= 1) {
         return res.status(409).json({
           status: 409,
-          message: "Email exists"
+          message: "This email is already in use"
         });
       } else {
         userlist
           .save()
           .then(result => {
+            //Save the user depending on where their profile belongs.
             if (req.body.usertype == 1) {
               user
                 .save()
@@ -194,6 +200,9 @@ router.post("/", upload.single("product-image"), (req, res, next) => {
       });
     });
 });
+
+//REMEMBER: Fuck with this later
+//upload.single("product-image")
 
 // getUseslist = () => {
 //     Userlist.find()

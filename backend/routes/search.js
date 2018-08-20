@@ -27,44 +27,68 @@ router.get("/i=:id", (req, res, next) => {
 });
 
 router.get("/\?:super", (req, res, next) => {
-  let spr = req.params.super.match(/((?<=^|&)([a-zA-Z]+=[\da-zA-Z]+))/g);
+  //Regex with lookbehind. TODO: Figure out if it works on other servers. TODO: Make this much more specific.
+  let re = /((?<=^|&)([a-zA-Z]+=[\da-zA-Z]+))/g;
+  //Match the superroute with the regex, creating groups
+  let spr = req.params.super.match(re);
+
+  //Initialize variables
   let location = "";
   let specie = "";
   let ps = 0;
   let pn = 0;
   let findObj = {};
   let countAll = 0;
-  spr == null ? res.status(500).json({
-        error: "Incorrect syntax"
-      })
-    : null;
 
-  for (let i = 0; i < spr.length; i++) {
-    spr[i].split("=")[0] == "location"
-      ? (location = spr[i].split("=")[1])
-      : null;
-    spr[i].split("=")[0] == "specie" ? (specie = spr[i].split("=")[1]) : null;
-    spr[i].split("=")[0] == "ps" ? (ps = parseInt(spr[i].split("=")[1])) : null;
-    spr[i].split("=")[0] == "pn" ? (pn = parseInt(spr[i].split("=")[1])) : null;
+  //If no regex groups are returned, send a 500 error message saying Syntax is incorrect
+  if (spr == null) {
+    res.status(500).json({
+      error: "Incorrect Syntax"
+    });
   }
-  ps == 0 ? (ps = 10) : null;
-  pn == 0 ? (pn = 1) : null;
-  location !== ""
-    ? (findObj.location = { $regex: location, $options: "$i" })
-    : null;
-  specie !== "" ? (findObj.specie = { $regex: specie, $options: "$i" }) : null;
 
+  //Iterate through all regex groups, setting variables to their equivalents as mentioned in the API documentation.
+  for (let i = 0; i < spr.length; i++) {
+    if (spr[i].split("=")[0] == "location"){
+      location = spr[i].split("=")[1];
+    }
+    if (spr[i].split("=")[0] == "specie"){
+      specie = spr[i].split("=")[1];
+    }
+    if (spr[i].split("=")[0] == "ps"){
+      ps = parseInt(spr[i].split("=")[1]);
+    }
+    if (spr[i].split("=")[0] == "pn"){
+      pn = parseInt(spr[i].split("=")[1]);
+    }
+  }
+  //Set defaults for ps and pn if not found
+  ps = !ps ? 10: ps;
+  pn = !pn ? 1 : pn;
+
+  //Set defaults for location and species if not found
+  if (!!location){
+    findObj.location = { $regex: location, $options: "$i"};
+  }
+  if (!!specie){
+    findObj.specie = {$regex: specie, $options: "$i"};
+  }
+
+  //Count the results we'll get.
   Pet.count(findObj, (err, count) => {
-    countAll = count
-  })
+    countAll = count;
+  });
 
-  Pet.find(findObj)
-    //select the propieries to show
+  //Return all pets that fit in the query AND are not deleted
+  Pet.find({$and: [findObj,{isDeleted: {$ne: true}}]})
+    //Select the propieries to show
     .select(
       "_id name location specie size age breed description gender picture center"
     )
     .populate("center", "name address city postal phone email hours picture")
+    //Establish a limit based on Page Size
     .limit(ps)
+    //Skip first results for pagination
     .skip(ps * (pn - 1))
     .exec()
     .then(pets => {
@@ -95,7 +119,7 @@ router.get("/\?:super", (req, res, next) => {
     });
 });
 
-
+//REMEMBER: Remove this for Production
 // router.get("/", (req, res, next) => {
 //   Pet.find()
 //     //select the propieries to show

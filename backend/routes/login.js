@@ -52,7 +52,7 @@ router.get(
       keys.JWT_KEY,
       { expiresIn: "20m" }
     );
-    console.log(req.user.email, req.user._id)
+    console.log(req.user.email, req.user._id);
     res.cookie("token", token);
     res.status(200).redirect("https://localhost:4200/dashboard");
     // res.status(200).json({
@@ -68,7 +68,7 @@ router.get("/login", checkAuth, function(req, res) {
       if(err){
         res.status(401).json({
           error: "Auth error"
-        })
+        });
       } else {
         res.status(200).json({
           // session: req.session,
@@ -76,11 +76,11 @@ router.get("/login", checkAuth, function(req, res) {
           usertype: req.session.user.usertype
         });
       } 
-    })
+    });
 
 
   } else {
-      console.log(33)
+      console.log(33);
     res.status(401).json({
       error: "Auth error"
     });
