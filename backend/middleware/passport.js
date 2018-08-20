@@ -86,12 +86,13 @@ passport.use(
             }
             if (!user) {
               const id = new mongoose.Types.ObjectId();
+              const email = !profile.emails ? id + "@noepermission.org" : profile.emails[0].value 
               const hashedpw = Buffer.from("facebook");
               const tempUserlist = new Userlist({
                 _id: id,
                 hash: hashedpw,
                 usertype: 1,
-                email: profile.emails[0].value,
+                email: email,
                 facebookid: profile.id,
                 facebooktoken: token,
                 date_joined: new Date(),
@@ -102,7 +103,7 @@ passport.use(
               const tempUser = new User({
                 _id: id,
                 name: profile.displayName,
-                email: profile.emails[0].value,
+                email: email,
                 liked: [],
                 location: null,
                 picture: profile.photos[0].value,
