@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '../../../node_modules/@angular/router';
 import { SessionsService } from '../Services/sessions.service';
+import { Subscription } from '../../../node_modules/rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,23 +10,25 @@ import { SessionsService } from '../Services/sessions.service';
 })
 export class DashboardComponent implements OnInit {
   userIsAuthenticated = false;
+  userInfo: any;
+  userEmail: string;
+  private authListenerSubs: Subscription
+  private userInfoSubs: Subscription;
 
-  constructor(private router: Router, private auth: SessionsService) {
-
-
-
-   }
-
-  ngOnInit() {
-    this.auth
-    .getAuthStatusListener()
-    .subscribe(isAuthenticated => {
-      this.userIsAuthenticated = isAuthenticated;
-    });
-
-    if (this.userIsAuthenticated){
-      this.router.navigate(['login'])
-    }
+  constructor(public auth: SessionsService) {
+    this.auth = auth;
   }
-
+  ngOnInit() {
+    this.authListenerSubs = this.auth
+      .getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+    this.userInfoSubs = this.auth
+    .getUserInfoListener()
+    .subscribe(userInfo => {
+      this.userInfo = userInfo
+      this.userEmail = this.userInfo.email;
+    });
+  }
 }

@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 const keys = require("../gitignore/keys");
 
-const passport = require('../middleware/passport');
 
 module.exports = (req, res, next) => {
-  try {
-    // console.log(req.isAuthenticated())
+   try {
+  //   await req.isAuthenticated()
+  // console.log( await req.isAuthenticated())
     if ( req.isAuthenticated() ){ 
     const token = req.headers.autorization.split(" ")[1];
     jwt.verify(token, keys.JWT_KEY);

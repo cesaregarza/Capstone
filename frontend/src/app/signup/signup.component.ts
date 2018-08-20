@@ -49,6 +49,10 @@ export class SignupComponent implements OnInit {
   };
 
   form = new FormGroup({
+    nameFormControl: new FormControl("", [
+      Validators.required,
+      Validators.maxLength(254)
+    ]),
     emailFormControl: new FormControl("", [
       Validators.required,
       Validators.email,
@@ -118,6 +122,7 @@ export class SignupComponent implements OnInit {
     d.toLocaleString();
     if (this.form.status === "VALID") {
       this.http.post('https://localhost:3000/newuser',{
+        name: this.form.get('nameFormControl').value,
         email: this.form.get('emailFormControl').value,
         isDeleted: false,
         usertype: "1",

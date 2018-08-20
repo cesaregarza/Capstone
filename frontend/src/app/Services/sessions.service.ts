@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Subject, Subscription, Observable } from "rxjs";
 import { Router } from "@angular/router";
+import { Cookie } from "../../../node_modules/ng2-cookies";
 
 const jwt = new JwtHelperService();
 @Injectable({
@@ -36,6 +37,7 @@ export class SessionsService {
   isAuthenticated(): boolean {
     // Check whether the token is expired and return
     // true or false and return if the session
+
     const token = localStorage.getItem("token");
     return !jwt.isTokenExpired(token) ? true : false;
 
@@ -97,8 +99,11 @@ export class SessionsService {
 //   })
 // }
 
+
+
 facebook() {
   window.location.href = "" + this.environment.apiUrl + "login/facebook";
+
 }
 
   getLogin() {
@@ -108,13 +113,14 @@ facebook() {
       })
       .subscribe(
         (resp: any) => {
+          console.log(resp)
           if (resp) {
-
-            this.userInfo.next(resp.user);
+            this.userInfo.next(resp.name);
             this.loggedIn.next(true);
           }
         },
         err => {
+          this.loggedIn.next(false);
           localStorage.removeItem('token')
           console.error(err);
         }
@@ -132,6 +138,7 @@ facebook() {
       )
       .subscribe(() => {
         localStorage.removeItem("token");
+        Cookie.delete('token');
         this.userInfo.next({});
         this.loggedIn.next(false);
         this.router.navigate(["login"]);

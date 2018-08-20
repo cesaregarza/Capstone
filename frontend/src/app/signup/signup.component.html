@@ -10,6 +10,19 @@
             pets
           </i>
         </div>
+         <mat-form-field class="col-md-8 my-2">
+            <input matInput placeholder="Name" formControlName="nameFormControl" [errorStateMatcher]="matcher">
+            <mat-hint></mat-hint>
+
+            <mat-error *ngIf="form.get('nameFormControl').hasError('maxlength') && !form.get('nameFormControl').hasError('required')">
+                Name must have less than
+                <strong>255 characters</strong>
+              </mat-error>
+              <mat-error *ngIf="form.get('nameFormControl').hasError('required')">
+                  Name is
+                  <strong>required</strong>
+                </mat-error>
+          </mat-form-field>
         <mat-form-field class="col-md-8 my-2">
           <input matInput placeholder="Email" formControlName="emailFormControl" [errorStateMatcher]="matcher">
           <mat-hint></mat-hint>

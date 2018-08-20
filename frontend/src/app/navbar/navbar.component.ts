@@ -10,7 +10,7 @@ import { SessionsService } from "../Services/sessions.service";
 export class NavbarComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   userInfo: any;
-  userEmail: string;
+  userName: string;
   private authListenerSubs: Subscription;
   private userInfoSubs: Subscription;
 
@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.auth = auth;
   }
   ngOnInit() {
+
     this.authListenerSubs = this.auth
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
@@ -26,9 +27,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.userInfoSubs = this.auth
     .getUserInfoListener()
     .subscribe(userInfo => {
-      this.userInfo = userInfo
-      this.userEmail = this.userInfo.email;
+      this.userName = userInfo
     });
+
   }
   ngOnDestroy() {}
 

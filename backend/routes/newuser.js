@@ -59,7 +59,7 @@ var scryptParameters = scrypt.paramsSync(0.1);
 
 // Fetch  all users information
 router.get("/", (req, res, next) => {
-  User.find()
+  Userlist.find()
     .populate("_id")
     .exec()
     .then(users => {

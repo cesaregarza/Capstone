@@ -1,3 +1,4 @@
+
 <mat-sidenav-container class="container-fluid" *ngIf="!auth.shouldRun">
   <mat-sidenav class="h-100" #sidenav mode="over" position="end" [(opened)]="auth.opened" (opened)="auth.events.push('open!')"
     (closed)="auth.events.push('close!')">
@@ -28,12 +29,18 @@
             </a>
           </mat-chip>
 
-         <mat-chip class="nav-item">
-            <a class="nav-link" (click)="auth.facebook()">
-              <i class="material-icons">library_books</i>
-              <p>Typography</p>
-            </a>
-          </mat-chip>
+          <mat-chip class="nav-item">
+              <a class="nav-link" (click)="auth.getLogin()">
+                <i class="material-icons">library_books</i>
+                <p>check auth</p>
+              </a>
+            </mat-chip>
+             <mat-chip *ngIf="!userIsAuthenticated" class="nav-item">
+                <a class="nav-link" (click)="auth.facebook()">
+                  <i class="material-icons">library_books</i>
+                  <p>Login Facebook</p>
+                </a>
+              </mat-chip>
 
           <!--  <mat-chip class="nav-item">
             <a class="nav-link" href="./icons.html">
@@ -65,16 +72,17 @@
       <div>
         <a class="navbar-brand p-0" routerLink="home">
 
-          <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV</a>
+          <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV
+          {{ this.userName }}</a>
         </div>
         <div (click)="toggle()">
         <i class="material-icons">
             menu
             </i>
           </div>
-
     </div>
     <router-outlet></router-outlet>
+
   </mat-sidenav-content>
 
 </mat-sidenav-container>
@@ -123,3 +131,4 @@
 </nav>
 
 <router-outlet></router-outlet> -->
+
