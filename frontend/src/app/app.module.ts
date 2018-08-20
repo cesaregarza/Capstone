@@ -66,7 +66,7 @@ import { ChangepwComponent } from './dashboard/changepw/changepw.component';
 import { OptionsComponent } from './dashboard/options/options.component';
 import { CenterComponent } from './dashboard/center/center.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AuthInterceptor } from './testbed/auth-interceptor';
+import { AuthInterceptor } from './Services/auth-interceptor';
 import { SessionsService } from './Services/sessions.service';
 import { AuthGuardService } from './Services/auth-guard.service';
 import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component';

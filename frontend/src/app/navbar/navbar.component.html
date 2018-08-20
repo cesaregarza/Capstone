@@ -1,5 +1,5 @@
 
-<mat-sidenav-container class="container-fluid" *ngIf="!auth.shouldRun">
+<mat-sidenav-container class="container-fluid px-0 " *ngIf="!auth.shouldRun">
   <mat-sidenav class="h-100" #sidenav mode="over" position="end" [(opened)]="auth.opened" (opened)="auth.events.push('open!')"
     (closed)="auth.events.push('close!')">
     <div class="sidebar mt-2 " data-color="green" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
@@ -64,11 +64,10 @@
           </mat-chip>
 
         </mat-chip-list>
-      <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-1.jpg) "></div>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div class="navbar-translate justify-content-around">
+    <!-- <div class="navbar-translate justify-content-around">
       <div>
         <a class="navbar-brand p-0" routerLink="home">
 
@@ -80,11 +79,19 @@
             menu
             </i>
           </div>
-    </div>
+    </div> -->
+  <nav class="navbar  navbar-expand-xs navbar-light bg-light">
+    <a class="navbar-brand p-0" routerLink="home">
+
+      <img src="../../assets/img/templogo.jpeg" alt="" class="p-0 m-0" style="width: 70px">Pets RGV
+    </a> <span *ngIf="userName">{{ userName }}</span>
+    <button class="navbar-toggler" type="button" (click)="toggle()" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+
     <router-outlet></router-outlet>
-
   </mat-sidenav-content>
-
 </mat-sidenav-container>
 
 <!-- <nav class="navbar navbar-default navbar-expand-lg">

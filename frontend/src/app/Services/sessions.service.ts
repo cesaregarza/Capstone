@@ -43,11 +43,6 @@ export class SessionsService {
 
   }
 
-
-
-
-
-
   getAuthStatusListener() {
     this.getLogin();
     return this.loggedIn.asObservable();
@@ -93,14 +88,6 @@ export class SessionsService {
     // });
   }
 
-// facebook() {
-//   this.http.get(this.environment.apiUrl + "login/facebook", {withCredentials: true }).subscribe(resp=>{
-//     console.log(resp);
-//   })
-// }
-
-
-
 facebook() {
   window.location.href = "" + this.environment.apiUrl + "login/facebook";
 
@@ -113,13 +100,13 @@ facebook() {
       })
       .subscribe(
         (resp: any) => {
-          console.log(resp)
           if (resp) {
-            this.userInfo.next(resp.name);
+            this.userInfo.next(resp);
             this.loggedIn.next(true);
           }
         },
         err => {
+          this.userInfo.next('');
           this.loggedIn.next(false);
           localStorage.removeItem('token')
           console.error(err);
@@ -139,7 +126,7 @@ facebook() {
       .subscribe(() => {
         localStorage.removeItem("token");
         Cookie.delete('token');
-        this.userInfo.next({});
+        this.userInfo.next('');
         this.loggedIn.next(false);
         this.router.navigate(["login"]);
       });

@@ -11,14 +11,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   userInfo: any;
   userName: string;
+  usertype: string;
   private authListenerSubs: Subscription;
   private userInfoSubs: Subscription;
 
   constructor(public auth: SessionsService) {
     this.auth = auth;
   }
-  ngOnInit() {
 
+  ngOnInit() {
     this.authListenerSubs = this.auth
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
@@ -27,14 +28,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.userInfoSubs = this.auth
     .getUserInfoListener()
     .subscribe(userInfo => {
-      this.userName = userInfo
+      this.userName = userInfo.name;
+      this.usertype = userInfo.usertype;
     });
-
   }
   ngOnDestroy() {}
 
-
   toggle(){
-  this.auth.opened = !this.auth.opened
+  this.auth.opened = !this.auth.opened;
   }
 }

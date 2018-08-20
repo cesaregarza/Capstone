@@ -10,14 +10,14 @@ html * {
   padding: 10px;
 }
 
-
-/* .nav {
+.navbar {
   background: #fff;
   color: #555;
-  padding: 5px 0 !important;
+  padding: 5px 25px !important;
   margin-bottom: 20px;
   box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15) !important;
-} */
+}
+
 .nav-item {
   background: #e91e63;
   color: white;
