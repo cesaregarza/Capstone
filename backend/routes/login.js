@@ -74,7 +74,7 @@ router.get("/login", checkAuth, function(req, res) {
           // session: req.session,
           name: result.name
         });
-      }
+      } 
     })
 
 

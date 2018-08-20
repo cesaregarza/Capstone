@@ -112,7 +112,10 @@ passport.use(
               tempUserlist
                 .save()
                 .then(result => {
-                  tempUser.save().catch(err => {
+                  tempUser.save().then(result =>{
+                    return done(null, result)
+                  }
+                  ).catch(err => {
                     return done(err);
                   });
                 })
