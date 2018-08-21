@@ -1,6 +1,54 @@
-<p>
+<!-- <p>
   center works! routing parameter {{ this.id }}
 </p>
 <div class="container">
 <button (click)="fetchCenterInfo()">Fetch</button>
-</div>
+
+<span *ngIf="centerInfoFound">
+  {{ centerInfo.name }}
+  {{ centerInfo.address }}
+  {{ centerInfo.city }}
+  {{ centerInfo.postal }}
+  {{ centerInfo.phone }}
+  {{ centerInfo.email }}
+  {{ centerInfo.hours }}
+</span>
+
+<span *ngIf="!centerInfoFound">
+  Center not found
+</span>
+</div> -->
+<!-- Card -->
+<div *ngIf="centerInfoFound" class="col-lg-8 offset-lg-2 card card-cascade wider reverse">
+
+    <!-- Card image -->
+    <div class="view view-cascade overlay">
+      <img class="card-img-top" src="{{ centerInfo.picture }}" alt="Card image cap">
+      <a href="#!">
+        <div class="mask rgba-white-slight"></div>
+      </a>
+    </div>
+
+    <!-- Card content -->
+    <div class="card-body card-body-cascade text-center">
+
+      <!-- Title -->
+      <h3 class="card-title"><strong>{{ centerInfo.name }}</strong></h3>
+      <!-- Subtitle -->
+      <h6 class="
+       indigo-text text-muted py-2">{{ centerInfo.city }}  |  {{ centerInfo.phone }}  |  {{ centerInfo.email }}</h6>
+      <!-- Text -->
+      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem perspiciatis voluptatum a, quo nobis, non commodi quia repellendus sequi nulla voluptatem dicta reprehenderit, placeat laborum ut beatae ullam suscipit veniam.
+      </p>
+
+      <!-- Linkedin -->
+      <a class="px-2 fa-lg li-ic"><i class="fa fa-linkedin"></i></a>
+      <!-- Twitter -->
+      <a class="px-2 fa-lg tw-ic"><i class="fa fa-twitter"></i></a>
+      <!-- Dribbble -->
+      <a class="px-2 fa-lg fb-ic"><i class="fa fa-facebook"></i></a>
+
+    </div>
+
+  </div>
+  <!-- Card -->

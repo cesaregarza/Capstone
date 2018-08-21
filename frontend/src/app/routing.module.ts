@@ -36,11 +36,6 @@ const routes: Routes = [
     component: CentersComponent
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'home',
     component: HomeComponent
   },
@@ -101,6 +96,11 @@ const routes: Routes = [
   {
     path: 'center',
     redirectTo: '/centers'
+  },
+  {
+    path: 'dashboard',
+    redirectTo: 'dashboard/options',
+    canActivate: [AuthGuard],
   },
   { path: '',
     redirectTo: '/home',

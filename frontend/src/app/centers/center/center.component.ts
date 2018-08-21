@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SessionsService } from "../../Services/sessions.service";
 import { HttpClient } from "@angular/common/http";
 
@@ -11,6 +11,8 @@ import { HttpClient } from "@angular/common/http";
 export class CenterInfoComponent implements OnInit, OnDestroy {
   id: number;
   private sub: any;
+  centerInfo: any;
+  centerInfoFound = false;
   environment = {
     production: false,
     apiUrl: "https://localhost:3000/centers"
@@ -18,6 +20,7 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     public auth: SessionsService,
     public http: HttpClient
   ) {
@@ -28,6 +31,15 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = params["id"];
+      this.http.get(this.environment.apiUrl + '/cURL=' + this.id).subscribe((result: any) => {
+        console.log(result)
+        if (!this.isEmpty(result)){
+          this.centerInfo = result.center[0];
+          this.centerInfoFound = true;
+        } else {
+         this.router.navigate(['/centers'])
+        }
+      }, err => console.log(err))
     });
   }
 
@@ -40,4 +52,11 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
       console.log(result);
     })
   }
+
+  isEmpty = obj => {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  };
 }

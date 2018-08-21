@@ -11,6 +11,7 @@ const centerSchema = mongoose.Schema({
     email: { type: String, required: true },
     hours: { type: String, required: true },
     picture: { type: String, required: true },
+    cURL: { type: String, required: false },
     isDeleted: {type: Boolean, required: true }
 });
 

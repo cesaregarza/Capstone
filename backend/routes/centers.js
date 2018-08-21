@@ -24,14 +24,35 @@ router.patch("/i=:userId", (req, res, next) => {
 });
 
 router.get("/", (req, res, next) => {
-  Userlist.find({usertype: 2})
+  Center.find()
     .exec()
     .then(centers => {
-      console.log(centers,!isEmpty(centers))
       if (!isEmpty(centers)) {
        res.status(200).json({
          centers: centers
        }) 
+      }
+    })
+    .catch(err => {
+     res.status(500).json({
+        error: err
+     })
+    });
+});
+
+router.get("/cURL=:cURL", (req, res, next) => {
+const cURL = req.params.cURL;
+  Center.find({cURL: cURL})
+    .exec()
+    .then(center => {
+      if (!isEmpty(center)) {
+       res.status(200).json({
+         center: center
+       }) 
+      } else {
+        res.status(204).json({
+          center: 'Not found'
+        })
       }
     })
     .catch(err => {

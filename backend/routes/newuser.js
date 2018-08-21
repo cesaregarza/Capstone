@@ -96,7 +96,7 @@ router.patch('/i=:userId', (req, res, next) => {
 });
 
 router.post("/",  (req, res, next) => {
-  let localPathCopy = localpath;
+  let localPathCopy = localPath;
 
   const id = new mongoose.Types.ObjectId();
   

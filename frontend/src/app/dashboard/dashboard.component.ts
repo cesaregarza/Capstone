@@ -9,26 +9,7 @@ import { Subscription } from '../../../node_modules/rxjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  userIsAuthenticated = false;
-  userInfo: any;
-  userEmail: string;
-  private authListenerSubs: Subscription
-  private userInfoSubs: Subscription;
 
-  constructor(public auth: SessionsService) {
-    this.auth = auth;
-  }
-  ngOnInit() {
-    this.authListenerSubs = this.auth
-      .getAuthStatusListener()
-      .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
-      });
-    this.userInfoSubs = this.auth
-    .getUserInfoListener()
-    .subscribe(userInfo => {
-      this.userInfo = userInfo
-      this.userEmail = this.userInfo.email;
-    });
-  }
+  constructor() {}
+  ngOnInit() {}
 }
