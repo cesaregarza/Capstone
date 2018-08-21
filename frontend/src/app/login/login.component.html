@@ -42,8 +42,19 @@
               </mat-error>
             </mat-form-field>
 
-          <div class="col-md-8 text-center my-2">
-            <button (click)="sendForm()" class="btn bg-success text-light btn-round px-3" mat-raised-button>Signup</button>
+          <div class="col-md-9 text-center my-2 px-0">
+            <button (click)="sendForm()" class="px-0 btn bg-success text-light btn-round px-3" mat-raised-button>Log in</button>
+          </div>
+
+          <div class="col-md-9 text-center my-2 px-0">
+          -or-
+          </div>
+            <div class="col-md-8 text-center my-2 px-0">
+                <button (click)="auth.facebook()" class="px-0 btn bg-facebook text-light btn-round px-3" mat-raised-button><i class="fab fa-facebook-square"></i> Continue with Facebook</button>
+
+          </div>
+          <div routerLink="/signup" class="col-md-8 text-center my-2 text-muted">
+            <a class="px-3" >Don't have an account?</a>
           </div>
         </form>
       </div>

@@ -2,6 +2,10 @@ html * {
   -webkit-font-smoothing: antialiased;
 }
 
+nav img {
+  width: 100px;
+}
+
 .container-fluid {
   height: 100vh;
 }
@@ -17,13 +21,29 @@ html * {
   margin-bottom: 20px;
   box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15) !important;
 }
+.mat-menu-item {
+  width: 100%;
+  color: gray;
+  cursor: pointer;
 
-.nav-item {
-  background: #e91e63;
-  color: white;
-  margin: 10px!important;
 }
 
+.mat-chip {
+  background: transparent;
+  color: gray;
+  margin: 10px 3px!important;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+ .mat-chip:hover {
+box-shadow: 0px 1px 1px 1px gray;
+}
+
+
+button:focus {
+outline: none;
+}
 
 .nav-item.active {
   background: green;
@@ -38,27 +58,26 @@ html * {
   font-weight: 400;
   font-size: 12px;
   text-transform: uppercase;
-  border-radius: 3px;
+  border-radius: 5px;
   line-height: 20px;
   display: inline-flex;
 }
 
 .nav-item .nav-link i {
   font-size: 20px;
-  padding: 2px 10px;
+  padding: 2px 3px;
   position: relative;
 }
 
 .nav-item .nav-link p {
   position: relative;
-  padding: 2px 10px;
+  padding: 2px 3px;
   margin:0px;
 }
 
-.nav-item .nav-link i.fa {
+.nav-item .nav-link i.fa, .nav-item .nav-link i.fas  {
   margin-top: -4px;
-
-  padding: 2px 10px;
+  padding: 2px 3px;
   top: 2px;
 }
 
@@ -73,7 +92,7 @@ html * {
   font-size: 18px;
 }
 
-.btn {
+/* .btn {
   position: relative;
   padding: 12px 30px !important;
   margin: .3125rem 1px;
@@ -89,7 +108,7 @@ html * {
 }
 
 .btn.btn-round {
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 .btn.btn-rose {
@@ -126,5 +145,5 @@ html * {
 .btn.btn-white:focus {
   background-color: #fff;
   color: #999;
-}
+} */
 

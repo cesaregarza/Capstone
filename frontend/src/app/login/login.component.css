@@ -5,11 +5,23 @@
   font-size: 50px;
 }
 
+.text-muted {
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .container .row, .row img , .border-left-rounded {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
 
+i.fab {
+  font-size: 20px;
+}
+
+.bg-facebook {
+  background: #4367b2;
+}
 
 img {
 position: relative;
@@ -28,5 +40,5 @@ height: 100%;
 }
 
 .btn.btn-round {
-  border-radius: 30px;
+  border-radius: 5px;
 }

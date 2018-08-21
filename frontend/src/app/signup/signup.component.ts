@@ -11,6 +11,7 @@ import {
 import { ErrorStateMatcher } from "@angular/material/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { SessionsService } from "../Services/sessions.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -33,7 +34,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ["./signup.component.css"]
 })
 export class SignupComponent implements OnInit {
-  constructor(public http: HttpClient, public router: Router) {
+  constructor(public http: HttpClient, public router: Router, private auth: SessionsService) {
     this.http = http,
     this.router = router
   }
@@ -118,15 +119,17 @@ export class SignupComponent implements OnInit {
   }
 
   sendForm = () => {
+    let email = this.form.get('emailFormControl').value;
+    let pass = this.form.get('passwords').get('password').value;
     var d = new Date();
     d.toLocaleString();
     if (this.form.status === "VALID") {
       this.http.post('https://localhost:3000/newuser',{
         name: this.form.get('nameFormControl').value,
-        email: this.form.get('emailFormControl').value,
+        email: email,
         isDeleted: false,
         usertype: "1",
-        password: this.form.get('passwords').get('password').value,
+        password: pass,
         date_joined: d.toLocaleString(),
         last_login: d.toLocaleString(),
       })
@@ -134,7 +137,7 @@ export class SignupComponent implements OnInit {
       .then(result => {
         if (result['status'] == 201) {
           this.form.reset();
-          this.router.navigate(['/login']);
+          this.auth.doLogin(email, pass);
           // console.log('User Created');
         }
       })

@@ -1,6 +1,7 @@
 import { Subscription } from "rxjs";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SessionsService } from "../Services/sessions.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-navbar",
@@ -15,8 +16,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private authListenerSubs: Subscription;
   private userInfoSubs: Subscription;
 
-  constructor(public auth: SessionsService) {
+  constructor(public auth: SessionsService, public router: Router) {
     this.auth = auth;
+    this.router = router;
   }
 
   ngOnInit() {
