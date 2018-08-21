@@ -95,8 +95,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'centerinfo',
+    path: 'center/:id',
     component: CenterInfoComponent
+  },
+  {
+    path: 'center',
+    redirectTo: '/centers'
   },
   { path: '',
     redirectTo: '/home',
