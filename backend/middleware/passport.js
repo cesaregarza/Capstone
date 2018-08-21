@@ -86,7 +86,7 @@ passport.use(
             }
             if (!user) {
               const id = new mongoose.Types.ObjectId();
-              const email = !profile.emails ? id + "@noepermission.org" : profile.emails[0].value 
+              const email = !profile.emails ? id + "@noepermission.org" : profile.emails[0].value;
               const hashedpw = Buffer.from("facebook");
               const tempUserlist = new Userlist({
                 _id: id,
@@ -114,7 +114,7 @@ passport.use(
                 .save()
                 .then(result => {
                   tempUser.save().then(result =>{
-                    return done(null, result)
+                    return done(null, result);
                   }
                   ).catch(err => {
                     return done(err);
