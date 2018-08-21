@@ -4,7 +4,7 @@ import { SessionsService } from "../Services/sessions.service";
 @Component({
   selector: "app-testbed",
   templateUrl: "./testbed.component.html",
-  styleUrls: ["./testbed.component.css"]
+  styleUrls: ["./testbed.component.scss"]
 })
 export class TestbedComponent implements OnInit {
   constructor(public auth: SessionsService) {

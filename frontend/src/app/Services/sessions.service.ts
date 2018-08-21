@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Subject, Subscription, Observable } from "rxjs";
 import { Router } from "@angular/router";
-import { Cookie } from "../../../node_modules/ng2-cookies";
+import { Cookie } from "ng2-cookies";
 
 const jwt = new JwtHelperService();
 @Injectable({

@@ -6,7 +6,7 @@ import { Subscription } from '../../../node_modules/rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   userIsAuthenticated = false;

@@ -6,7 +6,7 @@ import { HttpClient } from "@angular/common/http";
 @Component({
   selector: "app-center",
   templateUrl: "./center.component.html",
-  styleUrls: ["./center.component.css"]
+  styleUrls: ["./center.component.scss"]
 })
 export class CenterInfoComponent implements OnInit, OnDestroy {
   id: number;
