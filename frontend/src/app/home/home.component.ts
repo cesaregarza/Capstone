@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {PageEvent} from '@angular/material';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import { SessionsService } from '../Services/sessions.service';
-
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +11,7 @@ import { SessionsService } from '../Services/sessions.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: HttpClient, public auth: SessionsService) {
+  constructor(private http: HttpClient, public auth: SessionsService, private router: Router) {
     this.http = http;
 
   }
@@ -31,11 +29,7 @@ export class HomeComponent implements OnInit {
 
   find = () => {
     let url = "https://localhost:3000/search/";
-    // let location = (<HTMLInputElement>document.getElementById('location')).value;
-    // let specie = (<HTMLInputElement>document.getElementById('specie')).value;
     console.log(this.city, this.specie);
-    // this.city !== '' ? url = url + 'location=' + this.city + '&': this.city = '';
-    // this.specie !== '' ? url = url + 'specie=' + this.specie + '&': this.specie = '';
     url = url + 'location=' + this.city + '&';
     url = url + 'specie=' + this.specie + '&';
 
@@ -57,6 +51,8 @@ export class HomeComponent implements OnInit {
     //   console.log(err);
     // })
   }
-
+moreInfo = (petInfo) => {
+this.router.navigate(['pet'])
+}
 
 }

@@ -4,7 +4,6 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { Subject, Subscription, Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { Cookie } from "ng2-cookies";
-import { MatSnackBar } from "@angular/material";
 
 const jwt = new JwtHelperService();
 @Injectable({
@@ -16,8 +15,9 @@ export class SessionsService {
   private userInfo = new Subject < any > ();
   public isAuthSub: Subscription;
   public userId: String;
+  public petInfo: Object;
 
-  constructor(private http: HttpClient, public router: Router, public snack: MatSnackBar) {
+  constructor(private http: HttpClient, public router: Router) {
     this.http = http;
     this.router = router;
   }
@@ -46,6 +46,7 @@ export class SessionsService {
   }
 
   getAuthStatusListener() {
+    // Get login session with refresh page
     this.getLogin();
     return this.loggedIn.asObservable();
   }
@@ -55,7 +56,7 @@ export class SessionsService {
   }
 
   doLogin(mail, pass) {
-    this.deleteLocalSession();
+    // this.deleteLocalSession();
     this.http
       .post(
         this.environment.apiUrl + "login", {
@@ -68,17 +69,12 @@ export class SessionsService {
       .toPromise()
       .then((resp: any) => {
         const token = resp.token;
-        this.userInfo.next(resp.user);
-        console.log("success!", resp.user.user);
         localStorage.setItem("token", token);
-        this.loggedIn.next(true);
-        this.router.navigate(["dashboard"]);
+        this.getLogin();
+        this.router.navigate(["/dashboard/options"]);
       })
       .catch(err => {
-        // this.snack.open( )
-        console.log(err);
-        this.userInfo.next({});
-        this.loggedIn.next(false);
+     this.deleteLocalSession();
       });
     // .subscribe((resp: any) => {
     //   console.log(resp)
@@ -96,6 +92,7 @@ export class SessionsService {
   }
 
   getLogin() {
+    console.log('getLogin');
     this.http
       .get(this.environment.apiUrl + "login", {
         withCredentials: true // <=========== important!
@@ -112,8 +109,6 @@ export class SessionsService {
         err => {
           this.userInfo.next('');
           this.loggedIn.next(false);
-          localStorage.removeItem('token')
-          console.error(err);
         }
       );
   }

@@ -8,31 +8,31 @@ import { SessionsService } from '../../Services/sessions.service';
   styleUrls: ['./options.component.scss']
 })
 export class OptionsComponent implements OnInit, OnDestroy {
-  userIsAuthenticated = false;
-  userInfo: any;
-  userEmail: String;
-  userId: String;
-  userName: String;
-  private userInfoSubs: Subscription;
+  // userIsAuthenticated = false;
+  // userInfo: any;
+  // userEmail: String;
+  // userId: String;
+  // userName: String;
+  // private userInfoSubs: Subscription;
 
   constructor(public auth: SessionsService) {
     this.auth = auth;
   }
   ngOnInit() {
-    this.userInfoSubs = this.auth
-    .getUserInfoListener()
-    .subscribe(userInfo => {
-      this.userInfo = userInfo;
-      this.userId = this.userInfo._id;
-      this.userName = this.userInfo.name;
-    });
+    // this.userInfoSubs = this.auth
+    // .getUserInfoListener()
+    // .subscribe(userInfo => {
+    //   this.userInfo = userInfo;
+    //   this.userId = this.userInfo._id;
+    //   // this.userName = this.userInfo.name;
+    // });
   }
 
   ngOnDestroy(){
-    this.userInfoSubs.unsubscribe;
+    // this.userInfoSubs.unsubscribe;
   };
 
   boop(){
-    console.log(this.userId);
+    // console.log(this.userId);
   }
 }

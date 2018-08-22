@@ -27,20 +27,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
+        console.log(this.userIsAuthenticated)
       });
+
     this.userInfoSubs = this.auth
     .getUserInfoListener()
     .subscribe(userInfo => {
       this.userName = userInfo.name;
       this.usertype = userInfo.usertype;
       this.userId = userInfo._id;
-      console.log(userInfo)
+      console.log(userInfo);
+
     });
   }
   ngOnDestroy() {}
 
   toggle(){
   this.auth.opened = !this.auth.opened;
-  console.log(this.userId);
+  console.log(this.userId, this.userName);
   }
 }
