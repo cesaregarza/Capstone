@@ -12,9 +12,10 @@ const jwt = new JwtHelperService();
 })
 export class SessionsService {
   public isValid = false;
-  public loggedIn = new Subject<boolean>();
-  private userInfo = new Subject<any>();
+  public loggedIn = new Subject < boolean > ();
+  private userInfo = new Subject < any > ();
   public isAuthSub: Subscription;
+  public userId: String;
 
   constructor(private http: HttpClient, public router: Router, public snack: MatSnackBar) {
     this.http = http;
@@ -54,14 +55,13 @@ export class SessionsService {
   }
 
   doLogin(mail, pass) {
+    this.deleteLocalSession();
     this.http
       .post(
-        this.environment.apiUrl + "login",
-        {
+        this.environment.apiUrl + "login", {
           email: mail,
           password: pass
-        },
-        {
+        }, {
           withCredentials: true
         }
       )
@@ -90,10 +90,10 @@ export class SessionsService {
     // });
   }
 
-facebook() {
-  window.location.href = "" + this.environment.apiUrl + "login/facebook";
+  facebook() {
+    window.location.href = "" + this.environment.apiUrl + "login/facebook";
 
-}
+  }
 
   getLogin() {
     this.http
@@ -105,6 +105,8 @@ facebook() {
           if (resp) {
             this.userInfo.next(resp);
             this.loggedIn.next(true);
+            this.userId = resp._id;
+            console.log(this.userId);
           }
         },
         err => {
@@ -119,18 +121,20 @@ facebook() {
   doLogout() {
     this.http
       .post(
-        this.environment.apiUrl + "logout",
-        {},
-        {
+        this.environment.apiUrl + "logout", {}, {
           withCredentials: true
         }
       )
       .subscribe(() => {
-        localStorage.removeItem("token");
-        Cookie.delete('token');
-        this.userInfo.next('');
-        this.loggedIn.next(false);
+        this.deleteLocalSession();
         this.router.navigate(["login"]);
       });
+  }
+
+  deleteLocalSession(){
+    localStorage.removeItem("token");
+    Cookie.delete('token');
+    this.userInfo.next('');
+    this.loggedIn.next(false);
   }
 }

@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
     picture: { type: String, required: false },
     isDeleted: { type: Boolean, required: true },
     facebookid: {type: String, required: false, unique: true},
-    facebooktoken: {type: String, required: false, unique: true}
+    facebooktoken: {type: String, required: false, unique: true},
+    options: {type: Object, required: false}
 });
 
 userSchema.plugin(uniqueValidator);

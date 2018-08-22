@@ -6,7 +6,7 @@ const User = require('../models/user')
 router.patch('/i=:userId', (req, res, next) => {
     const id = req.params.userId;
     const updateOps = {};
-    console.log(req.body)
+    console.log(req.body);
     for (const ops of req.body) {
       updateOps[ops.propName] = ops.value;
     }
