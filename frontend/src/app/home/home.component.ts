@@ -20,6 +20,8 @@ export class HomeComponent implements OnInit {
   pets = {};
   pageSizeOptions: number[] = [5, 10, 25, 100];
   pageEvent: PageEvent;
+  city = "";
+  specie = "";
   ngOnInit() {
   }
   setPageSizeOptions(setPageSizeOptionsInput: string) {
@@ -29,11 +31,13 @@ export class HomeComponent implements OnInit {
 
   find = () => {
     let url = "https://localhost:3000/search/";
-    let location = (<HTMLInputElement>document.getElementById('location')).value;
-    let specie = (<HTMLInputElement>document.getElementById('specie')).value;
-    console.log(location, specie);
-    location !== '' ? url = url + 'location=' + location + '&': location = '';
-    specie !== '' ? url = url + 'specie=' + specie + '&': specie = '';
+    // let location = (<HTMLInputElement>document.getElementById('location')).value;
+    // let specie = (<HTMLInputElement>document.getElementById('specie')).value;
+    console.log(this.city, this.specie);
+    // this.city !== '' ? url = url + 'location=' + this.city + '&': this.city = '';
+    // this.specie !== '' ? url = url + 'specie=' + this.specie + '&': this.specie = '';
+    url = url + 'location=' + this.city + '&';
+    url = url + 'specie=' + this.specie + '&';
 
     this.http.get(url)
     .subscribe((pets: any) => {

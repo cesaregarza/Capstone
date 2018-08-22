@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Pet = require("../models/pet");
-const checkAuth = require('../middleware/check-auth');
+const checkAuth = require("../middleware/check-auth");
 
 router.get("/i=:id", (req, res, next) => {
   Pet.findById(req.params.id)
@@ -26,12 +26,11 @@ router.get("/i=:id", (req, res, next) => {
     });
 });
 
-router.get("/\?:super", (req, res, next) => {
+router.get("/?:super", (req, res, next) => {
   //Regex with lookbehind. TODO: Figure out if it works on other servers. TODO: Make this much more specific.
   let re = /((?<=^|&)([a-zA-Z]+=[\da-zA-Z]+))/g;
   //Match the superroute with the regex, creating groups
   let spr = req.params.super.match(re);
-
   //Initialize variables
   let location = "";
   let specie = "";
@@ -41,37 +40,35 @@ router.get("/\?:super", (req, res, next) => {
   let countAll = 0;
 
   //If no regex groups are returned, send a 500 error message saying Syntax is incorrect
-  if (spr == null) {
-    res.status(500).json({
-      error: "Incorrect Syntax"
-    });
-  }
-
-  //Iterate through all regex groups, setting variables to their equivalents as mentioned in the API documentation.
-  for (let i = 0; i < spr.length; i++) {
-    if (spr[i].split("=")[0] == "location"){
-      location = spr[i].split("=")[1];
-    }
-    if (spr[i].split("=")[0] == "specie"){
-      specie = spr[i].split("=")[1];
-    }
-    if (spr[i].split("=")[0] == "ps"){
-      ps = parseInt(spr[i].split("=")[1]);
-    }
-    if (spr[i].split("=")[0] == "pn"){
-      pn = parseInt(spr[i].split("=")[1]);
+  if (spr !== null) {
+   
+    
+    //Iterate through all regex groups, setting variables to their equivalents as mentioned in the API documentation.
+    for (let i = 0; i < spr.length; i++) {
+      if (spr[i].split("=")[0] == "location") {
+        location = spr[i].split("=")[1];
+      }
+      if (spr[i].split("=")[0] == "specie") {
+        specie = spr[i].split("=")[1];
+      }
+      if (spr[i].split("=")[0] == "ps") {
+        ps = parseInt(spr[i].split("=")[1]);
+      }
+      if (spr[i].split("=")[0] == "pn") {
+        pn = parseInt(spr[i].split("=")[1]);
+      }
     }
   }
-  //Set defaults for ps and pn if not found
-  ps = !ps ? 10: ps;
-  pn = !pn ? 1 : pn;
-
-  //Set defaults for location and species if not found
-  if (!!location){
-    findObj.location = { $regex: location, $options: "$i"};
+    //Set defaults for ps and pn if not found
+    ps = !ps ? 10 : ps;
+    pn = !pn ? 1 : pn;
+    
+    //Set defaults for location and species if not found
+    if (!!location) {
+    findObj.location = { $regex: location, $options: "$i" };
   }
-  if (!!specie){
-    findObj.specie = {$regex: specie, $options: "$i"};
+  if (!!specie) {
+    findObj.specie = { $regex: specie, $options: "$i" };
   }
 
   //Count the results we'll get.
@@ -80,7 +77,7 @@ router.get("/\?:super", (req, res, next) => {
   });
 
   //Return all pets that fit in the query AND are not deleted
-  Pet.find({$and: [findObj,{isDeleted: {$ne: true}}]})
+  Pet.find({ $and: [findObj, { isDeleted: { $ne: true } }] })
     //Select the propieries to show
     .select(
       "_id name location specie size age breed description gender picture center"
@@ -92,26 +89,30 @@ router.get("/\?:super", (req, res, next) => {
     .skip(ps * (pn - 1))
     .exec()
     .then(pets => {
-      console.log(countAll);
-      res.status(200).json({
-        count: pets.length,
-        total: countAll,
-        pets: pets.map(pet => {
-          return {
-            _id: pet._id,
-            name: pet.name,
-            location: pet.location,
-            specie: pet.specie,
-            size: pet.size,
-            age: pet.age,
-            breed: pet.breed,
-            description: pet.description,
-            gender: pet.gender,
-            picture: pet.picture,
-            center: pet.center
-          };
-        })
-      });
+      if (!isEmpty(pets)) {
+        console.log(countAll);
+        res.status(200).json({
+          count: pets.length,
+          total: countAll,
+          pets: pets.map(pet => {
+            return {
+              _id: pet._id,
+              name: pet.name,
+              location: pet.location,
+              specie: pet.specie,
+              size: pet.size,
+              age: pet.age,
+              breed: pet.breed,
+              description: pet.description,
+              gender: pet.gender,
+              picture: pet.picture,
+              center: pet.center
+            };
+          })
+        });
+      } else {
+        res.status(404)
+      }
     })
     .catch(err => {
       console.log(err);
@@ -164,6 +165,6 @@ isEmpty = obj => {
 
 var countPets = (err, count) => {
   return count;
-}
+};
 
 module.exports = router;

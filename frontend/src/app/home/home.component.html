@@ -1,20 +1,32 @@
 <div class="container-fluid">
-  <mat-form-field class="w-50">
-    <input id="location" matInput placeholder="Location">
+  <mat-form-field>
+    <mat-select [(ngModel)]="city" [disableOptionCentering]="true" placeholder="City">
+      <mat-option value="">
+        Any
+      </mat-option>
+      <mat-option value="Mcallen">
+        Mcallen
+      </mat-option>
+      <mat-option value="Palmview">
+        Palmview
+      </mat-option>
+    </mat-select>
   </mat-form-field>
-  <br>
-  <mat-form-field class="w-50">
-    <input id="specie" matInput placeholder="Specie">
+  <mat-form-field>
+    <mat-select [(ngModel)]="specie" [disableOptionCentering]="true" placeholder="Specie">
+      <mat-option value="">
+        Any
+      </mat-option>
+      <mat-option value="Dog">
+        Dog
+      </mat-option>
+
+      <mat-option value="Cat">
+        Cat
+      </mat-option>
+    </mat-select>
   </mat-form-field>
-  <br>
-  <!-- <mat-form-field class="w-50">
-    <input matInput placeholder="">
-  </mat-form-field>
-<br>
-  <mat-form-field class="w-50">
-    <input matInput placeholder="Input">
-  </mat-form-field>
-  <br> -->
+
   <button mat-raised-button (click)="find()" color="primary">Find</button>
 </div>
 <br>

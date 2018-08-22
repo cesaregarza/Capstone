@@ -111,7 +111,7 @@
               <p>About</p>
             </a>
           </mat-chip>
-          <mat-chip  [matMenuTriggerFor]="menu" [ngClass]="this.router.url == '/dashboard/likes' || this.router.url == '/dashboard/options' || this.router.url == '/dashboard/changepw' ? 'active' : ''" *ngIf="userIsAuthenticated" class="nav-item">
+          <mat-chip  [matMenuTriggerFor]="menu" [ngClass]="this.router.url == '/dashboard/likes' || this.router.url == '/dashboard/options' || this.router.url == '/dashboard/changepw' || this.router.url == '/dashboard/options#_=_' ? 'active' : ''" *ngIf="userIsAuthenticated" class="nav-item">
             <a class="nav-link">
               <i class="material-icons">dashboard</i>
               <p class="mx-auto" *ngIf="userName">{{ userName }}</p>

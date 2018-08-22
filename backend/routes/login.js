@@ -72,6 +72,7 @@ router.get("/login", checkAuth, function(req, res) {
       } else {
         res.status(200).json({
           // session: req.session,
+          _id: result._id,
           name: result.name,
           usertype: req.session.user.usertype
         });

@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userInfo: any;
   userName: string;
   usertype: string;
+  userId: string;
   private authListenerSubs: Subscription;
   private userInfoSubs: Subscription;
 
@@ -32,11 +33,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     .subscribe(userInfo => {
       this.userName = userInfo.name;
       this.usertype = userInfo.usertype;
+      this.userId = userInfo._id;
+      console.log(userInfo)
     });
   }
   ngOnDestroy() {}
 
   toggle(){
   this.auth.opened = !this.auth.opened;
+  console.log(this.userId);
   }
 }

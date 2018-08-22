@@ -4,6 +4,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { Subject, Subscription, Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { Cookie } from "ng2-cookies";
+import { MatSnackBar } from "@angular/material";
 
 const jwt = new JwtHelperService();
 @Injectable({
@@ -15,7 +16,7 @@ export class SessionsService {
   private userInfo = new Subject<any>();
   public isAuthSub: Subscription;
 
-  constructor(private http: HttpClient, public router: Router) {
+  constructor(private http: HttpClient, public router: Router, public snack: MatSnackBar) {
     this.http = http;
     this.router = router;
   }
@@ -68,12 +69,13 @@ export class SessionsService {
       .then((resp: any) => {
         const token = resp.token;
         this.userInfo.next(resp.user);
-        console.log("success!", resp.user);
+        console.log("success!", resp.user.user);
         localStorage.setItem("token", token);
         this.loggedIn.next(true);
         this.router.navigate(["dashboard"]);
       })
       .catch(err => {
+        // this.snack.open( )
         console.log(err);
         this.userInfo.next({});
         this.loggedIn.next(false);
