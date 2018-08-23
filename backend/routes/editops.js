@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoost = require("mongoose");
+const mongoose = require("mongoose");
 const multer = require("multer");
 const scrypt = require("scrypt");
 const checkAuth = require("../middleware/check-auth");

@@ -1,11 +1,17 @@
 <div class="options">
-  <form method="patch" id="options" [formGroup]="form">
+  <form id="options" [formGroup]="form">
     <div class="changeName">
       <!-- <mat-form-field>
 
       </mat-form-field> -->
     </div>
     <div class="changeImg"></div>
-    <div class="changePw"></div>
+    <div class="changePw">
+      <ng-container formGroupName="passwords">
+        <mat-form-field>
+          <input id="oldpwd" matInputplaceholder="Current Password" formControlName="oldPassword" [type]="hide ? 'password' : 'text'" [errorStateMatcher]="matcher">
+        </mat-form-field>
+      </ng-container>
+    </div>
   </form>
 </div>
