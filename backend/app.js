@@ -15,6 +15,7 @@ var centersRouter = require('./routes/centers');
 var usersRouter = require('./routes/users');
 var newuserRouter = require('./routes/newuser');
 var loginRouter = require('./routes/login');
+var editopsRouter = require('./routes/editops');
 var keys = require('./gitignore/keys');
 
 mongoose.connect(`mongodb+srv://dbpets:${keys.PW}@petsdb-165j8.mongodb.net/test?retryWrites=true`, {
@@ -70,6 +71,7 @@ app.use('/centers', centersRouter);
 app.use('/users', usersRouter);
 app.use('/newuser', newuserRouter);
 app.use('/user', loginRouter);
+app.use('/editops', editopsRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
