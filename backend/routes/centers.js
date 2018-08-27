@@ -45,6 +45,7 @@ router.get("/id=:id", (req, res, next) => {
 router.get("/", (req, res, next) => {
   Center.find()
     .populate()
+    .sort({ field: 'asc', _id: -1 })
     .exec()
     .then(centers => {
       if (!isEmpty(centers)) {

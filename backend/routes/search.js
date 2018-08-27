@@ -60,7 +60,7 @@ router.get("/?:super", (req, res, next) => {
     }
   }
     //Set defaults for ps and pn if not found
-    ps = !ps ? 24 : ps;
+    ps = !ps ? 12 : ps;
     pn = !pn ? 1 : pn;
     
     //Set defaults for location and species if not found
@@ -72,7 +72,7 @@ router.get("/?:super", (req, res, next) => {
   }
 
   //Count the results we'll get.
-  Pet.count(findObj, (err, count) => {
+  Pet.countDocuments(findObj, (err, count) => {
     countAll = count;
   });
 
@@ -87,6 +87,7 @@ router.get("/?:super", (req, res, next) => {
     .limit(ps)
     //Skip first results for pagination
     .skip(ps * (pn - 1))
+    .sort({ field: 'asc', _id: -1 })
     .exec()
     .then(pets => {
       if (!isEmpty(pets)) {
@@ -111,7 +112,9 @@ router.get("/?:super", (req, res, next) => {
           })
         });
       } else {
-        res.status(404)
+        res.status(404).json({
+          message: 'Not found'
+        })
       }
     })
     .catch(err => {

@@ -88,7 +88,6 @@ export class SessionsService {
 
   facebook() {
     window.location.href = "" + this.environment.apiUrl + "login/facebook";
-
   }
 
   getLogin() {

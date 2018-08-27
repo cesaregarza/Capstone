@@ -1,45 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {PageEvent} from '@angular/material';
-import { SessionsService } from '../Services/sessions.service';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { ActivatedRoute, Router } from "@angular/router";
+import { SessionsService } from "../Services/sessions.service";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit {
-
-  constructor(private http: HttpClient, public auth: SessionsService, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    public auth: SessionsService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.http = http;
-
   }
+
   pets = {};
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-  pageEvent: PageEvent;
   city = "";
   specie = "";
+  pageNumber = 1;
+  countAll = 12;
+  limitPages = 3;
+
   ngOnInit() {
-    this.find();
+    this.find(this.pageNumber);
   }
 
-
-  find = () => {
+  find = pageNumber => {
     let url = "https://localhost:3000/search/";
-    console.log(this.city, this.specie);
-    url = url + 'location=' + this.city + '&';
-    url = url + 'specie=' + this.specie + '&';
-
-    this.http.get(url)
-    .subscribe((pets: any) => {
-      this.pets = pets
-    }, (err) => {
-      console.log(err);
-
-    })
+    url = url + "location=" + this.city + "&";
+    url = url + "specie=" + this.specie + "&";
+    url = url + "pn=" + pageNumber;
 
 
+      this.pageNumber = pageNumber;
+
+
+    this.http.get(url).subscribe(
+      (pets: any) => {
+        if (!this.isEmpty(pets)) {
+          this.pets = pets;
+          this.countAll = pets.total;
+          this.limitPages = Math.ceil(this.countAll / 12);
+          console.log(pets)
+        }
+      },
+      err => {
+        if (err.status == 404) {
+          this.router.navigate(["home"]);
+        }
+        console.log(err);
+      }
+    );
 
     // .toPromise()
     // .then(pets => {
@@ -48,7 +63,12 @@ export class HomeComponent implements OnInit {
     // .catch(err => {
     //   console.log(err);
     // })
-  }
+  };
 
-
+  isEmpty = obj => {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  };
 }
