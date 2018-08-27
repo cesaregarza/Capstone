@@ -21,11 +21,9 @@ export class HomeComponent implements OnInit {
   city = "";
   specie = "";
   ngOnInit() {
+    this.find();
   }
-  setPageSizeOptions(setPageSizeOptionsInput: string) {
-    console.log(1);
-    this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
-  }
+
 
   find = () => {
     let url = "https://localhost:3000/search/";
@@ -51,8 +49,6 @@ export class HomeComponent implements OnInit {
     //   console.log(err);
     // })
   }
-moreInfo = (petInfo) => {
-this.router.navigate(['pet'])
-}
+
 
 }

@@ -1,3 +1,12 @@
-<p>
-  centers works!
-</p>
+<div class="container">
+  <div class="row">
+      <div *ngFor="let center of centers" class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{ center.picture }}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ center.name }}</h5>
+            <p class="card-text">{{ center.city  }}</p>
+            <a [routerLink]="['/center',center.cURL]" routerLinkActive="router-link-active"  class="btn btn-primary">More Info</a>
+          </div>
+        </div>
+  </div>
+</div>

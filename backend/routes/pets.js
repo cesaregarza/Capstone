@@ -1,22 +1,22 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const mongoose = require('mongoose');
-const multer = require('multer');
+const mongoose = require("mongoose");
+const multer = require("multer");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './upload/');
+    cb(null, "./upload/");
   },
   filename: (req, file, cb) => {
     cb(null, filename(file.originalname));
   }
-})
+});
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+  if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {
     cb(null, false);
   } else {
     cb(null, true);
   }
-}
+};
 const upload = multer({
   storage: storage,
   limits: {
@@ -24,14 +24,14 @@ const upload = multer({
   },
   filefilter: fileFilter
 });
-const localPath = "https://localhost:3000/"
+const localPath = "https://localhost:3000/upload/";
 
-const Pet = require('../models/pet');
+const Pet = require("../models/pet");
 
-
-router.post('/', upload.single('product-image'), (req, res, next) => {
+router.post("/", upload.single("petimage"), (req, res, next) => {
   const id = new mongoose.Types.ObjectId();
   // req.file.filename = id + req.file.filename;
+  console.log(req.file);
   const pet = new Pet({
     _id: id,
     name: req.body.name,
@@ -42,15 +42,16 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
     breed: req.body.breed,
     description: req.body.description,
     gender: req.body.gender,
-    picture: localPath + req.file.path,
+    picture: localPath + req.file.filename,
     center: req.body.center,
     isDeleted: req.body.isDeleted
-  })
-  pet.save()
+  });
+  pet
+    .save()
     .then(result => {
       console.log(result);
       res.status(201).json({
-        message: 'Handling POST request to /pets',
+        message: "Handling POST request to /pets",
         createdPet: result
       });
     })
@@ -59,19 +60,35 @@ router.post('/', upload.single('product-image'), (req, res, next) => {
       res.status(500).json({
         error: err
       });
-    })
+    });
 });
 
+router.get("/id=:petId",
+  (req, res, next) => {
+    console.log(req.params.petId)
+    Pet.findOne({_id: req.params.petId})
+      .exec()
+      .then(result => {
+        res.status(200).json({
+          pets: result
+        })
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        })
+      });
+  });
 
-
-router.patch('/i=:petId', (req, res, next) => {
+router.patch("/i=:petId", (req, res, next) => {
   const id = req.params.petId;
   const updateOps = {};
-  console.log(req.body)
+  console.log(req.body);
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value;
   }
-  Pet.update({ _id: id }, { $set: updateOps }).exec()
+  Pet.update({ _id: id }, { $set: updateOps })
+    .exec()
     .then(result => {
       console.log(result);
       res.status(200).json(result);
@@ -84,24 +101,20 @@ router.patch('/i=:petId', (req, res, next) => {
     });
 });
 
-
-
-
-isEmpty = (obj) => {
+isEmpty = obj => {
   for (var key in obj) {
-    if (obj.hasOwnProperty(key))
-      return false;
+    if (obj.hasOwnProperty(key)) return false;
   }
   return true;
 };
 
 //Create a filename randomly and keep the same extesion
-filename = (filename) => {
+filename = filename => {
   var ext = /\.[a-zA-Z\d]+$/;
   var crypto = require("crypto");
-  var id = crypto.randomBytes(20).toString('hex');
-  console.log(filename, ext.exec(filename))
+  var id = crypto.randomBytes(20).toString("hex");
+  console.log(filename, ext.exec(filename));
   return id + ext.exec(filename);
-}
+};
 
 module.exports = router;

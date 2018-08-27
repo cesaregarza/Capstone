@@ -1,6 +1,6 @@
 const expressSession = require("express-session");
 const keys = require("../gitignore/keys");
-const User = require("../models/user");
+const User = require("../models/center");
 const Userlist = require("../models/userlist");
 const passport = require("passport");
 const scrypt = require("scrypt");
@@ -90,8 +90,9 @@ passport.use(
               const hashedpw = Buffer.from("facebook");
               const tempUserlist = new Userlist({
                 _id: id,
+                name: profile.displayName,
                 hash: hashedpw,
-                usertype: 1,
+                usertype: 2,
                 email: email,
                 facebookid: profile.id,
                 facebooktoken: token,

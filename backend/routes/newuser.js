@@ -109,7 +109,7 @@ router.post("/",  (req, res, next) => {
     _id: id,
     hash: hashedpw,
     usertype: req.body.usertype,
-    username: req.body.username,
+    name: req.body.name,
     email: req.body.email,
     date_joined: req.body.date_joined,
     last_login: req.body.last_login,

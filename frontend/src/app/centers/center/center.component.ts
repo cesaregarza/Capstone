@@ -17,6 +17,7 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
     production: false,
     apiUrl: "https://localhost:3000/centers"
   };
+  pets = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -31,15 +32,23 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = params["id"];
-      this.http.get(this.environment.apiUrl + '/cURL=' + this.id).subscribe((result: any) => {
-        console.log(result)
-        if (!this.isEmpty(result)){
-          this.centerInfo = result.center[0];
-          this.centerInfoFound = true;
-        } else {
-         this.router.navigate(['/centers'])
-        }
-      }, err => console.log(err))
+      this.http.get(this.environment.apiUrl + "/cURL=" + this.id).subscribe(
+        (result: any) => {
+          console.log(result);
+          if (!this.isEmpty(result)) {
+            this.centerInfo = result.center[0];
+            this.centerInfoFound = true;
+            this.http
+              .get(this.environment.apiUrl + "/id=" + this.centerInfo._id)
+              .subscribe(result => {
+                this.pets = result;
+              });
+          } else {
+            this.router.navigate(["/centers"]);
+          }
+        },
+        err => console.log(err)
+      );
     });
   }
 
@@ -50,7 +59,7 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
   fetchCenterInfo() {
     this.http.get(this.environment.apiUrl).subscribe(result => {
       console.log(result);
-    })
+    });
   }
 
   isEmpty = obj => {

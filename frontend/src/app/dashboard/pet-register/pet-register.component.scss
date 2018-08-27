@@ -1,0 +1,40 @@
+.material-icons{
+  font-size: 4rem;
+  color: #1c69af;
+}
+
+.btn-outline-primary {
+  color: #1c69af;
+}
+
+.btn-outline-primary:hover {
+  color: white;
+  background: #1c69af;
+}
+
+.btn-success {
+  background: #2eae4a;
+}
+
+
+.container .row, .row img , .border-left-rounded {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+
+img {
+position: relative;
+width: 100%;
+height: 100%;
+}
+
+.borderGray {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+}
+
+.border-right-rounded {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}

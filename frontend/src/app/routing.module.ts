@@ -52,7 +52,7 @@ const routes: Routes = [
     component: PetsComponent
   },
   {
-    path: 'pet',
+    path: 'pet/:id',
     component: PetComponent
   },
   {

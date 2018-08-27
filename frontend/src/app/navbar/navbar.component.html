@@ -36,13 +36,13 @@
             </a>
           </mat-chip>
           <mat-menu #menu="matMenu">
-              <button routerLink="dashboard/likes" routerLinkActive="active" *ngIf="userIsAuthenticated && userId == '1'" class="nav-item" mat-menu-item>
+              <button routerLink="dashboard/likes" routerLinkActive="active" *ngIf="userIsAuthenticated && usertype == '1'" class="nav-item" mat-menu-item>
                 <a class="nav-link">
                   <i class="fas fa-heart"></i>
                   <p>Likes</p>
                 </a>
               </button>
-              <button routerLink="dashboard/petregister" routerLinkActive="active" *ngIf="userIsAuthenticated && userId == '2'" class="nav-item" mat-menu-item>
+              <button routerLink="dashboard/petregister" routerLinkActive="active" *ngIf="userIsAuthenticated && usertype == '2'" class="nav-item" mat-menu-item>
                 <a class="nav-link">
                   <i class="fas fa-heart"></i>
                   <p>Pet Register</p>
@@ -126,12 +126,18 @@
             </a>
           </mat-chip>
           <mat-menu  [overlapTrigger]="false" #menu="matMenu">
-            <button routerLink="dashboard/likes" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>
-              <a class="nav-link">
-                <i class="fas fa-heart"></i>
-                <p>Likes</p>
-              </a>
-            </button>
+              <button routerLink="dashboard/likes" routerLinkActive="active" *ngIf="userIsAuthenticated && usertype == '1'" class="nav-item" mat-menu-item>
+                <a class="nav-link">
+                  <i class="fas fa-heart"></i>
+                  <p>Likes</p>
+                </a>
+              </button>
+              <button routerLink="dashboard/petregister" routerLinkActive="active" *ngIf="userIsAuthenticated && usertype == '2'" class="nav-item" mat-menu-item>
+                <a class="nav-link">
+                  <i class="fas fa-heart"></i>
+                  <p>Pet Register</p>
+                </a>
+              </button>
             <button routerLink="dashboard/changepw" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>
               <a class="nav-link">
                 <i class="fas fa-key"></i>

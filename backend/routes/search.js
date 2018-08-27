@@ -60,7 +60,7 @@ router.get("/?:super", (req, res, next) => {
     }
   }
     //Set defaults for ps and pn if not found
-    ps = !ps ? 10 : ps;
+    ps = !ps ? 24 : ps;
     pn = !pn ? 1 : pn;
     
     //Set defaults for location and species if not found

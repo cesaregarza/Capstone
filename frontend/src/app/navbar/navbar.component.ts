@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userName: string;
   usertype: string;
   userId: string;
+  userLocation: string;
   private authListenerSubs: Subscription;
   private userInfoSubs: Subscription;
 
@@ -36,6 +37,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.userName = userInfo.name;
       this.usertype = userInfo.usertype;
       this.userId = userInfo._id;
+      this.userLocation = userInfo.location;
       console.log(userInfo);
 
     });

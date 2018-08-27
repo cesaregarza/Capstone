@@ -64,35 +64,30 @@ router.get(
 
 router.get("/login", checkAuth, function(req, res) {
   if (req.session.user) {
-    User.findById(req.session.user._id, (err, result) => {
-      if(err){
-        res.status(401).json({
-          error: "Auth error"
-        });
-      } else {
-        res.status(200).json({
-          // session: req.session,
-          _id: result._id,
-          name: result.name,
-          usertype: req.session.user.usertype
-        });
-      } 
-    });
+    Userlist.findById(req.session.user._id)
+    .populate()
+    .exec()
+    .then(result =>{
+      console.log(result)
+
+      res.status(200).json({
+        // session: req.session,
+        _id: result._id,
+        name: result.name,
+        usertype: result.usertype,
+        location: result.location
+      });
+    })
+    .catch(err =>{
+      res.status(401).json({
+        error: "Auth error"
+      });
+    })
+
+    }}
+);
 
 
-  } else {
-      console.log(33);
-    res.status(401).json({
-      error: "Auth error"
-    });
-  }
-});
-
-router.get("/", (req, res, next) => {
-  res.status(401).json({
-    error: "Hola"
-  });
-});
 
 router.post("/logout", (req, res) => {
   req.session.destroy(err => {
