@@ -6,7 +6,7 @@
       </mat-form-field> -->
     </div>
     <div class="changeImg"></div>
-    <div class="changePw">
+    <mat-card class="changePw">
       <ng-container formGroupName="passwords">
         <mat-form-field>
           <input id="oldpwd" matInput placeholder="Current Password" formControlName="oldPassword" [type]="hide ? 'password' : 'text'" [errorStateMatcher]="matcher">
@@ -49,7 +49,7 @@
           </mat-form-field>
       </ng-container>
 
-      <button (click)="sendForm()" mat-raised-button> Update Settings</button>
-    </div>
+      <button (click)="sendForm()" mat-raised-button [disabled]="this.nav.fb"> Update Settings</button>
+    </mat-card>
   </form>
 </div>

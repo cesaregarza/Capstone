@@ -11,6 +11,8 @@ import { ErrorStateMatcher } from "@angular/material/core";
 import { HttpClient } from "@angular/common/http";
 import { SessionsService } from '../../Services/sessions.service';
 
+import { NavbarComponent } from '../../navbar/navbar.component';
+
 import * as $ from 'jquery';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -31,16 +33,13 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./options.component.scss']
 })
 export class OptionsComponent implements OnInit, OnDestroy {
-  userIsAuthenticated = false;
-  userInfo: any;
-  userEmail: String;
-  userId: String;
-  userName: String;
-  private userInfoSubs: Subscription;
 
-  constructor(public auth: SessionsService, public http:HttpClient) {
+  private fbSub: Subscription;
+
+  constructor(public auth: SessionsService, public http:HttpClient, public nav: NavbarComponent) {
     this.auth = auth,
-    this.http = http
+    this.http = http,
+    this.nav = nav
   }
 
   form = new FormGroup({
@@ -70,6 +69,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
       { validators: this.passwordMatchValidator }
     )
   });
+  passwordFields = this.form.get("passwords");
 
   passwordMatchValidator(g: FormGroup) {
     let newPassword = g.get("newPassword").errors;
@@ -131,7 +131,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
       this.http.post('https://localhost:3000/editops',{
         oldPassword: oldPassword,
         newPassword: newPass,
-        id: this.userId
+        id: this.nav.userId
       }, {
         withCredentials: true,
       })
@@ -150,21 +150,19 @@ export class OptionsComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
-    this.userInfoSubs = this.auth
-    .getUserInfoListener()
-    .subscribe(userInfo => {
-      this.userInfo = userInfo;
-      this.userId = this.userInfo._id;
-      this.userName = this.userInfo.name;
+    this.fbSub = this.auth.getUserInfoListener().subscribe(userInfo => {
+      if (userInfo.fb){
+        this.passwordFields.disable();
+      }
     });
   }
 
   ngOnDestroy(){
-    this.userInfoSubs.unsubscribe;
+    this.fbSub.unsubscribe();
   };
 
   boop(){
-    console.log(this.userId);
+    console.log(this.nav.userId);
   }
 
   hide = true;
