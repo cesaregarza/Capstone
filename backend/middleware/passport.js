@@ -30,7 +30,8 @@ passport.use(
     (email, password, done) => {
       Userlist.findOne(
         {
-          email: email
+          email: email,
+          isDeleted: false
         },
         (err, user) => {
           if (err) {
@@ -78,7 +79,8 @@ passport.use(
         // console.log(profile, profile._json)
         Userlist.findOne(
           {
-            facebookid: profile.id
+            facebookid: profile.id,
+            isDeleted: false
           },
           (err, user) => {
             if (err) {

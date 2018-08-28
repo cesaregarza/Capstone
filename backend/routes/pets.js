@@ -66,7 +66,7 @@ router.post("/", upload.single("petimage"), (req, res, next) => {
 router.get("/id=:petId",
   (req, res, next) => {
     console.log(req.params.petId)
-    Pet.findOne({_id: req.params.petId})
+    Pet.findOne({_id: req.params.petId, isDeleted: false})
       .exec()
       .then(result => {
         res.status(200).json({
@@ -87,7 +87,7 @@ router.patch("/i=:petId", (req, res, next) => {
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value;
   }
-  Pet.update({ _id: id }, { $set: updateOps })
+  Pet.update({ _id: id, isDeleted: false }, { $set: updateOps })
     .exec()
     .then(result => {
       console.log(result);

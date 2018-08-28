@@ -38,51 +38,29 @@ const Center = require("../models/center");
 //Set scrypt parameters
 var scryptParameters = scrypt.paramsSync(0.1);
 
-// Testing hashed password with the login password
-// router.get("/i=:id&p=:pass", (req, res, next) => {
-//   Userlist.findOne({ _id: req.params.id })
+// Fetch  all users information
+// router.get("/", (req, res, next) => {
+//   Userlist.find()
+//     .populate("_id")
 //     .exec()
-//     .then(result => {
-//       let isTrue = scrypt.verifyKdfSync(result.hash, req.params.pass);
-//       if (isTrue) {
-//         res.status(200).json({
-//           isCorrect: isTrue
-//         });
-//       } else {
-//         res.status(401).json({
-//             isCorrect: isTrue
-//           });
-//       }
+//     .then(users => {
+//       console.log(users);
+//       res.send(users);
 //     })
 //     .catch(err => {
-//       res.status(500).json({
-//         error: err
-//       });
+//       res.status(500).json(err);
 //     });
 // });
 
-// Fetch  all users information
-router.get("/", (req, res, next) => {
-  Userlist.find()
-    .populate("_id")
-    .exec()
-    .then(users => {
-      console.log(users);
-      res.send(users);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
-});
-
-router.patch('/i=:userId', (req, res, next) => {
+router.patch("/i=:userId", (req, res, next) => {
   const id = req.params.userId;
   const updateOps = {};
   console.log(req.body);
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value;
   }
-  User.update({ _id: id }, { $set: updateOps }).exec()
+  User.update({ _id: id }, { $set: updateOps })
+    .exec()
     .then(result => {
       console.log(result);
       res.status(200).json(result);
@@ -95,11 +73,12 @@ router.patch('/i=:userId', (req, res, next) => {
     });
 });
 
-router.post("/",  (req, res, next) => {
-  let localPathCopy = localPath;
-
+router.post("/", (req, res, next) => {
+  let localPathCopy = localPath + "upload/";
+  filename = req.file == undefined ? "1.jpeg" : req.file.filename;
   const id = new mongoose.Types.ObjectId();
-  
+  console.log(filename, req.body.password);
+
   //hashedpw. Hash a password using scrypt.
   //INPUT TYPES => OUTPUT TYPES: ((String || Buffer), Object) => (String || Buffer)
   const hashedpw = scrypt.kdfSync(req.body.password, scryptParameters); //REMEMBER: to use req.body.password NOT req.body.hash
@@ -111,6 +90,7 @@ router.post("/",  (req, res, next) => {
     usertype: req.body.usertype,
     name: req.body.name,
     email: req.body.email,
+    location: req.body.location,
     date_joined: req.body.date_joined,
     last_login: req.body.last_login,
     isDeleted: req.body.isDeleted
@@ -119,6 +99,7 @@ router.post("/",  (req, res, next) => {
     _id: id,
     name: req.body.name,
     username: req.body.username,
+    location: req.body.location,
     email: req.body.email,
     liked: req.body.liked,
     location: req.body.location,
@@ -130,7 +111,8 @@ router.post("/",  (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     address: req.body.address,
-    city: req.body.city,
+    picture: localPathCopy + filename,
+    location: req.body.location,
     postal: req.body.postal,
     phone: req.body.phone,
     hours: req.body.hours,

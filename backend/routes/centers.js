@@ -10,7 +10,7 @@ router.patch("/i=:userId", (req, res, next) => {
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value;
   }
-  Center.update({ _id: id }, { $set: updateOps })
+  Center.update({ _id: id, isDeleted: false }, { $set: updateOps })
     .exec()
     .then(result => {
       console.log(result);
@@ -23,6 +23,7 @@ router.patch("/i=:userId", (req, res, next) => {
       });
     });
 });
+
 
 router.get("/id=:id", (req, res, next) => {
   Pet.find({
@@ -43,7 +44,9 @@ router.get("/id=:id", (req, res, next) => {
 });
 
 router.get("/", (req, res, next) => {
-  Center.find()
+  Center.find({
+    isDeleted: false
+  })
     .populate()
     .sort({ field: 'asc', _id: -1 })
     .exec()
@@ -64,7 +67,7 @@ router.get("/", (req, res, next) => {
 
 router.get("/cURL=:cURL", (req, res, next) => {
   const cURL = req.params.cURL;
-  Center.find({ cURL: cURL })
+  Center.find({ cURL: cURL, isDeleted: false })
     .exec()
     .then(center => {
       if (!isEmpty(center)) {

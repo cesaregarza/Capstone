@@ -48,4 +48,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   this.auth.opened = !this.auth.opened;
   console.log(this.userId, this.userName);
   }
+
+  scrollTop = () => {
+    window.scrollTo(0,0);
+  }
 }

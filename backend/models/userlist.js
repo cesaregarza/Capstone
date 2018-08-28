@@ -8,6 +8,7 @@ const userlistSchema = mongoose.Schema({
     name: {type: String, required: true },
     email: { type: String, required: true, unique: true, maxlength: 254 },
     date_joined: { type: Date, required: true },
+    location: {type: String, require: false},
     last_login  : { type: Date, required: true },
     isDeleted: { type: Boolean, required: true },
     facebookid: {type: String, required: false, unique: true},

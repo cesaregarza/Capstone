@@ -1,6 +1,6 @@
-<div class="container-fluid">
+<div id="SearchBar" class="container-fluid">
   <mat-form-field>
-    <mat-select [(ngModel)]="city" (ngModelChange)="find(1)" [disableOptionCentering]="true" placeholder="City">
+    <mat-select [(ngModel)]="city" (ngModelChange)="movePage(1)" [disableOptionCentering]="true" placeholder="City">
       <mat-option value="">
         Any
       </mat-option>
@@ -14,7 +14,7 @@
   </mat-form-field>
   <span> | </span>
   <mat-form-field>
-    <mat-select [(ngModel)]="specie" (ngModelChange)="find(1)" [disableOptionCentering]="true" placeholder="Specie">
+    <mat-select [(ngModel)]="specie" (ngModelChange)="movePage(1)" [disableOptionCentering]="true" placeholder="Specie">
       <mat-option value="">
         Any
       </mat-option>
@@ -50,27 +50,28 @@
     </mat-card-actions>
   </mat-card>
 </div> -->
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation">
   <ul class="pagination justify-content-center">
     <li class="page-item">
-      <a [ngClass]="pageNumber == 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber !== 1 ? find(1) : ''"><i class="fas fa-angle-double-left"></i></a>
+      <a [ngClass]="pageNumber == 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber !== 1 ? movePage(1) : ''"><i class="fas fa-angle-double-left"></i></a>
     </li>
     <li class="page-item">
-      <a [ngClass]="pageNumber <= 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber > 1 ? find(pageNumber - 1) : ''"><i class="fas fa-angle-left"></i></a>
+      <a [ngClass]="pageNumber <= 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber > 1 ? movePage(pageNumber - 1) : ''"><i class="fas fa-angle-left"></i></a>
     </li>
-    <li  *ngIf="pageNumber - 2 > 0" class="page-item"><a class="page-link" (click)="find(pageNumber - 2)">{{ pageNumber - 2 }}</a></li>
-    <li *ngIf="pageNumber - 1 > 0" class="page-item"><a class="page-link" (click)="find(pageNumber - 1)">{{ pageNumber - 1 }}</a></li>
-    <li class="active page-item"><a class="page-link" >{{ pageNumber }}</a></li>
-    <li *ngIf="pageNumber + 1 <= limitPages" class="page-item"><a class="page-link" (click)="find(pageNumber + 1)" >{{ pageNumber + 1 }}</a></li>
-    <li *ngIf="pageNumber + 2 <= limitPages" class="page-item"><a class="page-link" (click)="find(pageNumber + 2)">{{ pageNumber + 2 }}</a></li>
+    <ng-container *ngFor="let page of paginationBar" >
+      <li *ngIf="limitPages >= page" [ngClass]="page == pageNumber ? 'active' :''" class="page-item"><a class="page-link" (click)="movePage(page)">{{ page }}</a></li>
+    </ng-container>
+
     <li class="page-item">
-      <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? find(pageNumber + 1) : ''"><i class="fas fa-angle-right"></i></a>
+      <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(pageNumber + 1) : ''"><i class="fas fa-angle-right"></i></a>
     </li>
     <li class="page-item">
-      <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? find(limitPages) : ''"><i class="fas fa-angle-double-right"></i></a>
+      <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(limitPages) : ''"><i class="fas fa-angle-double-right"></i></a>
     </li>
   </ul>
 </nav>
+
+
 <div class="row justify-content-around mx-3 row-eq-height">
 
   <div *ngFor="let pet of pets.pets; index as i" class="col-lg-3 col-md-4">
@@ -120,3 +121,23 @@
   </div>
 
 </div>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a [ngClass]="pageNumber == 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber !== 1 ? movePage(1) : ''"><i class="fas fa-angle-double-left"></i></a>
+      </li>
+      <li class="page-item">
+        <a [ngClass]="pageNumber <= 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber > 1 ? movePage(pageNumber - 1) : ''"><i class="fas fa-angle-left"></i></a>
+      </li>
+      <ng-container *ngFor="let page of paginationBar" >
+        <li *ngIf="limitPages >= page" [ngClass]="page == pageNumber ? 'active' :''" class="page-item"><a class="page-link"  (click)="movePage(page)">{{ page }}</a></li>
+      </ng-container>
+
+      <li class="page-item">
+        <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(pageNumber + 1) : ''"><i class="fas fa-angle-right"></i></a>
+      </li>
+      <li class="page-item">
+        <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(limitPages) : ''"><i class="fas fa-angle-double-right"></i></a>
+      </li>
+    </ul>
+  </nav>
