@@ -10,8 +10,46 @@
       <ng-container formGroupName="passwords">
         <mat-form-field>
           <input id="oldpwd" matInput placeholder="Current Password" formControlName="oldPassword" [type]="hide ? 'password' : 'text'" [errorStateMatcher]="matcher">
+
+          <mat-error *ngIf="!this.form.get('passwords').get('oldPassword').hasError('required') && this.form.get('passwords').get('oldPassword').hasError('minlength') || this.form.get('passwords').get('oldPassword').hasError('maxlength')"> 
+            Password must be between 8 and 20 characters in length
+          </mat-error>
+
+          <mat-error *ngIf="this.form.get('passwords').get('oldPassword').hasError('required')">
+            Password is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
+        <mat-form-field>
+            <input id="pwd1" matInput placeholder=" New Password" formControlName="newPassword" [type]="hide ? 'password' : 'text'" [errorStateMatcher]="matcher">
+
+            <mat-error *ngIf="this.form.get('passwords').get('newPassword').hasError('mismatch') && !this.form.get('passwords').get('newPassword').hasError('minlength') && !this.form.get('passwords').get('newPassword').hasError('required') && !this.form.get('passwords').get('newPassword').hasError('maxlength')">
+                Passwords must match!
+              </mat-error>
+            <mat-error *ngIf="(this.form.get('passwords').get('newPassword').hasError('minlength') || this.form.get('passwords').get('newPassword').hasError('maxlength')) && !this.form.get('passwords').get('newPassword').hasError('required')">
+              Password must be between 8 and 20 characters!
+            </mat-error>
+            <mat-error *ngIf="this.form.get('passwords').get('newPassword').hasError('required')">
+              Password is
+              <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field id="pwd2">
+            <input  matInput placeholder="Retype password" formControlName="passwordConfirm" [type]="hide ? 'password' : 'text'">
+            <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('mismatch') && !this.form.get('passwords').get('passwordConfirm').hasError('minlength') && !this.form.get('passwords').get('passwordConfirm').hasError('required') && !this.form.get('passwords').get('passwordConfirm').hasError('maxlength')">
+                Password must match!
+              </mat-error>
+            <mat-error *ngIf="(this.form.get('passwords').get('passwordConfirm').hasError('minlength') || this.form.get('passwords').get('passwordConfirm').hasError('maxlength')) && !this.form.get('passwords').get('passwordConfirm').hasError('required')">
+              Password must be between 8 and 20 characters!
+            </mat-error>
+            <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('required')">
+              Password is
+              <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
       </ng-container>
+
+      <button (click)="sendForm()" mat-raised-button> Update Settings</button>
     </div>
   </form>
 </div>

@@ -68,14 +68,15 @@ router.get("/login", checkAuth, function(req, res) {
     .populate()
     .exec()
     .then(result =>{
-      console.log(result)
+      console.log(result);
 
       res.status(200).json({
         // session: req.session,
         _id: result._id,
         name: result.name,
         usertype: result.usertype,
-        location: result.location
+        location: result.location,
+        fb: !!result.facebookid,
       });
     })
     .catch(err =>{

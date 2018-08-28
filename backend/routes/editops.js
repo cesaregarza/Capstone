@@ -41,19 +41,20 @@ const storage = multer.diskStorage({
 
 
   router.post("/", checkAuth, (req, res, next) => {
-
       let id = req.body.id;
-
-      Userlist.findOneAndUpdate({
-          id: id
+console.log(req.body)
+      Userlist.findOne({
+          _id: id
       }, (err, user) => {
+          console.log(user);
           let newPass = req.body.newPassword;
           let oldPass = req.body.oldPassword;
 
-          if (err){
+          if (err || !user){
             return res.status(500).json({
                 status: 500,
-                message: "Server Error"
+                message: "Server Error",
+                error: err
             });
           }
 
@@ -68,11 +69,12 @@ const storage = multer.diskStorage({
               }
           }
 
-          user.save().then(result => {
-              res.status(202).json({
-                  status: 202,
-                  message: "Updated"
-              });
+          Userlist.update({_id: id}, {$set: {
+              hash: user.hash
+          }});
+           res.status(202).json({
+              status: 202,
+              message: "Updated"
           });
       });
   });

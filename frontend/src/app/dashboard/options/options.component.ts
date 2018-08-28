@@ -45,7 +45,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
 
   form = new FormGroup({
     nameFormControl: new FormControl("", [
-      Validators.required,
+      // Validators.required,
       Validators.maxLength(254)
     ]),
     passwords: new FormGroup(
@@ -74,33 +74,41 @@ export class OptionsComponent implements OnInit, OnDestroy {
   passwordMatchValidator(g: FormGroup) {
     let newPassword = g.get("newPassword").errors;
     let passwordConfirm = g.get("passwordConfirm").errors;
-    let arr = [newPassword, passwordConfirm];
 
     if (g.get("newPassword").value === g.get("passwordConfirm").value) {
 
-      for (let i = 0; i < arr.length; i++){
-        let prop = arr[i];
-        if (!prop){
-          if (!prop.mismatch){
-            delete prop.mismatch;
-          }
-        }
-        if ($.isEmptyObject(prop)){
-          prop = null;
+      if (!!newPassword){
+        if (!!newPassword.mismatch){
+          delete newPassword.mismatch;
         }
       }
+      
+      if (!!passwordConfirm){
+        if (!!passwordConfirm.mismatch){
+          delete passwordConfirm.mismatch;
+        }
+      }
+
+      if ($.isEmptyObject(newPassword)){
+        newPassword = null;
+      }
+
+      if ($.isEmptyObject(passwordConfirm)){
+        passwordConfirm = null;
+      }
+
       g.get("newPassword").setErrors(newPassword);
       g.get("passwordConfirm").setErrors(passwordConfirm);
       return null;
     }
 
-    for (let j = 0; j < arr.length; j++){
-      let prop = arr[j];
-
-      if (!prop){
-        prop = {};
-        prop.mismatch = true;
-      }
+    if (!newPassword){
+      newPassword = {};
+      newPassword.mismatch = true;
+    }
+    if (!passwordConfirm){
+      passwordConfirm = {};
+      passwordConfirm.mismatch = true;
     }
 
     g.get("newPassword").setErrors(newPassword);
@@ -110,19 +118,26 @@ export class OptionsComponent implements OnInit, OnDestroy {
   }
 
   sendForm () {
+    console.log("click");
+
     let oldPassword = this.form.get('passwords').get('oldPassword').value;
     let newPass = this.form.get('passwords').get('newPassword').value;
     let d = new Date();
     d.toLocaleString();
+
+    console.log(this.form);
 
     if (this.form.status == "VALID"){
       this.http.post('https://localhost:3000/editops',{
         oldPassword: oldPassword,
         newPassword: newPass,
         id: this.userId
+      }, {
+        withCredentials: true,
       })
       .toPromise()
       .then(result => {
+        console.log(result);
         if (result['status'] == 202) {
           this.form.reset();
         }
@@ -152,5 +167,6 @@ export class OptionsComponent implements OnInit, OnDestroy {
     console.log(this.userId);
   }
 
+  hide = true;
   matcher = new MyErrorStateMatcher();
 }
