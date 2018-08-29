@@ -48,6 +48,12 @@
                   <p>Pet Register</p>
                 </a>
               </button>
+              <button routerLink="dashboard/editpet" routerLinkActive="active" *ngIf="userIsAuthenticated && usertype == '2'" class="nav-item" mat-menu-item>
+                <a class="nav-link">
+                  <i class="fas fa-heart"></i>
+                  <p>Edit Pets</p>
+                </a>
+              </button>
             <button routerLink="dashboard/changepw" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>
               <a class="nav-link">
                 <i class="fas fa-key"></i>
@@ -136,6 +142,12 @@
                 <a class="nav-link">
                   <i class="fas fa-heart"></i>
                   <p>Pet Register</p>
+                </a>
+              </button>
+              <button routerLink="dashboard/editpet" routerLinkActive="active" *ngIf="userIsAuthenticated && usertype == '2'" class="nav-item" mat-menu-item>
+                <a class="nav-link">
+                  <i class="fas fa-heart"></i>
+                  <p>Edit Pets</p>
                 </a>
               </button>
             <button routerLink="dashboard/changepw" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>

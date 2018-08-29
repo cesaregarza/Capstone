@@ -72,6 +72,7 @@ import { AuthInterceptor } from './Services/auth-interceptor';
 import { SessionsService } from './Services/sessions.service';
 import { AuthGuardService } from './Services/auth-guard.service';
 import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component';
+import { EditpetComponent } from './editpet/editpet.component';
 
 
 @NgModule({
@@ -132,7 +133,8 @@ import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component'
     ChangepwComponent,
     OptionsComponent,
     PageNotFoundComponent,
-    FacebooktokenComponent
+    FacebooktokenComponent,
+    EditpetComponent
   ],
   imports: [
     BrowserModule,

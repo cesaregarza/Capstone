@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionsService } from "../Services/sessions.service";
-import { NavbarComponent } from "../navbar/navbar.component"
 
 @Component({
   selector: "app-home",
@@ -14,8 +13,7 @@ export class HomeComponent implements OnInit {
     private http: HttpClient,
     public auth: SessionsService,
     private route: ActivatedRoute,
-    private router: Router,
-    private navbar: NavbarComponent
+    private router: Router
   ) {
     this.http = http;
   }
@@ -40,10 +38,7 @@ export class HomeComponent implements OnInit {
     i = i < 1 ? 1 : i;
     this.paginationBar.push(i);
   }
-  this.navbar.scrollTop();
-
     this.find(pageNumber);
-
   }
 
   find = pageNumber => {

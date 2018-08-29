@@ -20,6 +20,7 @@ import { CenterInfoComponent } from './centers/center/center.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthGuardService as AuthGuard } from './Services/auth-guard.service';
 import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component';
+import { EditpetComponent } from './editpet/editpet.component';
 
 
 const routes: Routes = [
@@ -82,6 +83,11 @@ const routes: Routes = [
   {
     path: 'dashboard/petregister',
     component: PetRegisterComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'dashboard/editpet',
+    component: EditpetComponent,
     canActivate: [AuthGuard]
   },
   {

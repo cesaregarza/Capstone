@@ -80,7 +80,7 @@ router.get("/id=:petId",
       });
   });
 
-router.patch("/i=:petId", (req, res, next) => {
+router.patch("/id=:petId", (req, res, next) => {
   const id = req.params.petId;
   const updateOps = {};
   console.log(req.body);
