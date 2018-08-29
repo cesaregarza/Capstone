@@ -14,6 +14,7 @@ import { SessionsService } from '../../Services/sessions.service';
 import { NavbarComponent } from '../../navbar/navbar.component';
 
 import * as $ from 'jquery';
+import { ToastrService } from 'ngx-toastr';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -36,11 +37,18 @@ export class OptionsComponent implements OnInit, OnDestroy {
 
   private fbSub: Subscription;
 
-  constructor(public auth: SessionsService, public http:HttpClient, public nav: NavbarComponent) {
+  constructor(public auth: SessionsService, public http:HttpClient, public nav: NavbarComponent, private toastr: ToastrService) {
     this.auth = auth,
     this.http = http,
-    this.nav = nav
+    this.nav = nav,
+    this.toastr = toastr
   }
+
+  toastrSettings = {
+    timeOut: 2000,
+    extendedTimeOut: 1000,
+    progressBar: true
+  };
 
   form = new FormGroup({
     nameFormControl: new FormControl("", [
@@ -140,10 +148,14 @@ export class OptionsComponent implements OnInit, OnDestroy {
         console.log(result);
         if (result['status'] == 202) {
           this.form.reset();
+          this.toastr.success('Password successfully changed', 'Success!', this.toastrSettings);
         }
       })
       .catch(err => {
         if (err['status'] == 500){
+          this.toastr.error('An error occurred', 'Error', this.toastrSettings);
+        } else if (err['status'] == 400){
+          this.toastr.error('Wrong password', 'Error', this.toastrSettings);
         }
       })
     }
