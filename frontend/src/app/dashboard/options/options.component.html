@@ -7,6 +7,9 @@
     </div>
     <div class="changeImg"></div>
     <mat-card class="changePw">
+      <mat-card-title [ngClass]="this.nav.fb ? 'grayed' : ''">
+        Change Password
+      </mat-card-title>
       <ng-container formGroupName="passwords">
         <mat-form-field>
           <input id="oldpwd" matInput placeholder="Current Password" formControlName="oldPassword" [type]="hide ? 'password' : 'text'" [errorStateMatcher]="matcher">

@@ -42,7 +42,7 @@ const storage = multer.diskStorage({
 
   router.post("/", checkAuth, (req, res, next) => {
       let id = req.body.id;
-console.log(req.body)
+console.log(req.body);
       Userlist.findOne({
           _id: id
       }, (err, user) => {
@@ -61,6 +61,7 @@ console.log(req.body)
           if (!!newPass) {
               if (isValidPassword(user, oldPass)){
                   user.hash = scrypt.kdfSync(newPass, scryptParameters);
+                  console.log("Success");
               } else {
                   return res.status(400).json({
                       status: 400,
@@ -71,10 +72,19 @@ console.log(req.body)
 
           Userlist.update({_id: id}, {$set: {
               hash: user.hash
-          }});
-           res.status(202).json({
-              status: 202,
-              message: "Updated"
+          }}, (errr, use) => {
+              if (errr) {
+                  return res.status(500).json({
+                      status: 500,
+                      message: "Internal Server Error",
+                      error: errr
+                  });
+                } else {
+                    return res.status(202).json({
+                        status: 202,
+                        message: "Updated"
+                    });
+                }
           });
       });
   });
