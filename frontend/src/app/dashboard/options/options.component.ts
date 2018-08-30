@@ -14,7 +14,6 @@ import { SessionsService } from '../../Services/sessions.service';
 import { NavbarComponent } from '../../navbar/navbar.component';
 
 import * as $ from 'jquery';
-import { ToastrService } from 'ngx-toastr';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -37,18 +36,11 @@ export class OptionsComponent implements OnInit, OnDestroy {
 
   private fbSub: Subscription;
 
-  constructor(public auth: SessionsService, public http:HttpClient, public nav: NavbarComponent, private toastr: ToastrService) {
+  constructor(public auth: SessionsService, public http:HttpClient, public nav: NavbarComponent) {
     this.auth = auth,
     this.http = http,
-    this.nav = nav,
-    this.toastr = toastr
+    this.nav = nav
   }
-
-  toastrSettings = {
-    timeOut: 2000,
-    extendedTimeOut: 1000,
-    progressBar: true
-  };
 
   form = new FormGroup({
     nameFormControl: new FormControl("", [
@@ -128,6 +120,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
   sendForm () {
     console.log("click");
 
+    let name=this.form.controls.nameFormControl.value;
     let oldPassword = this.form.get('passwords').get('oldPassword').value;
     let newPass = this.form.get('passwords').get('newPassword').value;
     let d = new Date();
@@ -137,6 +130,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
 
     if (this.form.status == "VALID"){
       this.http.post('https://localhost:3000/editops',{
+        name: name,
         oldPassword: oldPassword,
         newPassword: newPass,
         id: this.nav.userId
@@ -148,14 +142,14 @@ export class OptionsComponent implements OnInit, OnDestroy {
         console.log(result);
         if (result['status'] == 202) {
           this.form.reset();
-          this.toastr.success('Password successfully changed', 'Success!', this.toastrSettings);
+          this.auth.toastr.success('Password successfully changed', 'Success!', this.auth.toastrSettings);
         }
       })
       .catch(err => {
         if (err['status'] == 500){
-          this.toastr.error('An error occurred', 'Error', this.toastrSettings);
+          this.auth.toastr.error('An error occurred', 'Error', this.auth.toastrSettings);
         } else if (err['status'] == 400){
-          this.toastr.error('Wrong password', 'Error', this.toastrSettings);
+          this.auth.toastr.error('Wrong password', 'Error', this.auth.toastrSettings);
         }
       })
     }
@@ -166,6 +160,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
       if (userInfo.fb){
         this.passwordFields.disable();
       }
+      this.form.controls.nameFormControl.setValue(userInfo.name);
     });
   }
 

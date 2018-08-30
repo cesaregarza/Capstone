@@ -4,6 +4,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { Subject, Subscription, Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { Cookie } from "ng2-cookies";
+import { ToastrService } from 'ngx-toastr';
 
 const jwt = new JwtHelperService();
 @Injectable({
@@ -17,10 +18,17 @@ export class SessionsService {
   public userId: String;
   public petInfo: Object;
 
-  constructor(private http: HttpClient, public router: Router) {
+  constructor(private http: HttpClient, public router: Router, public toastr: ToastrService) {
     this.http = http;
     this.router = router;
+    this.toastr = toastr;
   }
+
+  toastrSettings = {
+    timeOut: 2000,
+    extendedTimeOut: 1000,
+    progressBar: true,
+  };
 
   environment = {
     production: false,
@@ -68,13 +76,19 @@ export class SessionsService {
       )
       .toPromise()
       .then((resp: any) => {
+        console.log(resp);
         const token = resp.token;
         localStorage.setItem("token", token);
         this.getLogin();
         this.router.navigate(["/dashboard/options"]);
+        if (resp['status'] == 200){
+          this.toastr.success('Welcome!', 'Login Successful', this.toastrSettings);
+        }
       })
       .catch(err => {
+        console.log(err);
      this.deleteLocalSession();
+     this.toastr.error('Login failed', 'Error', this.toastrSettings);
       });
     // .subscribe((resp: any) => {
     //   console.log(resp)
@@ -122,6 +136,7 @@ export class SessionsService {
       .subscribe(() => {
         this.deleteLocalSession();
         this.router.navigate(["login"]);
+        this.toastr.success('Successfully logged out', 'Success', this.toastrSettings);
       });
   }
 

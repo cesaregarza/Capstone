@@ -1,10 +1,11 @@
 <div class="options">
   <form id="options" [formGroup]="form">
-    <div class="changeName">
-      <!-- <mat-form-field>
-
-      </mat-form-field> -->
-    </div>
+    <mat-card class="changeName">
+      <mat-card-title>
+        Change Name
+      </mat-card-title>
+      <input matInput placeholder="Name" formControlName="nameFormControl" [errorStateMatcher]="matcher">
+    </mat-card>
     <div class="changeImg"></div>
     <mat-card class="changePw">
       <mat-card-title [ngClass]="this.nav.fb ? 'grayed' : ''">
