@@ -12,31 +12,130 @@
           <p>{{ pet.description }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button data-toggle="modal" data-target="#exampleModal">Edit</button>
+          <button mat-button (click)='showEdit(pet)'>Edit</button>
           <button mat-button (click)="deletePet(pet._id)">Delete</button>
         </mat-card-actions>
       </mat-card>
     </div>
 
   </div>
-
+  <button id="modal" hidden data-toggle="modal" data-target="#exampleModal"></button>
   <div data-backdrop="false" style="background-color: rgba(0, 0, 0, 0.5);" class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Edit pet</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          ...
+
+                <form [formGroup]="form" enctype="multipart/form-data" method="POST" action="https://localhost:3000/pets" class="row  p-0 ">
+
+                  <div class="col-lg-12 text-center">
+                    <i class="material-icons ">
+                      pets
+                    </i>
+                  </div>
+
+                  <mat-form-field class="col-lg-8 offset-lg-2 my-0">
+                    <input matInput placeholder="Name" formControlName="name" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="form.get('name').hasError('required')">
+                      Name is
+                      <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
+                    <mat-select placeholder="Specie" formControlName="specie" [errorStateMatcher]="matcher">
+                      <mat-option value="dog">Dog</mat-option>
+                      <mat-option value="cat">Cat</mat-option>
+                      <mat-option value="turtle">Turtle</mat-option>
+                      <mat-option value="other">Other</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('specie').hasError('required')">
+                      Specie is
+                      <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
+                    <mat-select placeholder="Age" formControlName="age" [errorStateMatcher]="matcher">
+                      <mat-option value="puppy">Puppy</mat-option>
+                      <mat-option value="young">Young</mat-option>
+                      <mat-option value="adult">Adult</mat-option>
+                      <mat-option value="senior">Senior</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('age').hasError('required')">
+                      Age is
+                      <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
+                    <mat-select matInput placeholder="Gender" formControlName="gender" [errorStateMatcher]="matcher">
+                      <mat-option value="male">Male</mat-option>
+                      <mat-option value="female">Female</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('gender').hasError('required')">
+                      Gender is
+                      <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
+                    <mat-select matInput placeholder="Size" formControlName="size" [errorStateMatcher]="matcher">
+                      <mat-option value="small">Small</mat-option>
+                      <mat-option value="medium">Medium</mat-option>
+                      <mat-option value="large">Large</mat-option>
+                      <mat-option value="xl">XL</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('size').hasError('required')">
+                      Size is
+                      <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="col-lg-8 offset-lg-2 my-0">
+                    <input matInput placeholder="Breed" formControlName="breed" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="form.get('breed').hasError('required')">
+                      Breed is
+                      <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="col-lg-8 offset-lg-2 my-0">
+                    <input matInput placeholder="History" formControlName="description" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="form.get('description').hasError('required')">
+                      History is
+                      <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="col-lg-8 offset-lg-2">
+                    <button color="primary" class="btn-sm btn-outline-primary" (click)="fileInput.click()">Picture</button>
+                    <mat-error *ngIf="form.get('petimage').hasError('required')">
+                      Picture is
+                      <strong>required</strong>
+                    </mat-error>
+                    <input hidden matInput formControlName="petimage" [errorStateMatcher]="matcher">
+                    <input type="file" hidden #fileInput formControlName="petimage" (change)="onFileChange($event)" name="petimage">
+                    <span class="justify-self-center">&nbsp;&nbsp;&nbsp;&nbsp;{{this.selectedFileName}}</span>
+                  </mat-form-field>
+
+
+                  <div class="modal-footer col-md-8 offset-md-2 text-center my-2 px-0">
+
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button data-dismiss="modal" (click)="this.sendForm(form.value)" class="btn bg-success text-light btn-round px-3" mat-raised-button>Save</button>
+                    <!-- <input type="submit" value="Upload Phot" /> -->
+                  </div>
+
+
+
+
+                </form>
+
         </div>
-        <div class="modal-footer">
+        <!-- <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

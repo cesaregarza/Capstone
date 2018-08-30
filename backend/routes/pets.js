@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
+var fs = require("fs");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./upload/");
   },
   filename: (req, file, cb) => {
-    cb(null, filename(file.originalname));
+    cb(null, file.originalname);
   }
 });
 const fileFilter = (req, file, cb) => {
@@ -63,38 +64,72 @@ router.post("/", upload.single("petimage"), (req, res, next) => {
     });
 });
 
-router.get("/id=:petId",
-  (req, res, next) => {
-    console.log(req.params.petId)
-    Pet.findOne({_id: req.params.petId, isDeleted: false})
-      .exec()
-      .then(result => {
-        res.status(200).json({
-          pets: result
-        })
-      })
-      .catch(err => {
-        res.status(500).json({
-          error: err
-        })
+router.get("/id=:petId", (req, res, next) => {
+  console.log(req.params.petId);
+  Pet.findOne({ _id: req.params.petId, isDeleted: false })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        pets: result
       });
-  });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+});
+router.patch("/upid=:petId", upload.single("petimage"), (req, res, next) => {
+  const id = req.params.petId;
+  Pet.findOne({ _id: id })
+    .exec()
+    .then(result => {
+      fs.unlink(
+        "." + result.picture.split("https://localhost:3000")[1],
+        err => {
+          if (err) {
+            console.log("failed to delete local image:" + err);
+          } else {
+            console.log("successfully deleted local image");
+          }
+        }
+      );
+
+      Pet.update(
+        { _id: id, isDeleted: false },
+        { $set: { picture: localPath + req.file.filename } }
+      )
+        .exec()
+        .then(result => {
+          res.status(202).json({
+            message: "ok"
+          });
+        })
+        .catch(err => {
+          res.status(500).json({
+            error: err
+          });
+        });
+    })
+    .catch(err => {
+      next();
+    });
+});
 
 router.patch("/id=:petId", (req, res, next) => {
   const id = req.params.petId;
   const updateOps = {};
-  console.log(req.body);
-  for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value;
+  if (!req.file) {
+    for (const ops of req.body) {
+      updateOps[ops.propName] = ops.value;
+    }
   }
   Pet.update({ _id: id, isDeleted: false }, { $set: updateOps })
     .exec()
     .then(result => {
-      console.log(result);
       res.status(200).json(result);
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
         error: err
       });

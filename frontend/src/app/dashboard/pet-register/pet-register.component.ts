@@ -89,7 +89,7 @@ export class PetRegisterComponent implements OnInit {
     tempForm.append("size", values.size);
     tempForm.append("description", values.description);
     tempForm.append("gender", values.gender);
-    tempForm.append("petimage", this.selectedFile, this.navbar.userId + ".png");
+    tempForm.append("petimage", this.selectedFile, this.navbar.userId + this.logic.pictureId() + ".png");
     tempForm.append("center", this.navbar.userId);
     tempForm.append('isDeleted', 'false');
     tempForm.append('location', this.navbar.userLocation);
