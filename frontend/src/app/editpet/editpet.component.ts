@@ -53,21 +53,15 @@ export class EditpetComponent implements OnInit {
   ngOnInit() {
     this.loadPets();
   }
+
   form = new FormGroup({
     name: new FormControl("", [Validators.required]),
-
     specie: new FormControl("", [Validators.required]),
-
     age: new FormControl("", [Validators.required]),
-
     breed: new FormControl("", [Validators.required]),
-
     size: new FormControl("", [Validators.required]),
-
     description: new FormControl("", [Validators.required]),
-
     gender: new FormControl("", [Validators.required]),
-
     petimage: new FormControl("")
   });
 

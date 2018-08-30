@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var path = require('path');
 const mongoose = require('mongoose');
 
+var adminRouter = require('./routes/admin');
 var searchRouter = require('./routes/search');
 var petsRouter = require('./routes/pets');
 var centersRouter = require('./routes/centers');
@@ -64,7 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+app.use('/admin', adminRouter);
 app.use('/search', searchRouter);
 app.use('/pets', petsRouter);
 app.use('/centers', centersRouter);

@@ -21,6 +21,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AuthGuardService as AuthGuard } from './Services/auth-guard.service';
 import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component';
 import { EditpetComponent } from './editpet/editpet.component';
+import { CenterRegisterComponent } from './center-register/center-register.component';
 
 
 const routes: Routes = [
@@ -55,6 +56,10 @@ const routes: Routes = [
   {
     path: 'pet/:id',
     component: PetComponent
+  },
+  {
+  path: 'center-register',
+  component: CenterRegisterComponent
   },
   {
     path : 'facebook-token',

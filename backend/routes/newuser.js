@@ -3,13 +3,15 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 const scrypt = require("scrypt");
+const bodyParser = require("body-parser");
+const checkToken = require("../middleware/check-token");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./upload/");
   },
   filename: (req, file, cb) => {
-    cb(null, filename(file.originalname));
+    cb(null, file.originalname);
   }
 });
 
@@ -34,6 +36,7 @@ const localPath = "https://localhost:3000/";
 const Userlist = require("../models/userlist");
 const User = require("../models/user");
 const Center = require("../models/center");
+const Token = require("../models/tokens");
 
 //Set scrypt parameters
 var scryptParameters = scrypt.paramsSync(0.1);
@@ -73,7 +76,8 @@ router.patch("/i=:userId", (req, res, next) => {
     });
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", upload.single("picture"), checkToken, (req, res, next) => {
+ 
   let localPathCopy = localPath + "upload/";
   filename = req.file == undefined ? "1.jpeg" : req.file.filename;
   const id = new mongoose.Types.ObjectId();
@@ -98,7 +102,6 @@ router.post("/", (req, res, next) => {
   const user = new User({
     _id: id,
     name: req.body.name,
-    username: req.body.username,
     location: req.body.location,
     email: req.body.email,
     liked: req.body.liked,
@@ -108,7 +111,6 @@ router.post("/", (req, res, next) => {
   const center = new Center({
     _id: id,
     name: req.body.name,
-    username: req.body.username,
     email: req.body.email,
     address: req.body.address,
     picture: localPathCopy + filename,
@@ -116,7 +118,8 @@ router.post("/", (req, res, next) => {
     postal: req.body.postal,
     phone: req.body.phone,
     hours: req.body.hours,
-    isDeleted: req.body.isDeleted
+    isDeleted: req.body.isDeleted,
+    cURL: req.body.cURL
   });
   //Search to see if email is already in use. If not, create the user.
   Userlist.find({ email: req.body.email })
@@ -128,6 +131,7 @@ router.post("/", (req, res, next) => {
           message: "This email is already in use"
         });
       } else {
+
         userlist
           .save()
           .then(result => {
@@ -149,10 +153,12 @@ router.post("/", (req, res, next) => {
                   });
                 });
             } else if (req.body.usertype == 2) {
+             
+          
               center
                 .save()
                 .then(result => {
-                  console.log(result);
+                  Token.findByIdAndRemove(req.body.tokenId).exec()
                   res.status(201).json({
                     status: 201,
                     message: "The center was successfully created.",
@@ -160,11 +166,16 @@ router.post("/", (req, res, next) => {
                   });
                 })
                 .catch(err => {
+                  console.log(err)
                   res.status(500).json({
                     status: 500,
                     error: err
                   });
                 });
+                
+              
+              
+
             }
           })
           .catch(err => {

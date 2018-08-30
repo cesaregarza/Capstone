@@ -3,6 +3,7 @@ var router = express.Router();
 var Center = require("../models/center");
 var Pet = require("../models/pet");
 var Userlist = require("../models/userlist");
+var Token = require("../models/tokens");
 
 router.patch("/i=:userId", (req, res, next) => {
   const id = req.params.userId;

@@ -73,6 +73,7 @@ import { SessionsService } from './Services/sessions.service';
 import { AuthGuardService } from './Services/auth-guard.service';
 import { FacebooktokenComponent } from './facebooktoken/facebooktoken.component';
 import { EditpetComponent } from './editpet/editpet.component';
+import { CenterRegisterComponent } from './center-register/center-register.component';
 
 
 @NgModule({
@@ -134,7 +135,8 @@ import { EditpetComponent } from './editpet/editpet.component';
     OptionsComponent,
     PageNotFoundComponent,
     FacebooktokenComponent,
-    EditpetComponent
+    EditpetComponent,
+    CenterRegisterComponent
   ],
   imports: [
     BrowserModule,
