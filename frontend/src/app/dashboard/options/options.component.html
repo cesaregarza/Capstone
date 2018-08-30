@@ -6,6 +6,7 @@
       </mat-card-title>
       <input matInput placeholder="Name" formControlName="nameFormControl" [errorStateMatcher]="matcher">
     </mat-card>
+    <mat-divider></mat-divider>
     <div class="changeImg"></div>
     <mat-card class="changePw">
       <mat-card-title [ngClass]="this.nav.fb ? 'grayed' : ''">
@@ -53,7 +54,7 @@
           </mat-form-field>
       </ng-container>
 
-      <button (click)="sendForm()" mat-raised-button [disabled]="this.nav.fb"> Update Settings</button>
+      <button (click)="sendForm()" mat-raised-button> Update Settings</button>
     </mat-card>
   </form>
 </div>

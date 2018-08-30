@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   FormControl,
@@ -41,6 +41,8 @@ export class OptionsComponent implements OnInit, OnDestroy {
     this.http = http,
     this.nav = nav
   }
+
+  @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
 
   form = new FormGroup({
     nameFormControl: new FormControl("", [
@@ -141,7 +143,10 @@ export class OptionsComponent implements OnInit, OnDestroy {
       .then(result => {
         console.log(result);
         if (result['status'] == 202) {
-          this.form.reset();
+          this.form.controls.passwords.reset();
+          this.formGroupDirective.resetForm();
+          this.auth.getLogin();
+          this.form.controls.nameFormControl.setValue(this.nav.userName);
           this.auth.toastr.success('Password successfully changed', 'Success!', this.auth.toastrSettings);
         }
       })
@@ -170,6 +175,10 @@ export class OptionsComponent implements OnInit, OnDestroy {
 
   boop(){
     console.log(this.nav.userId);
+  }
+
+  clearFormGroupDirective(){
+
   }
 
   hide = true;

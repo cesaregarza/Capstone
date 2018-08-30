@@ -50,6 +50,13 @@ console.log(req.body);
           let newPass = req.body.newPassword;
           let oldPass = req.body.oldPassword;
 
+          let name = req.body.name;
+          let editObj = {};
+
+          if (name !== user.name && !!name){
+              editObj.name = name;
+          }
+
           if (err || !user){
             return res.status(500).json({
                 status: 500,
@@ -60,7 +67,7 @@ console.log(req.body);
 
           if (!!newPass) {
               if (isValidPassword(user, oldPass)){
-                  user.hash = scrypt.kdfSync(newPass, scryptParameters);
+                  editObj.hash = scrypt.kdfSync(newPass, scryptParameters);
                   console.log("Success");
               } else {
                   return res.status(400).json({
@@ -70,9 +77,7 @@ console.log(req.body);
               }
           }
 
-          Userlist.update({_id: id}, {$set: {
-              hash: user.hash
-          }}, (errr, use) => {
+          Userlist.update({_id: id}, {$set: editObj}, (errr, use) => {
               if (errr) {
                   return res.status(500).json({
                       status: 500,
