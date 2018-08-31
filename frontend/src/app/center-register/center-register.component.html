@@ -1,120 +1,154 @@
 <div class="container">
-    <div class="row borderGray">
-  <div class="col-lg-4 col-md-5 d-md-flex d-none position-relative px-0 border-left-rounded">
-    <img src="../../../assets/img/centerregister.png" class="" alt="">
-  </div>
-      <div class="col-lg-8 col-md-7 border-right-rounded">
-        <form [formGroup]="form" enctype="multipart/form-data" method="POST" action="https://localhost:3000/newuser" class="row  p-0 ">
+  <div class="row borderGray">
+    <div class="col-lg-4 col-md-5 d-md-flex d-none position-relative px-0 border-left-rounded">
+      <img src="../../../assets/img/centerregister.png" class="" alt="">
+    </div>
+    <div class="col-lg-8 col-md-7 border-right-rounded">
+      <form [formGroup]="form" enctype="multipart/form-data" method="POST" action="https://localhost:3000/newuser" class="row  p-0 ">
 
-          <div class="col-lg-10 col-md-12 offset-lg-1 text-center my-2">
+        <div class="col-lg-10 col-md-12 offset-lg-1 text-center my-1">
           <p class="h3 text-muted"><i class="fas fa-home"></i>&nbsp;&nbsp;Registration Center</p>
-          </div>
+        </div>
 
-          <mat-form-field class="col-lg-8 offset-lg-2 my-0">
-            <input matInput placeholder="Name" formControlName="name" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="form.get('name').hasError('required')">
-              Name is
+        <mat-form-field class="col-lg-8 offset-lg-2 my-0">
+          <input matInput placeholder="Name" formControlName="name" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="form.get('name').hasError('maxlength') && !form.get('name').hasError('required')">
+            Name must have less than
+            <strong>255 characters</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            Name is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-lg-8 offset-lg-2 my-0">
+          <input matInput placeholder="Email" formControlName="email" [errorStateMatcher]="matcher">
+
+          <mat-error *ngIf="(form.get('email').hasError('pattern') || form.get('email').hasError('email')) && !form.get('email').hasError('required') && !form.get('email').hasError('maxlength')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="form.get('email').hasError('maxlength') && !form.get('email').hasError('required')">
+            Email must have less than
+            <strong>255 characters</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('email').hasError('already')">
+            Email already exist!
+          </mat-error>
+        </mat-form-field>
+        <ng-container formGroupName="passwords">
+
+          <mat-form-field class="col-lg-4 offset-lg-2 my-0">
+            <input id="pwd1" matInput placeholder="Password" formControlName="password" type="password" [errorStateMatcher]="matcher">
+
+            <mat-error *ngIf="this.form.get('passwords').get('password').hasError('mismatch') && !this.form.get('passwords').get('password').hasError('minlength') && !this.form.get('passwords').get('password').hasError('required') && !this.form.get('passwords').get('password').hasError('maxlength')">
+              Password must match!
+            </mat-error>
+            <mat-error *ngIf="(this.form.get('passwords').get('password').hasError('minlength') || this.form.get('passwords').get('password').hasError('maxlength')) && !this.form.get('passwords').get('password').hasError('required')">
+              Password must be between 8 and 20 characters!
+            </mat-error>
+            <mat-error *ngIf="this.form.get('passwords').get('password').hasError('required')">
+              Password is
               <strong>required</strong>
             </mat-error>
+
           </mat-form-field>
-          <mat-form-field class="col-lg-8 offset-lg-2 my-0">
-              <input matInput placeholder="Email" formControlName="email" [errorStateMatcher]="matcher">
 
-              <mat-error *ngIf="form.get('email').hasError('required')">
-                Email is
-                <strong>required</strong>
-              </mat-error>
-            </mat-form-field>
-            <ng-container formGroupName="passwords">
-
-                <mat-form-field class="col-lg-4 offset-lg-2 my-0">
-                  <input id="pwd1" matInput placeholder="Password" formControlName="password" type="password" [errorStateMatcher]="matcher">
-
-                  <mat-error *ngIf="this.form.get('passwords').get('password').hasError('mismatch') && !this.form.get('passwords').get('password').hasError('minlength') && !this.form.get('passwords').get('password').hasError('required') && !this.form.get('passwords').get('password').hasError('maxlength')">
-                      Password must match!
-                    </mat-error>
-                  <mat-error *ngIf="(this.form.get('passwords').get('password').hasError('minlength') || this.form.get('passwords').get('password').hasError('maxlength')) && !this.form.get('passwords').get('password').hasError('required')">
-                    Password must be between 8 and 20 characters!
-                  </mat-error>
-                  <mat-error *ngIf="this.form.get('passwords').get('password').hasError('required')">
-                    Password is
-                    <strong>required</strong>
-                  </mat-error>
-                </mat-form-field>
-
-                <mat-form-field id="pwd2" class="col-lg-4 my-0">
-                  <input  matInput placeholder="Retype password" formControlName="passwordConfirm" type="password">
-                  <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('mismatch') && !this.form.get('passwords').get('passwordConfirm').hasError('minlength') && !this.form.get('passwords').get('passwordConfirm').hasError('required') && !this.form.get('passwords').get('passwordConfirm').hasError('maxlength')">
-                      Password must match!
-                    </mat-error>
-                  <mat-error *ngIf="(this.form.get('passwords').get('passwordConfirm').hasError('minlength') || this.form.get('passwords').get('passwordConfirm').hasError('maxlength')) && !this.form.get('passwords').get('passwordConfirm').hasError('required')">
-                    Password must be between 8 and 20 characters!
-                  </mat-error>
-                  <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('required')">
-                    Password is
-                    <strong>required</strong>
-                  </mat-error>
-
-
-                </mat-form-field>
-              </ng-container>
-            <mat-form-field class="col-lg-8 offset-lg-2 my-0">
-              <input matInput placeholder="Address" formControlName="address" [errorStateMatcher]="matcher">
-
-              <mat-error *ngIf="form.get('address').hasError('required')">
-                Address is
-                <strong>required</strong>
-              </mat-error>
-            </mat-form-field>
-          <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
-            <input matInput placeholder="City" formControlName="location" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="form.get('location').hasError('required')">
-              City is
+          <mat-form-field id="pwd2" class="col-lg-4 my-0">
+            <input matInput placeholder="Retype password" formControlName="passwordConfirm" type="password">
+            <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('mismatch') && !this.form.get('passwords').get('passwordConfirm').hasError('minlength') && !this.form.get('passwords').get('passwordConfirm').hasError('required') && !this.form.get('passwords').get('passwordConfirm').hasError('maxlength')">
+              Password must match!
+            </mat-error>
+            <mat-error *ngIf="(this.form.get('passwords').get('passwordConfirm').hasError('minlength') || this.form.get('passwords').get('passwordConfirm').hasError('maxlength')) && !this.form.get('passwords').get('passwordConfirm').hasError('required')">
+              Password must be between 8 and 20 characters!
+            </mat-error>
+            <mat-error *ngIf="this.form.get('passwords').get('passwordConfirm').hasError('required')">
+              Password is
               <strong>required</strong>
             </mat-error>
-          </mat-form-field>
-          <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
-            <input matInput placeholder="Postal code" formControlName="postal" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="form.get('postal').hasError('required')">
-              Postal code is
-              <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
-            <input matInput placeholder="Phone" formControlName="phone" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="form.get('phone').hasError('required')">
-              Phone is
-              <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
-            <input matInput placeholder="Open hours" formControlName="hours" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="form.get('hours').hasError('required')">
-              Open hours are
-              <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="col-lg-8 offset-lg-2">
-            <button color="primary" class="btn-sm btn-outline-primary" (click)="fileInput.click()">Picture</button>
-            <mat-error *ngIf="form.get('picture').hasError('required')">
-              Picture is
-              <strong>required</strong>
-            </mat-error>
-            <input hidden matInput formControlName="picture" [errorStateMatcher]="matcher">
-            <input type="file" hidden #fileInput formControlName="picture" (change)="onFileChange($event)" name="picture">
-            <span class="justify-self-center">&nbsp;&nbsp;&nbsp;&nbsp;{{this.selectedFileName}}</span>
-
-          </mat-form-field>
-          <mat-form-field class="col-lg-8 offset-lg-2 my-0">
-              <input matInput placeholder="Token" formControlName="tokenId" [errorStateMatcher]="matcher">
-              <mat-error *ngIf="form.get('tokenId').hasError('required')">
-                Token is
-                <strong>required</strong>
-              </mat-error>
-            </mat-form-field>
 
 
-          <!-- <mat-form-field class="col-md-8 my-2">
+          </mat-form-field>
+        </ng-container>
+        <mat-form-field class="col-lg-8 offset-lg-2 my-0">
+          <input matInput placeholder="Address" formControlName="address" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="form.get('address').hasError('maxlength') && !form.get('address').hasError('required')">
+              Address must have less than
+              <strong>255 characters</strong>
+            </mat-error>
+          <mat-error *ngIf="form.get('address').hasError('required')">
+            Address is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
+          <input matInput placeholder="City" formControlName="location" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="form.get('location').hasError('maxlength') && !form.get('location').hasError('required')">
+              City must have less than
+              <strong>255 characters</strong>
+            </mat-error>
+          <mat-error *ngIf="form.get('location').hasError('required')">
+            City is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
+          <input matInput type="number" placeholder="Postal code" formControlName="postal" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="form.get('postal').hasError('max') && !form.get('postal').hasError('required')">
+              Postal must have
+              <strong>5 numbers</strong>
+            </mat-error>
+          <mat-error *ngIf="form.get('postal').hasError('required')">
+            Postal code is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
+          <input matInput placeholder="Phone" formControlName="phone" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="form.get('phone').hasError('maxlength') && !form.get('phone').hasError('required')">
+              Phone must have less than
+              <strong>20 characters</strong>
+            </mat-error>
+          <mat-error *ngIf="form.get('phone').hasError('required')">
+            Phone is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
+          <input matInput placeholder="Open hours" formControlName="hours" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="form.get('hours').hasError('maxlength') && !form.get('hours').hasError('required')">
+              Open hours must have less than
+              <strong>255 characters</strong>
+            </mat-error>
+          <mat-error *ngIf="form.get('hours').hasError('required')">
+            Open hours are
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-lg-8 offset-lg-2">
+          <button color="primary" class="btn-sm btn-outline-primary" (click)="fileInput.click()">Picture</button>
+          <mat-error *ngIf="form.get('picture').hasError('required')">
+            Picture is
+            <strong>required</strong>
+          </mat-error>
+          <input hidden matInput formControlName="picture" [errorStateMatcher]="matcher">
+          <input type="file" hidden #fileInput formControlName="picture" (change)="onFileChange($event)" name="picture">
+          <span class="justify-self-center">&nbsp;&nbsp;&nbsp;&nbsp;{{this.selectedFileName}}</span>
+
+        </mat-form-field>
+        <mat-form-field class="col-lg-8 offset-lg-2 my-0">
+          <input matInput placeholder="Token" formControlName="tokenId" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="form.get('tokenId').hasError('maxlength') && !form.get('tokenId').hasError('required')">
+              Token must have less than
+              <strong>25 characters</strong>
+            </mat-error>
+          <mat-error *ngIf="form.get('tokenId').hasError('required')">
+            Token is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+
+        <!-- <mat-form-field class="col-md-8 my-2">
               <input matInput placeholder="Email" formControlName="emailFormControl" [errorStateMatcher]="matcher">
               <mat-hint></mat-hint>
               <mat-error *ngIf="(form.get('emailFormControl').hasError('pattern') || form.get('emailFormControl').hasError('email')) && !form.get('emailFormControl').hasError('required') && !form.get('emailFormControl').hasError('maxlength')">
@@ -147,15 +181,15 @@
               </mat-form-field>
                -->
 
-          <div class="col-md-8 offset-md-2 text-center my-2 px-0">
-            <button (click)="this.sendForm(form.value)" class="btn bg-success text-light btn-round px-3" mat-raised-button>Register</button>
-            <!-- <input type="submit" value="Upload Phot" /> -->
-          </div>
+        <div class="col-md-8 offset-md-2 text-center my-2 px-0">
+          <button (click)="this.sendForm(form.value)" class="btn bg-success text-light btn-round px-3" mat-raised-button>Register</button>
+          <!-- <input type="submit" value="Upload Phot" /> -->
+        </div>
 
 
 
 
-        </form>
-      </div>
+      </form>
     </div>
   </div>
+</div>
