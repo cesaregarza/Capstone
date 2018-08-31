@@ -47,11 +47,12 @@ export class SessionsService {
   isAuthenticated(): boolean {
     // Check whether the token is expired and return
     // true or false and return if the session
-
     const token = localStorage.getItem("token");
     return !jwt.isTokenExpired(token) ? true : false;
 
   }
+
+
 
   getAuthStatusListener() {
     // Get login session with refresh page
@@ -116,7 +117,6 @@ export class SessionsService {
             this.userInfo.next(resp);
             this.loggedIn.next(true);
             this.userId = resp._id;
-            console.log(this.userId);
           }
         },
         err => {
@@ -142,7 +142,7 @@ export class SessionsService {
 
   deleteLocalSession(){
     localStorage.removeItem("token");
-    Cookie.delete('token');
+    Cookie.delete('token', '/');
     this.userInfo.next('');
     this.loggedIn.next(false);
   }

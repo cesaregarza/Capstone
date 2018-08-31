@@ -4,14 +4,12 @@ import { RouterModule, Routes, CanActivate } from '@angular/router';
 import { TestbedComponent } from './testbed/testbed.component';
 import { AboutComponent } from './about/about.component';
 import { CentersComponent } from './centers/centers.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { PetsComponent } from './home/pets/pets.component';
 import { PetComponent } from './home/pet/pet.component';
 import { CenterComponent } from './dashboard/center/center.component';
-import { ChangepwComponent } from './dashboard/changepw/changepw.component';
 import { LikesComponent } from './dashboard/likes/likes.component';
 import { OptionsComponent } from './dashboard/options/options.component';
 import { PetRegisterComponent } from './dashboard/pet-register/pet-register.component';
@@ -71,14 +69,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'dashboard/changepw',
-    component: ChangepwComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'dashboard/likes',
     component: LikesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: {
+      expectedRole: '1'
+    }
   },
   {
     path: 'dashboard/options',
@@ -88,17 +84,26 @@ const routes: Routes = [
   {
     path: 'dashboard/petregister',
     component: PetRegisterComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: {
+      expectedRole: '2'
+    }
   },
   {
     path: 'dashboard/editpet',
     component: EditpetComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: {
+      expectedRole: '2'
+    }
   },
   {
     path: 'dashboard/user',
     component: UserComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    data: {
+      expectedRole: '1'
+    }
   },
   {
     path: 'center/:id',

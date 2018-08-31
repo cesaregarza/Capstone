@@ -31,7 +31,6 @@
             <a class="nav-link">
               <i class="material-icons">dashboard</i>
               <p class="mx-auto" *ngIf="userName">{{ userName }}</p>
-
               <i class="fas fa-angle-down"></i>
             </a>
           </mat-chip>
@@ -54,12 +53,6 @@
                   <p>Edit Pets</p>
                 </a>
               </button>
-            <button routerLink="dashboard/changepw" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>
-              <a class="nav-link">
-                <i class="fas fa-key"></i>
-                <p>Change Password</p>
-              </a>
-            </button>
             <button routerLink="dashboard/options" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>
               <a class="nav-link">
                 <i class="fas fa-cog"></i>
@@ -111,7 +104,7 @@
               <p>Home</p>
             </a>
           </mat-chip>
-          <mat-chip routerLink="centers" routerLinkActive="active" class="nav-item">
+          <mat-chip routerLink="centers" [ngClass]="this.router.url == '/centers' || this.router.url.slice(0, 8) == '/center/' ? 'active' : ''" class="nav-item">
             <a class="nav-link">
               <i class="fas fa-building"></i>
               <p>Centers</p>
@@ -123,11 +116,10 @@
               <p>About</p>
             </a>
           </mat-chip>
-          <mat-chip  [matMenuTriggerFor]="menu" [ngClass]="this.router.url == '/dashboard/likes' || this.router.url == '/dashboard/options' || this.router.url == '/dashboard/changepw' || this.router.url == '/dashboard/options#_=_' ? 'active' : ''" *ngIf="userIsAuthenticated" class="nav-item">
+          <mat-chip  [matMenuTriggerFor]="menu" [ngClass]="this.router.url == '/dashboard/likes' || this.router.url == '/dashboard/options' || this.router.url == '/dashboard/petregister' || this.router.url == '/dashboard/options#_=_' || this.router.url == '/dashboard/editpet' ? 'active' : ''" *ngIf="userIsAuthenticated" class="nav-item">
             <a class="nav-link">
               <i class="material-icons">dashboard</i>
               <p class="mx-auto" *ngIf="userName">{{ userName }}</p>
-
               <i class="fas fa-angle-down"></i>
             </a>
           </mat-chip>
@@ -150,12 +142,6 @@
                   <p>Edit Pets</p>
                 </a>
               </button>
-            <button routerLink="dashboard/changepw" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>
-              <a class="nav-link">
-                <i class="fas fa-key"></i>
-                <p>Change Password</p>
-              </a>
-            </button>
             <button routerLink="dashboard/options" routerLinkActive="active" *ngIf="userIsAuthenticated" class="nav-item" mat-menu-item>
               <a class="nav-link">
                 <i class="fas fa-cog"></i>

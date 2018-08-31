@@ -15,10 +15,10 @@ const localPath = "https://localhost:3000/";
 router.post("/login", passport.authenticate("local"), (req, res) => {
   let userSansHash = req.user;
   userSansHash.hash = "";
-
   req.session.user = userSansHash;
+  console.log(req.user);
   const token = jwt.sign(
-    { email: req.user.email, userId: req.user._id },
+    { email: req.user.email, userId: req.user._id, usertype: req.user.usertype },
     keys.JWT_KEY,
     { expiresIn: "20m" }
   );
@@ -42,17 +42,15 @@ router.get(
   "/auth/facebook",
   passport.authenticate("facebook", {}),
   (req, res) => {
-    console.log(req.userlist);
-    
     let userSansHash = req.user;
     userSansHash.hash = "";
     req.session.user = userSansHash;
+    console.log(req.session, req.user);
     const token = jwt.sign(
-      { email: req.user.email, userId: req.user._id },
+      { email: req.user.email, userId: req.user._id, usertype: req.user.usertype },
       keys.JWT_KEY,
       { expiresIn: "20m" }
     );
-    console.log(req.user.email, req.user._id);
     res.cookie("token", token);
     res.status(200).redirect("https://localhost:4200/dashboard");
     // res.status(200).json({

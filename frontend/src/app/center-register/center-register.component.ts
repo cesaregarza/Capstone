@@ -11,6 +11,7 @@ import { ErrorStateMatcher } from "@angular/material/core";
 import { LogicService } from "../Services/logic.service";
 import { NavbarComponent } from "../navbar/navbar.component";
 import { HttpClient } from "@angular/common/http";
+import { SessionsService } from "../Services/sessions.service";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -45,7 +46,8 @@ export class CenterRegisterComponent implements OnInit {
     public logic: LogicService,
     private navbar: NavbarComponent,
     private cd: ChangeDetectorRef,
-    private http: HttpClient
+    private http: HttpClient,
+    private auth: SessionsService
   ) {
     this.logic = logic;
   }
@@ -146,6 +148,8 @@ export class CenterRegisterComponent implements OnInit {
   };
 
   sendForm = values => {
+    let email = values.email;
+    let pass = values.passwords.password;
     let cURL = values.name
       .toLowerCase()
       .split(" ")
@@ -156,7 +160,7 @@ export class CenterRegisterComponent implements OnInit {
     tempForm.append("location", values.location);
     tempForm.append("postal", values.postal);
     tempForm.append("phone", values.phone);
-    tempForm.append("email", values.email);
+    tempForm.append("email", email);
     tempForm.append("hours", values.hours);
     tempForm.append(
       "picture",
@@ -169,7 +173,7 @@ export class CenterRegisterComponent implements OnInit {
     tempForm.append("date_joined", Date.now().toString());
     tempForm.append("last_login", Date.now().toString());
     tempForm.append("usertype", "2");
-    tempForm.append("password", values.passwords.password);
+    tempForm.append("password", pass);
 
     // let tempForm = new Form
     if (this.form.status === "VALID") {
@@ -179,15 +183,19 @@ export class CenterRegisterComponent implements OnInit {
             this.formGroupDirective.resetForm();
             this.selectedFile = null;
             this.selectedFileName = "";
+            this.auth.doLogin(email,pass);
+
           }
         },
         err => {
-          err["status"] == 409
-            ? this.form.controls.email.setErrors({ already: true })
-            : "";
-          err["status"] == 401
-            ? this.form.controls.tokenId.setErrors({ required: true })
-            : "";
+          if (err["status"] == 409) {
+            this.form.controls.email.setErrors({ already: true });
+            this.auth.toastr.error('Email already exist', 'Error', this.auth.toastrSettings);
+          } else if (err["status"] == 401) {
+            this.form.controls.tokenId.setErrors({ invalid: true })
+            this.auth.toastr.error('Invalid or expired token', 'Error', this.auth.toastrSettings);
+
+          }
         }
       );
     }

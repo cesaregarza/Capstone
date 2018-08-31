@@ -72,9 +72,9 @@
         <mat-form-field class="col-lg-8 offset-lg-2 my-0">
           <input matInput placeholder="Address" formControlName="address" [errorStateMatcher]="matcher">
           <mat-error *ngIf="form.get('address').hasError('maxlength') && !form.get('address').hasError('required')">
-              Address must have less than
-              <strong>255 characters</strong>
-            </mat-error>
+            Address must have less than
+            <strong>255 characters</strong>
+          </mat-error>
           <mat-error *ngIf="form.get('address').hasError('required')">
             Address is
             <strong>required</strong>
@@ -83,9 +83,9 @@
         <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
           <input matInput placeholder="City" formControlName="location" [errorStateMatcher]="matcher">
           <mat-error *ngIf="form.get('location').hasError('maxlength') && !form.get('location').hasError('required')">
-              City must have less than
-              <strong>255 characters</strong>
-            </mat-error>
+            City must have less than
+            <strong>255 characters</strong>
+          </mat-error>
           <mat-error *ngIf="form.get('location').hasError('required')">
             City is
             <strong>required</strong>
@@ -94,9 +94,9 @@
         <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
           <input matInput type="number" placeholder="Postal code" formControlName="postal" [errorStateMatcher]="matcher">
           <mat-error *ngIf="form.get('postal').hasError('max') && !form.get('postal').hasError('required')">
-              Postal must have
-              <strong>5 numbers</strong>
-            </mat-error>
+            Postal must have
+            <strong>5 numbers</strong>
+          </mat-error>
           <mat-error *ngIf="form.get('postal').hasError('required')">
             Postal code is
             <strong>required</strong>
@@ -105,9 +105,9 @@
         <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
           <input matInput placeholder="Phone" formControlName="phone" [errorStateMatcher]="matcher">
           <mat-error *ngIf="form.get('phone').hasError('maxlength') && !form.get('phone').hasError('required')">
-              Phone must have less than
-              <strong>20 characters</strong>
-            </mat-error>
+            Phone must have less than
+            <strong>20 characters</strong>
+          </mat-error>
           <mat-error *ngIf="form.get('phone').hasError('required')">
             Phone is
             <strong>required</strong>
@@ -116,9 +116,9 @@
         <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 my-0">
           <input matInput placeholder="Open hours" formControlName="hours" [errorStateMatcher]="matcher">
           <mat-error *ngIf="form.get('hours').hasError('maxlength') && !form.get('hours').hasError('required')">
-              Open hours must have less than
-              <strong>255 characters</strong>
-            </mat-error>
+            Open hours must have less than
+            <strong>255 characters</strong>
+          </mat-error>
           <mat-error *ngIf="form.get('hours').hasError('required')">
             Open hours are
             <strong>required</strong>
@@ -138,12 +138,16 @@
         <mat-form-field class="col-lg-8 offset-lg-2 my-0">
           <input matInput placeholder="Token" formControlName="tokenId" [errorStateMatcher]="matcher">
           <mat-error *ngIf="form.get('tokenId').hasError('maxlength') && !form.get('tokenId').hasError('required')">
-              Token must have less than
-              <strong>25 characters</strong>
-            </mat-error>
+            Token must have less than
+            <strong>25 characters</strong>
+          </mat-error>
           <mat-error *ngIf="form.get('tokenId').hasError('required')">
             Token is
             <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('tokenId').hasError('invalid')">
+            Token is
+            <strong>invalid or expired</strong>
           </mat-error>
         </mat-form-field>
 

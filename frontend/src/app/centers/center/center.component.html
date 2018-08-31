@@ -1,33 +1,10 @@
-<!-- <p>
-  center works! routing parameter {{ this.id }}
-</p>
-<div class="container">
-<button (click)="fetchCenterInfo()">Fetch</button>
 
-<span *ngIf="centerInfoFound">
-  {{ centerInfo.name }}
-  {{ centerInfo.address }}
-  {{ centerInfo.city }}
-  {{ centerInfo.postal }}
-  {{ centerInfo.phone }}
-  {{ centerInfo.email }}
-  {{ centerInfo.hours }}
-</span>
-
-<span *ngIf="!centerInfoFound">
-  Center not found
-</span>
-</div> -->
 <!-- Card -->
 <div *ngIf="centerInfoFound" class="col-lg-8 offset-lg-2 card card-cascade wider reverse">
 
     <!-- Card image -->
-    <div class="view view-cascade overlay">
-      <img class="card-img-top w-50 mx-auto" src="{{ centerInfo.picture }}" alt="Card image cap">
-      <a href="#!">
-        <div class="mask rgba-white-slight"></div>
-      </a>
-    </div>
+      <img class="view view-cascade overlay card-img-top mx-auto" src="{{ centerInfo.picture }}" alt="Card image cap">
+
 
     <!-- Card content -->
     <div class="card-body card-body-cascade text-center">
@@ -36,7 +13,7 @@
       <h3 class="card-title"><strong>{{ centerInfo.name }}</strong></h3>
       <!-- Subtitle -->
       <h6 class="
-       indigo-text text-muted py-2">{{ centerInfo.city }}  |  {{ centerInfo.phone }}  |  {{ centerInfo.email }}</h6>
+       indigo-text text-muted py-2">{{ centerInfo.location }}  |  {{ centerInfo.phone }}  |  {{ centerInfo.email }}</h6>
       <!-- Text -->
       <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem perspiciatis voluptatum a, quo nobis, non commodi quia repellendus sequi nulla voluptatem dicta reprehenderit, placeat laborum ut beatae ullam suscipit veniam.
       </p>
@@ -55,7 +32,7 @@
 
   <div class="row justify-content-around mx-3 row-eq-height">
 
-      <div *ngFor="let pet of pets.pets; index as i" class="col-lg-3 col-md-4">
+      <div *ngFor="let pet of pets.pets; index as i" class="col-lg-4 col-md-6">
         <!-- <h4 id=""><strong>{{ pet.name }}</strong></h4> -->
 
         <!--Description-->
@@ -68,12 +45,8 @@
           <div class="card card-cascade wider mb-4">
 
             <!-- Card image -->
-            <div class="view view-cascade overlay">
-              <img class="card-img-top" src="{{ pet.picture }}" alt="Card image cap">
-              <a href="#!">
-                <div class="mask rgba-white-slight waves-effect waves-light"></div>
-              </a>
-            </div>
+              <img class="view view-cascade overlay card-img-top" src="{{ pet.picture }}" alt="Card image cap">
+
 
             <!-- Card content -->
             <div class="card-body card-body-cascade text-center mx-4">
@@ -81,7 +54,7 @@
               <!-- Title -->
               <h4 class="card-title"><strong>{{ pet.name }}</strong></h4>
               <!-- Subtitle -->
-              <h5 class="blue-text pb-2"><strong>{{ pet.specie }}</strong></h5>
+              <p class="blue-text pb-2 capitalize text-muted">{{ pet.specie }} | {{ pet.age }} | {{ pet.breed }} | {{ pet.gender }} </p>
               <!-- Text -->
               <p class="card-text">{{ pet.description }} </p>
 

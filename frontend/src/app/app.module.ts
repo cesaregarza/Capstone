@@ -53,7 +53,6 @@ import { TestbedComponent } from './testbed/testbed.component';
 import { RoutingModule } from './routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AboutComponent } from './about/about.component';
 import { CentersComponent } from './centers/centers.component';
 import { SignupComponent } from './signup/signup.component';
@@ -64,7 +63,6 @@ import { PetComponent } from './home/pet/pet.component';
 import { UserComponent } from './dashboard/user/user.component';
 import { LikesComponent } from './dashboard/likes/likes.component';
 import { PetRegisterComponent } from './dashboard/pet-register/pet-register.component';
-import { ChangepwComponent } from './dashboard/changepw/changepw.component';
 import { OptionsComponent } from './dashboard/options/options.component';
 import { CenterComponent } from './dashboard/center/center.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -119,7 +117,6 @@ import { CenterRegisterComponent } from './center-register/center-register.compo
     TestbedComponent,
     NavbarComponent,
     HomeComponent,
-    DashboardComponent,
     AboutComponent,
     CentersComponent,
     SignupComponent,
@@ -131,7 +128,6 @@ import { CenterRegisterComponent } from './center-register/center-register.compo
     UserComponent,
     LikesComponent,
     PetRegisterComponent,
-    ChangepwComponent,
     OptionsComponent,
     PageNotFoundComponent,
     FacebooktokenComponent,

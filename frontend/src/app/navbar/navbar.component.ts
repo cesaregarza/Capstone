@@ -29,7 +29,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
-        console.log(this.userIsAuthenticated)
       });
 
     this.userInfoSubs = this.auth
@@ -40,15 +39,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.userId = userInfo._id;
       this.userLocation = userInfo.location;
       this.fb = userInfo.fb;
-      console.log(userInfo);
-
     });
   }
   ngOnDestroy() {}
 
   toggle(){
   this.auth.opened = !this.auth.opened;
-  console.log(this.userId, this.userName);
+  console.log(this.router.url);
+
   }
 
 

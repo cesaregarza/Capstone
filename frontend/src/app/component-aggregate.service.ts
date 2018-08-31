@@ -9,7 +9,6 @@ import { SignupComponent } from './signup/signup.component';
 import { PetsComponent } from './home/pets/pets.component';
 import { PetComponent } from './home/pet/pet.component';
 import { CenterComponent } from './dashboard/center/center.component';
-import { ChangepwComponent } from './dashboard/changepw/changepw.component';
 import { LikesComponent } from './dashboard/likes/likes.component';
 import { OptionsComponent } from './dashboard/options/options.component';
 import { PetRegisterComponent } from './dashboard/pet-register/pet-register.component';
