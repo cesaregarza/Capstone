@@ -20,4 +20,22 @@ export class LogicService {
     }
     return pw.join("");
   };
+
+  logicXor = (a, b) => {
+    return (a && !b) || (!a && b);
+  };
+
+  pushAll = (arr: Array<any>, input) => {
+    for (let i = 0; i < arr.length; i++){
+      arr.map(x => x.push(input));
+    }
+  };
+
+  popAll = (arr: Array<any>, input) => {
+    for (let i = 0; i < arr.length; i++){
+      arr.map(x => x.pop());
+    }
+  };
+
+  
 }

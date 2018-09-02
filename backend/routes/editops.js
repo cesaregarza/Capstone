@@ -77,6 +77,14 @@ console.log(req.body);
               }
           }
 
+          if (JSON.stringify(editObj) == JSON.stringify({})){
+              return res.status(304).json({
+                  status: 304,
+                  message: "No change",
+                  error: "No Change"
+              });
+          }
+
           Userlist.update({_id: id}, {$set: editObj}, (errr, use) => {
               if (errr) {
                   return res.status(500).json({

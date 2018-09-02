@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   FormControl,
@@ -10,6 +10,7 @@ import {
 import { ErrorStateMatcher } from "@angular/material/core";
 import { HttpClient } from "@angular/common/http";
 import { SessionsService } from '../../Services/sessions.service';
+import { LogicService } from '../../Services/logic.service';
 
 import { NavbarComponent } from '../../navbar/navbar.component';
 
@@ -32,17 +33,23 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './options.component.html',
   styleUrls: ['./options.component.scss']
 })
-export class OptionsComponent implements OnInit, OnDestroy {
+export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
 
   private fbSub: Subscription;
 
-  constructor(public auth: SessionsService, public http:HttpClient, public nav: NavbarComponent) {
+  constructor(public auth: SessionsService, public http:HttpClient, public nav: NavbarComponent, public logic: LogicService) {
     this.auth = auth,
     this.http = http,
-    this.nav = nav
+    this.nav = nav,
+    this.logic = logic
   }
 
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+
+  validatorBase = [Validators.minLength(8), Validators.maxLength(20)];
+  oldPwValidators = this.validatorBase;
+  newPwValidators = this.validatorBase;
+  pwConfirmValidators = this.validatorBase;
 
   form = new FormGroup({
     nameFormControl: new FormControl("", [
@@ -51,27 +58,18 @@ export class OptionsComponent implements OnInit, OnDestroy {
     ]),
     passwords: new FormGroup(
       {
-        oldPassword: new FormControl("", [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(20)
-        ]),
-        newPassword: new FormControl("", [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(20)
-        ]),
+        oldPassword: new FormControl("", this.oldPwValidators),
+        newPassword: new FormControl("", this.newPwValidators),
 
-        passwordConfirm: new FormControl("", [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(20)
-        ]),
+        passwordConfirm: new FormControl("", this.pwConfirmValidators),
       },
       { validators: this.passwordMatchValidator }
     )
   });
   passwordFields = this.form.get("passwords");
+  oldPwField = this.passwordFields.get("oldPassword");
+  newPwField = this.passwordFields.get("newPassword");
+  pwConfirmField = this.passwordFields.get("passwordConfirm");
 
   passwordMatchValidator(g: FormGroup) {
     let newPassword = g.get("newPassword").errors;
@@ -143,11 +141,12 @@ export class OptionsComponent implements OnInit, OnDestroy {
       .then(result => {
         console.log(result);
         if (result['status'] == 202) {
-          this.form.controls.passwords.reset();
           this.formGroupDirective.resetForm();
           this.auth.getLogin();
           this.form.controls.nameFormControl.setValue(this.nav.userName);
-          this.auth.toastr.success('Password successfully changed', 'Success!', this.auth.toastrSettings);
+          this.auth.toastr.success('Settings successfully updated', 'Success!', this.auth.toastrSettings);
+        } else if (result['status'] == 304) {
+          this.auth.toastr.warning('No changes were submitted', 'Warning', this.auth.toastrSettings);
         }
       })
       .catch(err => {
@@ -155,6 +154,8 @@ export class OptionsComponent implements OnInit, OnDestroy {
           this.auth.toastr.error('An error occurred', 'Error', this.auth.toastrSettings);
         } else if (err['status'] == 400){
           this.auth.toastr.error('Wrong password', 'Error', this.auth.toastrSettings);
+        } else if (err['status']== 304){
+          this.auth.toastr.warning('No changes were submitted', 'Warning', this.auth.toastrSettings);
         }
       })
     }
@@ -169,6 +170,22 @@ export class OptionsComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges() {
+    let temp = this.requirePasswordXNOR();
+
+    if (temp) {
+      this.oldPwValidators.push(Validators.required);
+      this.newPwValidators.push(Validators.required);
+      this.pwConfirmValidators.push(Validators.required);
+    } else {
+      this.oldPwValidators.pop();
+      this.newPwValidators.pop();
+      this.pwConfirmValidators.pop();
+    }
+
+    console.log(this.oldPwValidators);
+  };
+
   ngOnDestroy(){
     this.fbSub.unsubscribe();
   };
@@ -179,6 +196,16 @@ export class OptionsComponent implements OnInit, OnDestroy {
 
   clearFormGroupDirective(){
 
+  }
+
+  //Using !! for type coercion, this will force true values if the is any length in the fields and false if they're empty. Then it will do A XNOR (B AND C). The case where B = 0 and C > 0 or vice-versa will resolve to true, but this does not matter since the mismatch validator will prevent this case from validating.
+  requirePasswordXNOR(){
+    let a = !!this.oldPwField.value;
+    let b = !!this.newPwField.value;
+    let c = !!this.pwConfirmField.value;
+
+    let d = (b && c);
+    return !this.logic.logicXor(a, d);
   }
 
   hide = true;
