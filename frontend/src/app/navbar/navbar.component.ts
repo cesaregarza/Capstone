@@ -45,7 +45,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggle(){
   this.auth.opened = !this.auth.opened;
-  console.log(this.router.url);
 
   }
 

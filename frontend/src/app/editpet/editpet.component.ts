@@ -66,7 +66,6 @@ export class EditpetComponent implements OnInit {
   });
 
   deletePet = id => {
-    console.log(id);
     this.http
       .patch(this.enviroment.url + "/id=" + id, [
         {

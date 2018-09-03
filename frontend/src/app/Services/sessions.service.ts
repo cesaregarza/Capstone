@@ -77,7 +77,6 @@ export class SessionsService {
       )
       .toPromise()
       .then((resp: any) => {
-        console.log(resp);
         const token = resp.token;
         localStorage.setItem("token", token);
         this.getLogin();
@@ -106,7 +105,6 @@ export class SessionsService {
   }
 
   getLogin() {
-    console.log('getLogin');
     this.http
       .get(this.environment.apiUrl + "login", {
         withCredentials: true // <=========== important!

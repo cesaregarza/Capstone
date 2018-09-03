@@ -25,7 +25,6 @@ router.patch("/i=:userId", (req, res, next) => {
     });
 });
 
-
 router.get("/id=:id", (req, res, next) => {
   Pet.find({
     center: req.params.id,
@@ -36,28 +35,6 @@ router.get("/id=:id", (req, res, next) => {
       res.status(200).json({
         pets: result
       });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-    });
-});
-
-router.get("/", (req, res, next) => {
-  Center.find({
-    isDeleted: false
-  })
-    .populate()
-    .sort({ field: 'asc', _id: -1 })
-    .exec()
-    .then(centers => {
-      if (!isEmpty(centers)) {
-        console.log(centers);
-        res.status(200).json({
-          centers: centers
-        });
-      }
     })
     .catch(err => {
       res.status(500).json({
@@ -87,6 +64,67 @@ router.get("/cURL=:cURL", (req, res, next) => {
       });
     });
 });
+
+router.get("/?:super", (req, res, next) => {
+  //Regex with lookbehind. TODO: Figure out if it works on other servers. TODO: Make this much more specific.
+  let re = /((?<=^|&)([a-zA-Z]+=[\da-zA-Z]+))/g;
+
+  //Match the superroute with the regex, creating groups
+  let spr = req.params.super.match(re);
+
+  //Initialize pagination variables
+  let ps = 0;
+  let pn = 0;
+
+  //If no regex groups are returned, send a 500 error message saying Syntax is incorrect
+  if (spr !== null) {
+    //Iterate through all regex groups, setting variables to their equivalents as mentioned in the API documentation.
+    for (let i = 0; i < spr.length; i++) {
+      if (spr[i].split("=")[0] == "ps") {
+        ps = parseInt(spr[i].split("=")[1]);
+      }
+      if (spr[i].split("=")[0] == "pn") {
+        pn = parseInt(spr[i].split("=")[1]);
+      }
+    }
+  }
+  
+  //Set defaults for ps and pn if not found
+  ps = !ps ? 12 : ps;
+  pn = !pn ? 1 : pn;
+
+  //Return all centers that have not been deleted
+  Center.find({
+    isDeleted: false
+  })
+    .populate()
+    //Establish a limit based on Page Size
+    .limit(ps)
+    //Skip first results for pagination
+    .skip(ps * (pn - 1))
+    .sort({ field: "asc", _id: -1 })
+    .exec()
+    .then(centers => {
+      if (!isEmpty(centers)) {
+
+        //Count all the centers.
+        Center.countDocuments({ isDeleted: false }, (err, count) => {
+         if (err) throw err;
+          res.status(200).json({
+            total: count,
+            centers: centers
+          });
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+});
+
+
 
 isEmpty = obj => {
   for (var key in obj) {
