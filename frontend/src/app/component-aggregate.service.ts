@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { TestbedComponent } from './testbed/testbed.component';
 import { AboutComponent } from './about/about.component';
 import { CentersComponent } from './centers/centers.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';

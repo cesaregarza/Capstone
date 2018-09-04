@@ -82,7 +82,7 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
           delete newPassword.mismatch;
         }
       }
-      
+
       if (!!passwordConfirm){
         if (!!passwordConfirm.mismatch){
           delete passwordConfirm.mismatch;
@@ -118,15 +118,11 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   sendForm () {
-    console.log("click");
-
     let name=this.form.controls.nameFormControl.value;
     let oldPassword = this.form.get('passwords').get('oldPassword').value;
     let newPass = this.form.get('passwords').get('newPassword').value;
     let d = new Date();
     d.toLocaleString();
-
-    console.log(this.form);
 
     if (this.form.status == "VALID"){
       this.http.post('https://localhost:3000/editops',{
@@ -139,7 +135,6 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
       })
       .toPromise()
       .then(result => {
-        console.log(result);
         if (result['status'] == 202) {
           this.formGroupDirective.resetForm();
           this.auth.getLogin();

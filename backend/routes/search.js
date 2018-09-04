@@ -34,6 +34,7 @@ router.get("/?:super", (req, res, next) => {
   //Initialize variables
   let location = "";
   let specie = "";
+  let center = "";
   let ps = 0;
   let pn = 0;
   let findObj = {};
@@ -41,10 +42,11 @@ router.get("/?:super", (req, res, next) => {
 
   //If no regex groups are returned, send a 500 error message saying Syntax is incorrect
   if (spr !== null) {
-   
-    
     //Iterate through all regex groups, setting variables to their equivalents as mentioned in the API documentation.
     for (let i = 0; i < spr.length; i++) {
+      if (spr[i].split("=")[0] == "center") {
+        center = spr[i].split("=")[1];
+      }
       if (spr[i].split("=")[0] == "location") {
         location = spr[i].split("=")[1];
       }
@@ -59,16 +61,21 @@ router.get("/?:super", (req, res, next) => {
       }
     }
   }
-    //Set defaults for ps and pn if not found
-    ps = !ps ? 12 : ps;
-    pn = !pn ? 1 : pn;
-    
+  //Set defaults for ps and pn if not found
+  ps = !ps ? 12 : ps;
+  pn = !pn ? 1 : pn;
+
+  //Set 
+  if (!!center) {
+    findObj.center = center;
+  } else {
     //Set defaults for location and species if not found
     if (!!location) {
-    findObj.location = { $regex: location, $options: "$i" };
-  }
-  if (!!specie) {
-    findObj.specie = { $regex: specie, $options: "$i" };
+      findObj.location = { $regex: location, $options: "$i" };
+    }
+    if (!!specie) {
+      findObj.specie = { $regex: specie, $options: "$i" };
+    }
   }
 
   //Count the results we'll get.
@@ -87,7 +94,7 @@ router.get("/?:super", (req, res, next) => {
     .limit(ps)
     //Skip first results for pagination
     .skip(ps * (pn - 1))
-    .sort({ field: 'asc', _id: -1 })
+    .sort({ field: "asc", _id: -1 })
     .exec()
     .then(pets => {
       if (!isEmpty(pets)) {
@@ -113,8 +120,8 @@ router.get("/?:super", (req, res, next) => {
         });
       } else {
         res.status(404).json({
-          message: 'Not found'
-        })
+          message: "Not found"
+        });
       }
     })
     .catch(err => {

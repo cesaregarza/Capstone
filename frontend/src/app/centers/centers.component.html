@@ -1,12 +1,66 @@
 <div class="container">
+<!-- Start top pagination bar -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a [ngClass]="pageNumber == 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber !== 1 ? movePage(1) : ''"><i
+            class="fas fa-angle-double-left"></i></a>
+      </li>
+      <li class="page-item">
+        <a [ngClass]="pageNumber <= 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber > 1 ? movePage(pageNumber - 1) : ''"><i
+            class="fas fa-angle-left"></i></a>
+      </li>
+      <ng-container *ngFor="let page of paginationBar">
+        <li *ngIf="limitPages >= page" [ngClass]="page == pageNumber ? 'active' :''" class="page-item"><a class="page-link"
+            (click)="movePage(page)">{{ page }}</a></li>
+      </ng-container>
+
+      <li class="page-item">
+        <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(pageNumber + 1) : ''"><i
+            class="fas fa-angle-right"></i></a>
+      </li>
+      <li class="page-item">
+        <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(limitPages) : ''"><i
+            class="fas fa-angle-double-right"></i></a>
+      </li>
+    </ul>
+  </nav>
+<!-- Finish top pagination bar -->
   <div class="row">
-      <div *ngFor="let center of centers" class="card" style="width: 18rem;">
-          <img class="card-img-top" src="{{ center.picture }}" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">{{ center.name }}</h5>
-            <p class="card-text">{{ center.city  }}</p>
-            <a [routerLink]="['/center',center.cURL]" routerLinkActive="router-link-active"  class="btn btn-primary">More Info</a>
-          </div>
-        </div>
+    <div *ngFor="let center of centers" class="card" style="width: 18rem;">
+      <img class="card-img-top" src="{{ center.picture }}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{ center.name }}</h5>
+        <p class="card-text">{{ center.city }}</p>
+        <a [routerLink]="['/center',center.cURL]" routerLinkActive="router-link-active" class="btn btn-primary">More Info</a>
+      </div>
+    </div>
   </div>
+<!-- Start bottom pagination bar -->
+  <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a [ngClass]="pageNumber == 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber !== 1 ? movePage(1) : ''"><i
+              class="fas fa-angle-double-left"></i></a>
+        </li>
+        <li class="page-item">
+          <a [ngClass]="pageNumber <= 1 ? 'text-muted' : ''" class="page-link" (click)="pageNumber > 1 ? movePage(pageNumber - 1) : ''"><i
+              class="fas fa-angle-left"></i></a>
+        </li>
+        <ng-container *ngFor="let page of paginationBar">
+          <li *ngIf="limitPages >= page" [ngClass]="page == pageNumber ? 'active' :''" class="page-item"><a class="page-link"
+              (click)="movePage(page)">{{ page }}</a></li>
+        </ng-container>
+
+        <li class="page-item">
+          <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(pageNumber + 1) : ''"><i
+              class="fas fa-angle-right"></i></a>
+        </li>
+        <li class="page-item">
+          <a [ngClass]="limitPages <= pageNumber ? 'text-muted' : ''" class="page-link" (click)="limitPages > pageNumber ? movePage(limitPages) : ''"><i
+              class="fas fa-angle-double-right"></i></a>
+        </li>
+      </ul>
+    </nav>
+    <!-- Finish bottom pagination bar -->
 </div>
