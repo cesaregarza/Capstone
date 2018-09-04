@@ -91,7 +91,7 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
         }
       })
       .catch(err => {
-        if (err.status == 404) {
+        if (err.status == 500) {
           this.router.navigate(["home"]);
         }
         console.log(err);
