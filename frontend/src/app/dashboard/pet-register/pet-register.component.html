@@ -20,14 +20,14 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field class="col-lg-4 col-sm-6 col-xs-6 offset-lg-2 my-0">
-          <mat-select placeholder="Specie" formControlName="specie" [errorStateMatcher]="matcher">
+          <mat-select placeholder="Species" formControlName="specie" [errorStateMatcher]="matcher">
             <mat-option value="dog">Dog</mat-option>
             <mat-option value="cat">Cat</mat-option>
             <mat-option value="turtle">Turtle</mat-option>
             <mat-option value="other">Other</mat-option>
           </mat-select>
           <mat-error *ngIf="form.get('specie').hasError('required')">
-            Specie is
+            Species is
             <strong>required</strong>
           </mat-error>
         </mat-form-field>

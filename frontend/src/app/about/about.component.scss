@@ -1,0 +1,29 @@
+@function boxshadow($alpha) {
+  @return rgba(0, 0, 0, $alpha);
+}
+
+
+img {
+ object-fit: fill;
+//  max-width: 400px;
+}
+
+.team {
+  line-height: 1.9;
+  box-shadow: 0 2px 5px 0 boxshadow(0.16), 0 2px 10px 0 boxshadow(0.12);
+
+  // box-shadow: 0 5px 11px 0 boxshadow(0.18), 0 4px 15px 0 boxshadow(0.15);
+}
+
+#together {
+  font-size: 1.2rem;
+  font-weight: 200;
+  line-height: 1.9;
+}
+
+hr, div.border-bottom  {
+  // color: green;
+  border-color: green!important;
+}
+
+
