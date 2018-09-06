@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
 <!-- Start top pagination bar -->
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
@@ -26,11 +26,11 @@
     </ul>
   </nav>
 <!-- Finish top pagination bar -->
-  <div class="row">
-    <div *ngFor="let center of centers" class="card" style="width: 18rem;">
+  <div class="row justify-content-center">
+    <div *ngFor="let center of centers" class="card col-md-3 m-2">
       <img class="card-img-top" src="{{ center.picture }}" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">{{ center.name }}</h5>
+        <h6 class="card-title">{{ center.name }}</h6>
         <p class="card-text">{{ center.city }}</p>
         <a [routerLink]="['/center',center.cURL]" routerLinkActive="router-link-active" class="btn btn-primary">More Info</a>
       </div>

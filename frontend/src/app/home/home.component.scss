@@ -37,3 +37,27 @@
   -webkit-border-radius: .25rem;
   border-radius: .25rem;
 }
+
+
+.mat-card .example-card {
+  max-width: 400px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+.mat-card-image {
+  height: 180px;
+}
+
+.mat-card-content p {
+  height: 130px;
+}
+
+.material-icons{
+  font-size: 4rem;
+  color: #1c69af;
+}

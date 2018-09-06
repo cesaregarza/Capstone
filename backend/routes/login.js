@@ -61,6 +61,7 @@ router.get(
 );
 
 router.get("/login", checkAuth, function(req, res) {
+  console.log(req.session.user,2)
   if (req.session.user) {
     Userlist.findById(req.session.user._id)
     .populate()

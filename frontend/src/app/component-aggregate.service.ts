@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { TestbedComponent } from './testbed/testbed.component';
 import { AboutComponent } from './about/about.component';
 import { CentersComponent } from './centers/centers.component';
 import { HomeComponent } from './home/home.component';

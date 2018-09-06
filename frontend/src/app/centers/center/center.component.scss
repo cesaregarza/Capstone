@@ -67,8 +67,8 @@
 
 .card.card-cascade.wider.mb-4 img {
   width: 100%;
-  height: 200px;
-  object-fit: fill;
+  height: 240px;
+  object-fit: cover;
 }
 .card {
   @include makeBoxShadow(2);
@@ -161,4 +161,27 @@ img {
 
 .capitalize {
   text-transform: capitalize;
+}
+
+.mat-card .example-card {
+  max-width: 400px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+.mat-card-image {
+  height: 180px;
+}
+
+.mat-card-content p {
+  height: 130px;
+}
+
+.material-icons{
+  font-size: 4rem;
+  color: #1c69af;
 }

@@ -4,11 +4,17 @@
       <mat-option value="">
         Any
       </mat-option>
-      <mat-option value="Mcallen">
+      <mat-option value="mcallen">
         Mcallen
       </mat-option>
-      <mat-option value="Palmview">
-        Palmview
+      <mat-option value="mission">
+        Mission
+      </mat-option>
+      <mat-option value="edinburg">
+        Edinburg
+      </mat-option>
+      <mat-option value="harlingen">
+        Harlingen
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -24,6 +30,9 @@
 
       <mat-option value="Cat">
         Cat
+      </mat-option>
+      <mat-option value="Turtle">
+        Turtle
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -74,50 +83,25 @@
 
 <div class="row justify-content-around mx-3 row-eq-height">
 
-  <div *ngFor="let pet of pets.pets; index as i" class="col-lg-3 col-md-4">
-    <!-- <h4 id=""><strong>{{ pet.name }}</strong></h4> -->
-
-    <!--Description-->
-    <p class="description"></p>
-
-    <!--Section: Live preview-->
-    <section>
-
-      <!-- Card Wider -->
-      <div class="card card-cascade wider mb-4">
-
-        <!-- Card image -->
-        <div class="view view-cascade overlay">
-          <img class="card-img-top" src="{{ pet.picture }}" alt="Card image cap">
-          <a href="#!">
-            <div class="mask rgba-white-slight waves-effect waves-light"></div>
-          </a>
-        </div>
-
-        <!-- Card content -->
-        <div class="card-body card-body-cascade text-center mx-4">
-
-          <!-- Title -->
-          <h4 class="card-title"><strong>{{ pet.name }}</strong></h4>
-          <!-- Subtitle -->
-          <h5 class="blue-text pb-2"><strong>{{ pet.specie }}</strong></h5>
-          <!-- Text -->
-          <p class="card-text">{{ pet.description }} </p>
-
-          <!-- Linkedin -->
-          <a class="px-2 fa-lg li-ic" [routerLink]="['/pet', pet._id]"><i class="fas fa-info-circle"></i></a>
-          <!-- Twitter -->
-          <a class="px-2 fa-lg tw-ic"><i class="fa fa-twitter"></i></a>
-          <!-- Dribbble -->
-          <a class="px-2 fa-lg fb-ic"><i class="fa fa-facebook"></i></a>
-
-        </div>
-
+  <div class="container">
+    <div class=" row row-eq-height">
+      <div class="col-md-4 my-2" *ngFor="let pet of pets.pets">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <img mat-card-avatar class="" src="{{ pet.picture }}">
+            <mat-card-title>{{ pet.name }}</mat-card-title>
+            <mat-card-subtitle>{{ pet.breed }}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="{{ pet.picture }}" alt="">
+          <mat-card-content>
+            <p>{{ pet.description }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <a class="px-2 fa-lg li-ic" [routerLink]="['/pet', pet._id]" routerLinkActive="router-link-active"><i class="fas fa-info-circle"></i></a>
+          </mat-card-actions>
+        </mat-card>
       </div>
-      <!-- Card Wider -->
-
-    </section>
-    <!--Section: Live preview-->
+    </div>
   </div>
 
 </div>

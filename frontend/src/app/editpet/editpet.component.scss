@@ -1,5 +1,7 @@
-.example-card {
+.mat-card .example-card {
   max-width: 400px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .example-header-image {
@@ -7,11 +9,11 @@
 }
 
 .mat-card-image {
-  height: 200px;
+  height: 180px;
 }
 
-p {
-  height: 80px;
+.mat-card-content p {
+  height: 130px;
 }
 
 .material-icons{

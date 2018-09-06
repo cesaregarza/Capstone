@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes, CanActivate } from '@angular/router';
-import { TestbedComponent } from './testbed/testbed.component';
 import { AboutComponent } from './about/about.component';
 import { CentersComponent } from './centers/centers.component';
 import { HomeComponent } from './home/home.component';
@@ -23,10 +22,7 @@ import { CenterRegisterComponent } from './center-register/center-register.compo
 
 
 const routes: Routes = [
-  {
-    path: 'testbed',
-    component: TestbedComponent
-  },
+
   {
     path: 'about',
     component: AboutComponent

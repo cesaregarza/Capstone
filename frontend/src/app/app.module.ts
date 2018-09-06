@@ -49,7 +49,6 @@ import {
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { TestbedComponent } from './testbed/testbed.component';
 import { RoutingModule } from './routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
@@ -114,7 +113,6 @@ import { CenterRegisterComponent } from './center-register/center-register.compo
   ],
   declarations: [
     AppComponent,
-    TestbedComponent,
     NavbarComponent,
     HomeComponent,
     AboutComponent,
