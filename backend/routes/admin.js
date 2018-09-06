@@ -9,7 +9,7 @@ router.post("/",  (req, res, next) => {
   const id = new mongoose.Types.ObjectId();
   const token = new Token({
     _id: id,
-    expirationDate: Date.now() + 3600000 
+    expirationDate: Date.now() + 64800000 
   });
 
   token.save().then(

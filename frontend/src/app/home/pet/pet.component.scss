@@ -2,6 +2,11 @@ img {
   border-radius: 14px;
 }
 
+td, th {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 .capitalize {
   text-transform: capitalize;
 }

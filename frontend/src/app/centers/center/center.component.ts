@@ -87,7 +87,7 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
         if (!this.logic.isEmpty(pets)) {
           this.pets = pets;
           this.countAll = pets.total;
-          this.limitPages = Math.ceil(this.countAll / 12);
+          this.limitPages = Math.ceil(this.countAll / 6);
         }
       })
       .catch(err => {
