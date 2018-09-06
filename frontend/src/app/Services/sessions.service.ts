@@ -44,6 +44,8 @@ export class SessionsService {
     h.test(window.location.host)
   );
 
+  public fblogin: Boolean;
+
   isAuthenticated(): boolean {
     // Check whether the token is expired and return
     // true or false and return if the session

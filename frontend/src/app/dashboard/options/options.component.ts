@@ -157,12 +157,20 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
   };
 
   ngOnInit() {
-    this.fbSub = this.auth.getUserInfoListener().subscribe(userInfo => {
+    this.auth.getUserInfoListener().subscribe(userInfo => {
+      console.log("almost there");
       if (userInfo.fb){
+        console.log("here we go");
         this.passwordFields.disable();
+        this.auth.fblogin = true;
+      } else {
+        this.auth.fblogin = false;
       }
       this.form.controls.nameFormControl.setValue(userInfo.name);
     });
+    if (this.auth.fblogin){
+      this.passwordFields.disable();
+    }
   }
 
   ngOnChanges() {
@@ -182,7 +190,6 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
   };
 
   ngOnDestroy(){
-    this.fbSub.unsubscribe();
   };
 
   boop(){
