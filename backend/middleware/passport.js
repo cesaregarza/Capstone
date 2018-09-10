@@ -1,6 +1,6 @@
 const expressSession = require("express-session");
 const keys = require("../gitignore/keys");
-const User = require("../models/center");
+const User = require("../models/user");
 const Userlist = require("../models/userlist");
 const passport = require("passport");
 const scrypt = require("scrypt");
@@ -94,7 +94,7 @@ passport.use(
                 _id: id,
                 name: profile.displayName,
                 hash: hashedpw,
-                usertype: 2,
+                usertype: 1,
                 email: email,
                 facebookid: profile.id,
                 facebooktoken: token,
