@@ -13,6 +13,7 @@ const jwt = require("jsonwebtoken");
 const localPath = "https://localhost:3000/";
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
+  console.log('almost there');
   let userSansHash = req.user;
   userSansHash.hash = "";
   req.session.user = userSansHash;

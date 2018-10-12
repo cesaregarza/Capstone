@@ -11,11 +11,13 @@ var FacebookStrategy = require("passport-facebook").Strategy;
 
 //Create sessions as encrypted cookies. In this case, we'll just use the user ID as the session.
 passport.serializeUser((user, done) => {
+  console.log('serielize');
   done(null, user._id);
 });
 
 //Decrypt cookies to extract session information
 passport.deserializeUser((id, done) => {
+  console.log('deserialize');
   Userlist.findById(id, (err, user) => {
     done(err, user);
   });
@@ -28,6 +30,7 @@ passport.use(
       usernameField: "email"
     },
     (email, password, done) => {
+      console.log(email);
       Userlist.findOne(
         {
           email: email,
