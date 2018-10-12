@@ -67,7 +67,9 @@ router.get("/cURL=:cURL", (req, res, next) => {
 
 router.get("/?:super", (req, res, next) => {
   //Regex with lookbehind. TODO: Figure out if it works on other servers. TODO: Make this much more specific.
-  let re = /((?<=^|&)([a-zA-Z]+=[\da-zA-Z]+))/g;
+  // let re = /((?<=^|&)([a-zA-Z]+=[\da-zA-Z]+))/g;
+  let re = /(([a-zA-Z]+=[\da-zA-Z]+))/g;
+
 
   //Match the superroute with the regex, creating groups
   let spr = req.params.super.match(re);
