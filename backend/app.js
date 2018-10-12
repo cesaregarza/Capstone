@@ -33,17 +33,16 @@ app.use('/upload', express.static('upload'));
 
 corsOptions = {
   // Testing for deploy
-  // origin: ["http://localhost"],
-  credentials: false
+  origin: ["https://localhost:4200"],
+  credentials: true
 };
-
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   if (req === 'OPTIONS') {
-    res.header('Access-Control-Alloq-Methods', 'GET, PUT, POST, PATCH');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH');
     return res.status(200).json({});
   }
   next();

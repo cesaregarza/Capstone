@@ -90,6 +90,14 @@ router.post("/", upload.single("petimage"), (req, res, next) => {
     });
 });
 
+router.get('/', (req, res, next) => {
+  Pet.find().exec().then(result => {
+    res.status(200).json(result);
+  }).catch(err => {
+    res.status(500).json(err);
+  })
+})
+
 router.get("/id=:petId", (req, res, next) => {
   console.log(req.params.petId);
   Pet.findOne({ _id: req.params.petId, isDeleted: false })
