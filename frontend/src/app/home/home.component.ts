@@ -31,6 +31,10 @@ export class HomeComponent implements OnInit {
     this.find(this.pageNumber);
   }
 
+callLike = (petId) => {
+  this.auth.like(petId);
+}
+
   movePage = pageNumber => {
     this.paginationBar = [];
     let max = this.limitPages;

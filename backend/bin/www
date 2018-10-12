@@ -6,12 +6,14 @@
 
 var app = require('../app');
 var debug = require('debug')('backend:server');
-const https = require('https');
+// Change the https for http for deploy test
+const https = require('http');
 const fs = require('fs');
 
 const httpsOptions = {
-  key: fs.readFileSync('../SSLKeys/key.pem'),
-  cert: fs.readFileSync('../SSLKeys/cert.pem')
+  
+  // key: fs.readFileSync('../SSLKeys/key.pem'),
+  // cert: fs.readFileSync('../SSLKeys/cert.pem')
 };
 /**
  * Get port from environment and store in Express.
@@ -23,8 +25,9 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
-var server = https.createServer(httpsOptions, app);
+// var server = https.createServer(httpsOptions,app);
+// Remove httpsOptions for test the deploy
+var server = https.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.

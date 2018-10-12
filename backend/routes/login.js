@@ -16,11 +16,11 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
   let userSansHash = req.user;
   userSansHash.hash = "";
   req.session.user = userSansHash;
-  console.log(req.user);
+  // console.log(req.user);
   const token = jwt.sign(
     { email: req.user.email, userId: req.user._id, usertype: req.user.usertype },
     keys.JWT_KEY,
-    { expiresIn: "20m" }
+    { expiresIn: "1m" }
   );
 
   res.status(200).json({
@@ -49,7 +49,7 @@ router.get(
     const token = jwt.sign(
       { email: req.user.email, userId: req.user._id, usertype: req.user.usertype },
       keys.JWT_KEY,
-      { expiresIn: "20m" }
+      { expiresIn: "1m" }
     );
     res.cookie("token", token);
     res.status(200).redirect("https://localhost:4200/dashboard");
@@ -60,14 +60,13 @@ router.get(
   }
 );
 
-router.get("/login", checkAuth, function(req, res) {
-  console.log(req.session.user,2)
+router.get("/login", function(req, res) {
   if (req.session.user) {
     Userlist.findById(req.session.user._id)
     .populate()
     .exec()
     .then(result =>{
-      console.log(result);
+      // console.log(result);
 
       res.status(200).json({
         // session: req.session,

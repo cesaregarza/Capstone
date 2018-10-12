@@ -27,21 +27,14 @@ mongoose.connect(`mongodb+srv://dbpets:${keys.PW}@petsdb-165j8.mongodb.net/test?
   console.log("Not Connected to Database ERROR! ", err);
 });
 
-app.use(expressSession({
-secret: keys.session,
-cookie: {
-    maxAge: 1000*3600*2,
-    secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
-},
-resave: false,
-saveUninitialized: false,
-}));
+
 app.use(logger('dev'));
 app.use('/upload', express.static('upload'));
 
 corsOptions = {
-  origin: ["https://localhost:4200"],
-  credentials: true
+  // Testing for deploy
+  // origin: ["http://localhost"],
+  credentials: false
 };
 
 app.use(cors(corsOptions));
@@ -60,6 +53,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(expressSession({
+  secret: keys.session,
+  cookie: {
+      maxAge: 1000*3600*2,
+      secure: true, //REMEMBER TO SET THIS FOR PRODUCTION
+  },
+  // store: sessionStore,
+  resave: true,
+  saveUninitialized: false,
+  }));
 
 //Set up session parameters
 app.use(passport.initialize());

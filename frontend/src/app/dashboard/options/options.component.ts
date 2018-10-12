@@ -45,7 +45,7 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
-
+  private sub: Subscription;
   validatorBase = [Validators.minLength(8), Validators.maxLength(20)];
   oldPwValidators = this.validatorBase;
   newPwValidators = this.validatorBase;
@@ -157,7 +157,8 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
   };
 
   ngOnInit() {
-    this.auth.getUserInfoListener().subscribe(userInfo => {
+    console.log(1);
+    this.sub = this.auth.getUserInfoListener().subscribe(userInfo => {
       console.log("almost there");
       if (userInfo.fb){
         console.log("here we go");
@@ -190,6 +191,7 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
   };
 
   ngOnDestroy(){
+   this.sub.unsubscribe();
   };
 
   boop(){

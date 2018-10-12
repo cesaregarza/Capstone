@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
-var fs = require("fs");
+const fs = require("fs");
+const checkAuth = require("../middleware/check-auth");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./upload/");
@@ -28,6 +29,31 @@ const upload = multer({
 const localPath = "https://localhost:3000/upload/";
 
 const Pet = require("../models/pet");
+const User = require("../models/user");
+
+router.post("/likePet", checkAuth, (req, res, next) => {
+  let petId = req.body.petId;
+  let userId = req.body.userId;
+
+
+  Pet.findByIdAndUpdate(petId, { $push: { likes: userId } },
+    (err, success) => {
+          if (err) {
+              console.log(err);
+          } else {
+              console.log(success);
+          }
+      });
+  User.findByIdAndUpdate(userId, { $push: { liked: petId } },
+    (err, success) => {
+          if (err) {
+              console.log(err);
+          } else {
+              console.log(success);
+          }
+      });
+
+});
 
 router.post("/", upload.single("petimage"), (req, res, next) => {
   const id = new mongoose.Types.ObjectId();

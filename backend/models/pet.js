@@ -11,6 +11,7 @@ const petSchema = mongoose.Schema({
     description: { type: String, required: false },
     gender: { type: String, required: true },
     picture: { type: String, required: true },
+    likes: {type: Array, requiered: false },
     center: { type: mongoose.Schema.Types.ObjectId, ref: 'Center', required: true },
     isDeleted: { type: Boolean, required: true }
 });
