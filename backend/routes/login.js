@@ -67,7 +67,11 @@ router.get("/login", function(req, res) {
     .exec()
     .then(result =>{
       // console.log(result);
-
+if (!result) {
+  res.status(401).json({
+    error: "Auth error"
+  })
+}
       res.status(200).json({
         // session: req.session,
         _id: result._id,
