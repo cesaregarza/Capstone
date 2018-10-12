@@ -124,7 +124,7 @@ export class SignupComponent implements OnInit {
     var d = new Date();
     d.toLocaleString();
     if (this.form.status === "VALID") {
-      this.http.post('https://localhost:3000/newuser',{
+      this.http.post('https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/newuser',{
         name: this.form.get('nameFormControl').value,
         email: email,
         isDeleted: false,

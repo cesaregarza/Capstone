@@ -16,7 +16,7 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
   centerInfoFound = false;
   environment = {
     production: false,
-    apiUrl: "https://localhost:3000/centers"
+    apiUrl: "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/centers"
   };
   paginationBar = [1, 2, 3, 4, 5];
   pets = {};
@@ -75,7 +75,7 @@ export class CenterInfoComponent implements OnInit, OnDestroy {
   };
 
   find = pageNumber => {
-    let url = "https://localhost:3000/search/";
+    let url = "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/search/";
     url = url + "pn=" + pageNumber;
     url = url + "&ps=" + this.petsByPage
     url = url + "&center=" + this.centerInfo._id;

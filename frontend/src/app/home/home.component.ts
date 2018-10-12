@@ -52,7 +52,7 @@ callLike = (petId) => {
   };
 
   find = pageNumber => {
-    let url = "https://localhost:3000/search/";
+    let url = "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/search/";
     url = url + "location=" + this.city + "&";
     url = url + "specie=" + this.specie + "&";
     url = url + "pn=" + pageNumber;

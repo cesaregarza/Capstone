@@ -36,7 +36,7 @@ export class PetRegisterComponent implements OnInit {
   selectedFile = null;
   selectedFileName = "";
   enviroment = {
-    url: "https://localhost:3000/pets"
+    url: "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/pets"
   };
   constructor(
     public logic: LogicService,

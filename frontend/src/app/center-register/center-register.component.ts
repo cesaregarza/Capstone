@@ -40,7 +40,7 @@ export class CenterRegisterComponent implements OnInit {
   selectedFile = null;
   selectedFileName = "";
   enviroment = {
-    url: "https://localhost:3000/newuser"
+    url: "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/newuser"
   };
   constructor(
     public logic: LogicService,

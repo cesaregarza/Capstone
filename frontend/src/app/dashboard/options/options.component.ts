@@ -125,7 +125,7 @@ export class OptionsComponent implements OnInit, OnDestroy, OnChanges {
     d.toLocaleString();
 
     if (this.form.status == "VALID"){
-      this.http.post('https://localhost:3000/editops',{
+      this.http.post('https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/editops',{
         name: name,
         oldPassword: oldPassword,
         newPassword: newPass,

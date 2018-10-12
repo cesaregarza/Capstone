@@ -16,7 +16,7 @@ export class PetComponent implements OnInit, OnDestroy {
   petInfoFound = false;
   environment = {
     production: false,
-    apiUrl: "https://localhost:3000/pets"
+    apiUrl: "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/pets"
   };
 
   constructor(

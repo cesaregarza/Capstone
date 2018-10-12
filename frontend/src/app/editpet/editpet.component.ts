@@ -36,7 +36,7 @@ export class EditpetComponent implements OnInit {
   selectedFile = null;
   selectedFileName = "";
   enviroment = {
-    url: "https://localhost:3000/pets"
+    url: "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/pets"
   };
   pets: any;
   petId: string;
@@ -80,7 +80,7 @@ export class EditpetComponent implements OnInit {
 
   loadPets = () => {
     this.http
-      .get("https://localhost:3000/centers/id=" + this.navbar.userId)
+      .get("https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/centers/id=" + this.navbar.userId)
       .subscribe((result: any) => {
         this.pets = result.pets;
       });
@@ -95,7 +95,7 @@ export class EditpetComponent implements OnInit {
     this.form.controls.description.setValue(petInfo.description);
     this.form.controls.gender.setValue(petInfo.gender);
     this.petId = petInfo._id;
-    this.petPath = petInfo.picture.split("https://localhost:3000/upload/")[1];
+    this.petPath = petInfo.picture.split("https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/upload/")[1];
     document.getElementById("modal").click();
   };
 

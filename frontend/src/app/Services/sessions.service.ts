@@ -36,7 +36,7 @@ export class SessionsService {
 
   environment = {
     production: false,
-    apiUrl: "https://localhost:3000/user/"
+    apiUrl: "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/user/"
   };
 
   email: String = "123@123.com";
@@ -158,7 +158,7 @@ export class SessionsService {
   like = petId => {
     let body = { userId: this.userId, petId: petId };
     this.http
-      .post("https://localhost:3000/pets/likePet", body, { withCredentials: true })
+      .post("https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/pets/likePet", body, { withCredentials: true })
       .toPromise()
       .then(result => {
 

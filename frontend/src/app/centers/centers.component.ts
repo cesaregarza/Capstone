@@ -43,7 +43,7 @@ export class CentersComponent implements OnInit {
   };
 
   findCenters = pageNumber => {
-    let url = "https://localhost:3000/centers/";
+    let url = "https://petsrgv1-petsrgv.7e14.starter-us-west-2.openshiftapps.com/centers/";
     url = url + "pn=" + pageNumber;
     this.pageNumber = pageNumber;
     this.http
