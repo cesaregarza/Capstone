@@ -84,6 +84,7 @@ export class SessionsService {
       .then((resp: any) => {
         const token = resp.token;
         localStorage.setItem("token", token);
+        console.log(resp);
         this.getLogin();
         this.router.navigate(["/dashboard/options"]);
         if (resp["status"] == 200) {

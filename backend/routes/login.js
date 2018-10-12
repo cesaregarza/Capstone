@@ -87,7 +87,12 @@ if (!result) {
       });
     })
 
-    }}
+    } else {
+      res.status(401).json({
+        error: "Auth error"
+      })
+    }
+  }
 );
 
 
